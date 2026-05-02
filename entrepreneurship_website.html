@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ريادة الأعمال | منصة مراجعة ذكية</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: rgba(255,255,255,0.88);
+      --card-solid:#ffffff;
+      --text: #152033;
+      --muted: #62708a;
+      --primary: #2457d6;
+      --primary-2:#1f7a8c;
+      --accent:#e7efff;
+      --line:#dbe4f2;
+      --shadow: 0 12px 34px rgba(18, 34, 76, 0.08);
+      --shadow2: 0 20px 50px rgba(18,34,76,0.12);
+      --radius: 22px;
+      --radius-sm: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin:0;
+      font-family: Tahoma, Arial, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(36,87,214,.11), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(31,122,140,.10), transparent 28%),
+        linear-gradient(180deg, #fbfcff 0%, var(--bg) 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+    .progress-wrap {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      z-index: 9999;
+      background: rgba(220,229,246,.8);
+    }
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      border-radius: 999px;
+    }
+    header {
+      position: sticky;
+      top: 5px;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(248,250,255,0.75);
+      border-bottom: 1px solid rgba(219,228,242,0.9);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px 18px 14px;
+    }
+    .top-row {
+      display:flex;
+      gap:16px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .brand h1 {
+      margin:0;
+      font-size: clamp(1.2rem, 2.1vw, 2rem);
+      line-height:1.2;
+    }
+    .brand p {
+      margin:0;
+      color:var(--muted);
+      font-size:.96rem;
+      max-width: 820px;
+    }
+    .toolbar {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    button {
+      font-family: inherit;
+    }
+    .btn {
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.92);
+      color: var(--text);
+      padding: 11px 15px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: .2s ease;
+      box-shadow: 0 4px 14px rgba(18,34,76,.05);
+      font-size: .95rem;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--primary), #4f7df2);
+      color: white;
+      border-color: transparent;
+    }
+    .btn.ghost {
+      background: transparent;
+    }
+    .btn.active {
+      background: linear-gradient(135deg, rgba(36,87,214,.12), rgba(31,122,140,.10));
+      border-color: rgba(36,87,214,.35);
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 22px 18px 70px;
+    }
+    .hero {
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:20px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid rgba(219,228,242,.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+    .panel h2 {
+      margin:0 0 10px 0;
+      font-size:1.5rem;
+    }
+    .panel p { margin: 0; color: var(--muted); line-height: 1.9; }
+    .stats {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .stat {
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(247,250,255,.98));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .stat strong {
+      display:block;
+      font-size:1.12rem;
+      margin-bottom:4px;
+    }
+    .stat span { color: var(--muted); font-size:.92rem; line-height:1.7; }
+    .grid {
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .chapter-card {
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition: .22s ease;
+      background: var(--card-solid);
+      border: 1px solid rgba(219,228,242,.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      min-height: 186px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .chapter-card:hover { transform: translateY(-3px); box-shadow: var(--shadow2); }
+    .chapter-card .badge {
+      align-self:flex-start;
+      background: linear-gradient(135deg, #edf3ff, #e9fbff);
+      color: var(--primary);
+      border:1px solid rgba(36,87,214,.15);
+      border-radius:999px;
+      padding: 7px 12px;
+      font-weight:700;
+      font-size:.84rem;
+    }
+    .chapter-card h3 { margin:0; font-size:1.18rem; line-height:1.4; }
+    .chapter-card p { margin:0; color:var(--muted); line-height:1.8; }
+    .chapter-card ul {
+      margin: 0;
+      padding: 0 18px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: .93rem;
+    }
+    .chapter-wrap {
+      display:none;
+      animation: fadeIn .35s ease;
+    }
+    .chapter-wrap.active, .home-wrap.active, .quick-wrap.active { display:block; }
+    .home-wrap, .quick-wrap { display:none; animation: fadeIn .35s ease; }
+    .section {
+      background: var(--card-solid);
+      border: 1px solid rgba(219,228,242,.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-top: 16px;
+    }
+    .section h2 {
+      margin: 0 0 12px 0;
+      font-size: 1.34rem;
+    }
+    .section h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.08rem;
+    }
+    .section .lead {
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+    .section-header {
+      display:flex;
+      justify-content: space-between;
+      align-items:flex-start;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .pill-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 12px;
+    }
+    .pill {
+      background: #f2f6ff;
+      border: 1px solid var(--line);
+      color: #27406a;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: .84rem;
+    }
+    .defs {
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .def-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fff, #f8fbff);
+    }
+    .def-card .term {
+      display:block;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+    .def-card .def {
+      color: var(--muted);
+      line-height: 1.9;
+      margin:0;
+    }
+    .bullet-list {
+      margin:0;
+      padding: 0 22px 0 0;
+      color: var(--text);
+      line-height: 1.9;
+    }
+    .bullet-list li {
+      margin: 8px 0;
+      color: #2c374d;
+    }
+    .explain-grid {
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .explain-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
+    }
+    .explain-card strong {
+      display:block;
+      margin-bottom: 8px;
+      color: #193063;
+      font-size: 1rem;
+    }
+    .explain-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    details.review-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: #fff;
+    }
+    details.review-item + details.review-item { margin-top: 10px; }
+    details.review-item summary {
+      cursor:pointer;
+      font-weight:700;
+      color:#20355d;
+      list-style:none;
+    }
+    details.review-item summary::-webkit-details-marker { display:none; }
+    .answer {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.9;
+      border-top: 1px dashed var(--line);
+      padding-top: 10px;
+    }
+    .title-grid {
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .title-card {
+      cursor:pointer;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff, #f7fbff);
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(18,34,76,.05);
+      transition: .2s ease;
+      min-height: 112px;
+    }
+    .title-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .title-card h4 { margin: 0 0 8px 0; font-size: 1rem; }
+    .title-card p { margin:0; color:var(--muted); line-height:1.7; font-size:.92rem; }
+    .subtle {
+      color: var(--muted);
+      line-height: 1.9;
+      margin: 6px 0 0 0;
+    }
+    .chapter-top {
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .back-row {
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .toolbar-group {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .review-grid {
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .quiz-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fff, #f8fbff);
+      box-shadow: 0 8px 22px rgba(18,34,76,.05);
+    }
+    .quiz-card .meta {
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    .quiz-card h4 {
+      margin: 0 0 10px 0;
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+    .quiz-answer {
+      display:none;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.9;
+      border-top: 1px dashed var(--line);
+      padding-top: 10px;
+    }
+    .quiz-card.show .quiz-answer { display:block; }
+    .quick-hero {
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items:center;
+    }
+    .flash {
+      min-height: 210px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .flash .chapter-tag {
+      display:inline-flex;
+      align-self:flex-start;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background:#eef4ff;
+      color: var(--primary);
+      border:1px solid rgba(36,87,214,.16);
+      font-weight:700;
+      font-size:.85rem;
+    }
+    .flash h3 { margin:0 0 14px 0; font-size:1.25rem; line-height:1.8; }
+    .flash .answer {
+      margin-top: 0;
+      padding-top: 14px;
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,18,33,.52);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 2000;
+      padding: 16px;
+    }
+    .modal.show { display:flex; }
+    .modal-card {
+      width: min(760px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: var(--shadow2);
+      border: 1px solid rgba(219,228,242,.95);
+      overflow:hidden;
+      animation: pop .22s ease;
+    }
+    .modal-head {
+      padding: 18px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, #fbfdff, #f4f8ff);
+    }
+    .modal-head h3 { margin:0; font-size:1.15rem; }
+    .modal-body {
+      padding: 20px;
+      line-height: 1.95;
+      color: var(--muted);
+    }
+    .modal-body strong { color:#20355d; }
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.8;
+    }
+    .hidden { display:none !important; }
+    .mode-note {
+      background: linear-gradient(135deg, rgba(36,87,214,.08), rgba(31,122,140,.08));
+      border:1px solid rgba(36,87,214,.14);
+      color:#234067;
+      border-radius: 16px;
+      padding: 12px 14px;
+      line-height:1.8;
+      margin-bottom: 16px;
+    }
+    .small {
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform: translateY(10px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+    @keyframes pop {
+      from { opacity:0; transform: scale(.97); }
+      to { opacity:1; transform: scale(1); }
+    }
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { grid-template-columns: 1fr; }
+      .title-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      header { top: 4px; }
+      .grid, .defs, .explain-grid, .review-grid, .title-grid, .quick-hero { grid-template-columns: 1fr; }
+      .stats { grid-template-columns:1fr; }
+      .header-inner, .container { padding-left: 14px; padding-right: 14px; }
+      .chapter-card { min-height:auto; }
+      .toolbar, .back-row { width: 100%; }
+      .btn { flex: 1 1 auto; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <header>
+    <div class="header-inner">
+      <div class="top-row">
+        <div class="brand">
+          <h1>منصة مراجعة ذكية لمقرر ريادة الأعمال</h1>
+          <p>محتوى أكاديمي مبني على الكتاب المقرر، مع تنظيم يساعد الطالب على الفهم، والحفظ، والمراجعة السريعة قبل الامتحان.</p>
+        </div>
+        <div class="toolbar">
+          <button class="btn active" id="navHome">الرئيسية</button>
+          <button class="btn" id="navCh1">الفصل الأول</button>
+          <button class="btn" id="navCh2">الفصل الثاني</button>
+          <button class="btn" id="navCh3">الفصل الثالث</button>
+          <button class="btn" id="navCh5">الفصل الخامس</button>
+          <button class="btn" id="beforeExamBtn">Before Exam</button>
+          <button class="btn" id="quickReviewBtn">Quick Review</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="home-wrap active" id="homeView">
+      <div class="hero">
+        <div class="panel">
+          <h2>ابدأ من هنا</h2>
+          <p>اختر الفصل الذي تريد مراجعته. العرض يقتصر على الفصول المطلوبة، بينما يظهر الفصل الثالث على هيئة عناوين فقط مع شرح موجز عند النقر. في وضع Before Exam ستظهر التعريفات والنقاط عالية الأهمية فقط، وفي وضع Quick Review ستظهر بطاقات مراجعة سريعة.</p>
+          <div class="pill-row">
+            <span class="pill">تصميم أكاديمي نظيف</span>
+            <span class="pill">متجاوب مع الهاتف والكمبيوتر</span>
+            <span class="pill">تعلم سريع قبل الامتحان</span>
+            <span class="pill">بدون أطر خارجية</span>
+          </div>
+          <div class="footer-note">المحتوى في الفصول 1 و2 و5 يُقدَّم بصياغة تعليمية واضحة تحافظ على المعنى المقرر وتُسهل التذكر.</div>
+        </div>
+        <div class="panel">
+          <h2>خريطة الدراسة</h2>
+          <div class="stats">
+            <div class="stat"><strong>الفصل الأول</strong><span>أساسيات ريادة الأعمال، المنظومة، ورواد الأعمال.</span></div>
+            <div class="stat"><strong>الفصل الثاني</strong><span>العقلية الريادية، نموها، وطرق تطويرها.</span></div>
+            <div class="stat"><strong>الفصل الثالث</strong><span>عناوين فقط مع شرح قصير عند النقر.</span></div>
+            <div class="stat"><strong>الفصل الخامس</strong><span>الإدارة، التمويل، التسويق، المشروع، وحقوق المستهلك.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="grid" id="homeCards"></div>
+    </section>
+
+    <section class="chapter-wrap" id="chapterView"></section>
+
+    <section class="quick-wrap" id="quickView"></section>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle">عنوان</h3>
+        <button class="btn" id="closeModal">إغلاق</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const DATA = {"1": {"title": "الفصل الأول: أساسيات ريادة الأعمال", "subtitle": "مفهوم ريادة الأعمال، أسباب ظهورها، دور رواد الأعمال، والمنظومة الداعمة لها", "definitions": [{"term": "ريادة الأعمال", "definition": "عملية أو منظومة تبدأ بتحديد فكرة غير تقليدية ثم تحويلها إلى مشروع تجاري جديد أو تطوير مشروع قائم باستخدام موارد محدودة، مع موازنة العائد والمخاطرة."}, {"term": "رائد الأعمال", "definition": "شخص مبادر يسبق غيره، يلتقط الفرص، ويمهد الطريق لمشروع جديد، ويقود تحويل الفكرة إلى واقع عملي."}, {"term": "ثقافة ريادة الأعمال", "definition": "مجموعة من القيم والسلوكيات مثل المبادرة وتحمل المخاطرة والاستقلالية عندما تتكرر داخل جماعة أو مجتمع."}, {"term": "منظومة ريادة الأعمال", "definition": "بيئة متكاملة تضم أطرافًا متعددة تعمل بصورة مترابطة لتحويل الأفكار الريادية إلى مشاريع ومنشآت منتجة."}, {"term": "الاقتصاد الريادي", "definition": "اتجاه اقتصادي يجعل ريادة الأعمال محركًا للنمو، وخلق الفرص، وتعزيز القدرة التنافسية."}, {"term": "البيئة المحفزة لريادة الأعمال", "definition": "بيئة مرنة وداعمة تتوافر فيها البنية المناسبة، وتسهّل المبادرة، والتعاون، واتخاذ القرار، وتحويل الأفكار إلى عمل."}], "summary": ["ريادة الأعمال ليست مجرد عمل فردي؛ بل منظومة متكاملة تربط الفرد بالمؤسسات والبيئة.", "التعريفات تتفق على: المبادرة، الإبداع، الابتكار، المخاطرة، والقيادة.", "رائد الأعمال يبحث عن الفرص قبل الموارد، ثم يطوّع الموارد المتاحة لتحقيق الفكرة.", "ريادة الأعمال ترتبط بالنمو الاقتصادي، وفتح الأسواق، وخلق فرص العمل.", "التوجه الريادي يزداد مع البطالة، والتطور التكنولوجي، والاقتصاد المعرفي، والتجارة الإلكترونية.", "الجامعات والمدارس مطالبة ببناء ثقافة ومهارات ريادة الأعمال لدى الطلاب.", "نجاح الريادة يتطلب إدارة وقيادة وريادة معًا، لا الاعتماد على الحماس الفردي وحده.", "عدد الشركات الناشئة وحده ليس مؤشر نجاح؛ الأهم جودة الوظائف والأثر التنموي."], "explanation": [{"heading": "1) مفهوم ريادة الأعمال", "text": "يرى الكتاب أن ريادة الأعمال تعني البحث عن الفرص وبناء مشروع جديد أو تطوير مشروع قائم بطريقة مبتكرة، مع استخدام الموارد المتاحة بكفاءة وتحمل المخاطرة المحسوبة. وهي ترتبط بالقيادة، والمبادرة، والأسبقية، والجرأة، والتطوير، والاستقلالية."}, {"heading": "2) دور رواد الأعمال وروائداته", "text": "رواد الأعمال يملكون الرغبة والقدرة على تحويل الأفكار إلى مشاريع منتجة ومنافسة، وتكوين فرق عمل، وتحمل المسؤولية، والعمل نحو أهداف طموحة مدروسة. كما يبرز الكتاب أهمية رائدات الأعمال في التنمية، وضرورة تهيئة بيئة اجتماعية وثقافية وتدريبية تدعم دخولهن هذا المجال."}, {"heading": "3) لماذا يظهر التوجه نحو الريادة؟", "text": "تزايد الاهتمام بريادة الأعمال بسبب التحولات الاقتصادية والتكنولوجية، وضغط البطالة، وتقلص فرص الوظائف الحكومية، واتساع التجارة الإلكترونية، وحاجة المجتمعات إلى أفكار ومشاريع جديدة تحقق التنمية وتفتح مجالات عمل مستقلة."}, {"heading": "4) منظومة ريادة الأعمال", "text": "الكتاب يؤكد أن الريادة لا تقوم على البطولة الفردية فقط، بل على منظومة تشمل التعليم، والتمويل، والدعم الفني، والتشريعات، والثقافة، والتواصل مع المجتمع. وتتميز هذه المنظومة بالمبادأة، والمشاركة، والتكامل، والهدفية، والالتزام."}, {"heading": "5) دور المؤسسات التعليمية", "text": "الجامعات والمدارس ليست أماكن لتلقّي المعرفة فقط، بل أطراف فاعلة في بناء العقل الريادي: فهي تُدرّب، وتُرشد، وتُنتج معرفة تطبيقية، وتربط الطالب بالمجتمع وسوق العمل، وتساعده على تحويل المعرفة إلى قيمة ومشروع."}], "review": [{"type": "fill", "q": "أكمل: ريادة الأعمال هي عملية تحويل الفكرة غير التقليدية إلى ________ جديد أو تطوير مشروع قائم.", "a": "مشروع تجاري"}, {"type": "tf", "q": "صح أم خطأ: عدد الشركات الناشئة وحده يكفي للحكم على نجاح منظومة ريادة الأعمال.", "a": "خطأ"}, {"type": "short", "q": "اذكر ثلاثة عناصر تتفق عليها معظم تعريفات ريادة الأعمال.", "a": "المبادرة، الإبداع، المخاطرة."}, {"type": "fill", "q": "أكمل: المنظومة الريادية تعتمد على بيئة ________ ومتعاونة.", "a": "محفزة"}, {"type": "short", "q": "لماذا يهتم الكتاب بدور الجامعات في ريادة الأعمال؟", "a": "لأنها تبني الثقافة الريادية، وتدرّب الطلاب، وتربط المعرفة بالتطبيق والمجتمع."}]}, "2": {"title": "الفصل الثاني: تطوير وتدريب العقول الريادية", "subtitle": "العقلية الريادية، خصائصها، طرق تطويرها، وفوائدها العملية", "definitions": [{"term": "العقلية الريادية", "definition": "حالة ذهنية توجه السلوك نحو الفرص، والابتكار، وخلق قيمة جديدة، وتحفّز المبادرة والتصرف السريع."}, {"term": "عقلية النمو", "definition": "الاعتقاد بأن القدرات والذكاء يمكن تطويرهما عبر الجهد، والتعلم، والممارسة، والتعامل مع الفشل بوصفه فرصة للتعلم."}, {"term": "الاستقلالية", "definition": "رغبة الشخص في العمل بحرية، واتخاذ قراراته، وعدم الارتياح للتبعية الكاملة لقواعد الآخرين."}, {"term": "التوجه الإجرائي", "definition": "ميل الشخص إلى المبادرة واتخاذ القرار بسرعة، وعدم تأجيل العمل، والبحث عن التنفيذ العملي."}, {"term": "المثابرة", "definition": "القدرة على الاستمرار بعد النكسات وخيبات الأمل، وعدم الاستسلام بسهولة عند مواجهة الصعوبات."}, {"term": "توليد الأفكار", "definition": "القدرة على إنتاج أفكار متعددة وجديدة، وفتح أكثر من مسار لتحقيق الهدف."}], "summary": ["العقلية الريادية ليست موهبة ثابتة؛ بل يمكن تطويرها بالتعلم والخبرة.", "العقلية الريادية ترتبط بالفرص، والابتكار، وخلق القيمة، والقدرة على التحرك السريع.", "من سماتها: الاستقلالية، قبول المخاطر، الشغف، الحاجة إلى الإنجاز، والمرونة.", "من مهاراتها: التركيز المستقبلي، توليد الأفكار، التنفيذ، الثقة بالنفس، التفاؤل، والمثابرة.", "تنمية العقلية الريادية تتم عبر التعليم، والقراءة، والتجربة، والتعلم من الخطأ.", "الابتعاد عن منطقة الراحة، والمخاطرة المحسوبة، والسلوك الاستباقي عوامل أساسية للتطوير.", "وجود أشخاص متشابهين في التفكير، ومرشدين، وداعمين يعزز هذه العقلية.", "الفشل في الريادة يُقرأ كخبرة تعليمية إذا حُلل واستُفيد منه."], "explanation": [{"heading": "1) معنى العقلية الريادية", "text": "العقلية الريادية هي طريقة تفكير توجه صاحبها إلى الفرص والابتكار والتصرف الفعال في بيئات غير واضحة. وهي تقوم على القدرة على تحليل الواقع، وفهم المستقبل، وتحويل الأفكار إلى عمل ملموس."}, {"heading": "2) السمات المرتبطة بها", "text": "من أبرز السمات التي يذكرها الكتاب: الاستقلالية، تفضيل الهياكل المحدودة، عدم المطابقة، قبول المخاطر، التوجه الإجرائي، الشغف، والحاجة إلى الإنجاز. وهذه السمات لا تعمل منفصلة بل تكمل بعضها بعضًا."}, {"heading": "3) المهارات المرتبطة بها", "text": "تشمل المهارات: التركيز المستقبلي، توليد الأفكار، التنفيذ، الثقة بالنفس، التفاؤل، المثابرة، والحساسية للآخرين. وهذه المهارات تساعد الطالب على تحويل الرؤية إلى خطوة عملية ناجحة."}, {"heading": "4) كيف تُنمَّى العقلية الريادية؟", "text": "يوضح الكتاب أن التطوير يحدث عبر التعليم والتدريب، والقراءة، والتجربة العملية، وبناء فضول التعلم، وتحمل المخاطرة المحسوبة، والنهج الاستباقي، ومرافقة أشخاص يشاركونك العقلية نفسها."}, {"heading": "5) فوائدها لأصحاب الأعمال", "text": "العقلية الريادية تحسن حل المشكلات، وترفع القدرة على التكيف، وتزيد الوعي بالمخاطر، وتساعد على تحديد الفرص، وتنمّي عقلية النمو التي ترى الفشل خطوة تعلم لا نهاية الطريق."}], "review": [{"type": "fill", "q": "أكمل: العقلية الريادية توجه السلوك نحو ________ وخلق قيمة جديدة.", "a": "الفرص"}, {"type": "tf", "q": "صح أم خطأ: عقلية النمو تعني أن القدرات لا يمكن تغييرها.", "a": "خطأ"}, {"type": "short", "q": "اذكر أربعًا من مهارات العقلية الريادية.", "a": "التركيز المستقبلي، توليد الأفكار، التنفيذ، المثابرة."}, {"type": "fill", "q": "أكمل: من استراتيجيات تنمية العقلية الريادية تحمل المخاطر ________.", "a": "المحسوبة"}, {"type": "short", "q": "كيف يفيد الفشل في تنمية العقلية الريادية؟", "a": "إذا حُلِّل جيدًا، يصبح مصدرًا للتعلم والتحسين لا مجرد نكسة."}]}, "3": {"title": "الفصل الثالث: سمات ومهارات رائد الأعمال", "subtitle": "عناوين فقط مع شرح موجز عند النقر عليها", "titles": [{"title": "خصائص ريادة الأعمال", "explanation": "توضح الخصائص العامة التي تميّز السلوك الريادي، مثل المبادرة والجرأة والرؤية والمرونة.", "example": "طالب يلتقط فكرة نافعة ويحوّلها إلى مشروع صغير."}, {"title": "سمات رواد الأعمال المجتمعية", "explanation": "تصف صفات من يقودون حلولًا لمشكلات المجتمع عبر مشروعات أو خدمات ذات أثر اجتماعي.", "example": "مبادرة تقدم خدمة تقلل مشكلة مجتمعية وتدعم الفئات المحتاجة."}, {"title": "الإبداع والابتكار وريادة الأعمال", "explanation": "يربط هذا العنوان بين إنتاج الفكرة الجديدة وتحويلها إلى تطبيق ذي قيمة في السوق أو المجتمع.", "example": "تصميم خدمة جديدة ثم تحويلها إلى منتج قابل للاستخدام."}, {"title": "مفهوم الإبداع", "explanation": "الإبداع هو إنتاج فكرة أو حل جديد ذي أصالة وقيمة، وقد يكون ذهنيًا أو تطبيقيًا.", "example": "اقتراح طريقة جديدة لحل مشكلة قديمة."}, {"title": "الاختراع", "explanation": "الاختراع هو فكرة جديدة مفيدة قابلة للتطبيق، وغالبًا ترتبط بحل مشكلة قائمة.", "example": "جهاز أو أداة جديدة تحقق وظيفة لم تكن موجودة من قبل."}, {"title": "براءة الاختراع", "explanation": "حماية قانونية تمنح المخترع حقًا يمنع الآخرين من استغلال اختراعه تجاريًا لمدة محددة.", "example": "حماية ابتكار تقني قبل طرحه في السوق."}, {"title": "معايير الحصول على براءة الاختراع", "explanation": "تتلخص في الجدة، والابتكار الحقيقي، وإمكانية التحويل إلى منتج، وألا يكون المجال محظورًا.", "example": "فكرة جديدة قابلة للتصنيع والتسويق."}, {"title": "الابتكار", "explanation": "الابتكار هو تحويل الفكرة أو الاختراع إلى تطبيق أو خدمة أو منتج يضيف قيمة واضحة.", "example": "إنتاج فكرة جيدة ثم تقديمها للسوق بصورة عملية."}, {"title": "خصائص الإبداع والابتكار", "explanation": "الإبداع يبدأ صغيرًا، ويمكن أن ينمو، ويحتاج إلى بيئة محفزة، ويهدف إلى المنفعة المجتمعية.", "example": "فكرة بسيطة تتطور تدريجيًا حتى تصبح مشروعًا."}, {"title": "عوامل دعم الإبداع والابتكار", "explanation": "يدعم الإبداع التعليم، والأسرة، والتواصل مع المجتمع، والجهات الداعمة.", "example": "مدرسة تشجع التفكير الحر والمشروعات التطبيقية."}, {"title": "سمات المبدع", "explanation": "المبدع يمتلك طلاقة ومرونة وحساسية للمشكلات وأصالة ومواصلة الاتجاه.", "example": "طالب يقترح حلولًا متعددة وغير مألوفة لنفس المشكلة."}, {"title": "سمات رائد الأعمال المبدع الناجح", "explanation": "من أهمها الانفتاح، الشغف، الإبداع، التوجه نحو الهدف، الشخصية العملية، وقبول الآراء الأخرى.", "example": "رائد أعمال يطوّر فكرته باستمرار ويستفيد من النقد."}, {"title": "الطلاقة", "explanation": "الطلاقة هي القدرة على إنتاج عدد كبير من الأفكار في وقت محدد.", "example": "ذكر حلول متعددة بسرعة لمشكلة واحدة."}, {"title": "المرونة", "explanation": "المرونة هي القدرة على التفكير في بدائل متعددة وتغيير طريقة النظر للموقف.", "example": "استخدام الشيء الواحد في أكثر من وظيفة."}, {"title": "الحساسية للمشكلات", "explanation": "هي الانتباه السريع لوجود المشكلة والنظر إليها من زوايا متعددة.", "example": "اكتشاف مشكلة في خدمة واقتراح تحسينها."}, {"title": "الأصالة", "explanation": "الأصالة تعني إنتاج ما هو غير مألوف وعدم تكرار أفكار الآخرين.", "example": "فكرة جديدة لا تشبه الحلول التقليدية."}, {"title": "مواصلة الاتجاه", "explanation": "هي القدرة على الاستمرار والتركيز في مجال الاهتمام رغم المشتتات والمعوقات.", "example": "الاستمرار في تطوير فكرة حتى تنضج."}, {"title": "عوائق الإبداع", "explanation": "منها الخوف، وقلة الدعم، والتفكير قصير المدى، وضعف التعاون، وقلة التركيز، وعدم وجود منهجية واضحة.", "example": "فريق يتراجع عن فكرة جيدة بسبب الخوف من الفشل."}, {"title": "حقوق الملكية الفكرية", "explanation": "هي حقوق قانونية تحمي الإبداعات والاختراعات والنتاج الفكري.", "example": "حماية إنتاج ذهني أو فني من الاستغلال غير المشروع."}, {"title": "الملكية الصناعية", "explanation": "تشمل الاختراعات والعلامات التجارية والرسوم والنماذج الصناعية وبيانات المصدر الجغرافية.", "example": "تسجيل علامة أو تصميم صناعي."}, {"title": "حق المؤلف", "explanation": "يحمي الأعمال الأدبية والفنية والتكنولوجية مثل النصوص والبرمجيات وقواعد البيانات.", "example": "حماية كتاب أو برنامج حاسوبي."}, {"title": "العلامة التجارية", "explanation": "إشارة يميز بها التاجر منتجاته عن منتجات غيره.", "example": "اسم أو رمز يميز سلعة عن منافساتها."}, {"title": "أمثلة عالمية لشركات مبدعة", "explanation": "يعرض الكتاب أمثلة مثل آبل وجوجل وتسلا وفيسبوك بوصفها شركات اعتمدت على الابتكار المؤسسي.", "example": "إطلاق منتج جديد غيّر السوق."}]}, "5": {"title": "الفصل الخامس: إدارة الأعمال وفرص العمل المستقبلية", "subtitle": "المهارات الريادية، التسويق، التمويل، الإدارة، وبناء المشروع", "definitions": [{"term": "التسويق", "definition": "إتاحة المنتج المناسب، بالكمية المناسبة، في المكان المناسب، وفي الوقت المناسب، مع تحقيق ربح."}, {"term": "المنتج", "definition": "كل ما يمكن بيعه أو تقديمه للسوق، سواء كان سلعة ملموسة أو خدمة غير ملموسة."}, {"term": "المكان / التوزيع", "definition": "العملية التي تنقل السلع والخدمات من مصادر إنتاجها إلى المستهلك عبر منافذ توزيع مناسبة."}, {"term": "السعر", "definition": "القيمة التي تُحدد للمنتج، ويُعد من أصعب القرارات التسويقية لأنه يؤثر مباشرة في قرار الشراء."}, {"term": "الترويج", "definition": "عملية الاتصال بالجمهور بهدف التأثير في سلوكه نحو المنتج أو الخدمة."}, {"term": "الموارد المالية", "definition": "المصادر التي يعتمد عليها الفرد أو المؤسسة لتمويل أنشطتها وتحقيق أهدافها المالية."}, {"term": "حاضنة الأعمال", "definition": "وحدة خدمية تحول الأفكار والابتكارات إلى مشروعات اقتصادية منتجة عبر التأهيل والدعم والإرشاد."}, {"term": "التكاليف الأولية", "definition": "نفقات تُصرف مرة واحدة عند بداية المشروع، وتسمى أيضًا تكاليف البداية أو التأسيس."}, {"term": "تكاليف التشغيل", "definition": "النفقات اللازمة لتشغيل المشروع باستمرار مثل الإيجار والرواتب والخدمات."}, {"term": "المؤسسة الفردية", "definition": "منشأة يملكها شخص واحد ويتولى إدارتها ونتائجها كاملة."}, {"term": "الشركة", "definition": "منشأة يملكها أكثر من شخص، ويشارك كل منهم بحصة من المال أو العمل لاقتسام الربح أو الخسارة."}, {"term": "مصفوفة الأولويات", "definition": "أداة تقسّم الأنشطة إلى مهم/غير مهم وعاجل/غير عاجل لتحديد ما يجب البدء به أولًا."}, {"term": "حقوق الملكية الفكرية", "definition": "حقوق قانونية تحمي الإبداع الفكري والابتكار من الاستغلال غير المصرح به."}, {"term": "براءة الاختراع", "definition": "حق قانوني يمنع الآخرين من استغلال الاختراع تجاريًا لمدة محددة مقابل الإفصاح عنه."}, {"term": "حقوق النشر", "definition": "حقوق تحمي الأعمال الأدبية والفنية والبرمجيات وقواعد البيانات من النسخ غير المشروع."}], "summary": ["تطوير العقول الريادية يشمل الابتكار، والمخاطرة، والتفكير الاستراتيجي، وإدارة الوقت، والقيادة.", "اكتساب مهارات الريادة يتم عبر التعليم، والتدريب، والتجربة العملية.", "سياسة الابتكار ترتبط بالتعليم، والبحث والتطوير، والحاضنات، ورأس المال الاستثماري، والملكية الفكرية.", "فرص العمل المستقبلية تتأثر بالتمويل، والظروف الاقتصادية، والتكنولوجيا، والتنافس الصناعي، وتأهيل الكفاءات.", "الشباب والنساء يملكون فرصًا مهمة في الابتكار وريادة الأعمال، لكنهم يواجهون نقص التمويل والخبرة والدعم.", "من فوائد ريادة الأعمال: الاستقلالية، والتأثير الإيجابي، والدخل، مع وجود تحديات مثل عدم اليقين والمنافسة والتمويل والتشريعات.", "التسويق الناجح يبدأ بفهم المنتج، والمكان، والسعر، والترويج، ثم بناء الثقة مع العميل.", "الموارد المالية متعددة: ذاتية، عائلية، بنكية، استثمارية، حكومية، جماعية، وحاضنات وبرامج تسريع.", "الربح يُحسب بطرح التكاليف الكلية من الإيراد الكلي، ويبدأ ذلك بتسعير منطقي مدروس.", "القرارات الأولى للمشروع تشمل: إنشاء مشروع جديد، شراء مشروع قائم، امتياز تجاري، أو العمل من المنزل."], "explanation": [{"heading": "1) تطوير وتدريب العقول الريادية", "text": "يعرض الكتاب مجموعة من الممارسات التي تشكّل عقل رائد الأعمال: الابتكار، وتحمل المخاطرة، والتفكير الاستراتيجي، وإدارة الوقت، والقيادة، والتسويق، والمبيعات، وإدارة الموارد البشرية، والإدارة المالية. وتُكتسب هذه المهارات بالتعليم، والتدريب، والتجربة العملية."}, {"heading": "2) سياسة الابتكار والتنمية", "text": "يربط الكتاب بين الابتكار والتنمية الشاملة المستدامة، ويجعل التعليم والتدريب، والبحث والتطوير، وحاضنات الأعمال، ورأس المال الاستثماري، وحماية الملكية الفكرية، والتنظيم المناسب، عناصر أساسية لبناء بيئة ابتكارية فعالة."}, {"heading": "3) فرص العمل والتحديات", "text": "يبرز النص أن فرص العمل المستقبلية تتأثر بنقص الموارد المالية، والتغيرات الاقتصادية، والتقنيات الجديدة، والتنافس الصناعي، وصعوبة تأهيل العاملين. وفي المقابل، يفتح الابتكار وريادة الأعمال فرصًا للشباب والنساء في النمو، والاستقلال، وتحقيق الدخل، والمساهمة في التنمية."}, {"heading": "4) متطلبات ومخاطر ريادة الأعمال", "text": "رائد الأعمال يحصل على مزايا مثل الاستقلال والتأثير والدخل، لكنه يواجه عدم اليقين، والمنافسة، وصعوبة التمويل، والتشريعات، إضافة إلى ضغط العمل، وساعات العمل الطويلة، والمسؤولية الكاملة، واحتمال الإحباط."}, {"heading": "5) التسويق والمزيج التسويقي", "text": "التسويق عند الكتاب هو إيصال المنتج المناسب إلى المكان والوقت المناسبين بالسعر المناسب. ويعتمد على أربعة عناصر: المنتج، والمكان، والسعر، والترويج، مع وسائل ترويج مثل الإعلان والبيع الشخصي والدعاية وتنشيط المبيعات والتسويق المباشر."}, {"heading": "6) الموارد المالية وتكاليف المشروع", "text": "يوضح الكتاب مصادر التمويل: رأس المال الخاص، الأسرة والأصدقاء، البنوك، الإيرادات، الاستثمارات، التمويل الحكومي، الدعم الخارجي، التمويل الجماعي، والاستدانة. كما يفرق بين التكاليف الأولية وتكاليف التشغيل، ويشرح طريقة حساب الربح والاعتماد على تسعير مناسب."}, {"heading": "7) إدارة الأعمال وخيارات البداية", "text": "إدارة الأعمال هي تنظيم وتنسيق الأعمال التجارية وتوجيهها نحو الأهداف. ولرائد الأعمال خيارات متعددة للبدء: مشروع جديد، مشروع قائم، امتياز تجاري، أو عمل من المنزل. ولكل خيار مزايا وقيود."}, {"heading": "8) الشكل القانوني والتوازن مع الدراسة", "text": "يفرق النص بين المؤسسة الفردية والشركة من حيث الملكية وتوزيع المسؤولية، ثم يوضح كيف يوازن الطالب بين مشروعه ودراسته عبر الواقعية، والتخطيط، وإدارة الوقت، والاستفادة المزدوجة، والراحة، والتفويض."}, {"heading": "9) حقوق المستهلك", "text": "من المهم أن يراعي رائد الأعمال حقوق العميل: حرية الاختيار، ووضوح المواصفات، وسياسة الاستبدال، وأمان الاستخدام، وإتاحة الشكوى والاعتراض والاقتراح عبر قناة اتصال واضحة."}], "review": [{"type": "fill", "q": "أكمل: التسويق هو إتاحة المنتج المناسب، في المكان المناسب، وفي الوقت المناسب، وتحقيق ________.", "a": "ربح"}, {"type": "tf", "q": "صح أم خطأ: المؤسسة الفردية يملكها أكثر من شخص.", "a": "خطأ"}, {"type": "short", "q": "اذكر أربعة من عناصر المزيج التسويقي.", "a": "المنتج، المكان، السعر، الترويج."}, {"type": "fill", "q": "أكمل: التكاليف التي تُصرف مرة واحدة عند بداية المشروع تسمى ________.", "a": "التكاليف الأولية"}, {"type": "short", "q": "ما الفرق بين المشروع الجديد وشراء مشروع قائم؟", "a": "المشروع الجديد يحتاج بناءً وتخطيطًا من الصفر، أما المشروع القائم فيبدأ من أصل موجود وسوق وعملاء سابقين."}]}};
+    const QUICK = [{"chapter": "1", "q": "ما المقصود بريادة الأعمال كما ورد في الفصل الأول؟", "a": "هي عملية تحديد فكرة غير تقليدية ثم تحويلها إلى مشروع تجاري جديد أو تطوير مشروع قائم باستخدام موارد محدودة مع موازنة العائد والمخاطرة."}, {"chapter": "1", "q": "اذكر ثلاثة عناصر تتفق عليها معظم تعريفات ريادة الأعمال.", "a": "المبادرة، الإبداع، المخاطرة."}, {"chapter": "1", "q": "لماذا تعد الجامعات طرفًا مهمًا في منظومة ريادة الأعمال؟", "a": "لأنها تبني الثقافة الريادية، وتدرّب الطلاب، وتربط المعرفة بالتطبيق والمجتمع."}, {"chapter": "2", "q": "ما معنى العقلية الريادية؟", "a": "هي حالة ذهنية توجه السلوك نحو الفرص والابتكار وخلق قيمة جديدة."}, {"chapter": "2", "q": "ما الفرق بين عقلية النمو والعقلية الثابتة؟", "a": "عقلية النمو ترى أن القدرات يمكن تطويرها بالتعلم والجهد، بينما العقلية الثابتة تفترض أن القدرات محددة."}, {"chapter": "2", "q": "اذكر ثلاثًا من مهارات العقلية الريادية.", "a": "التركيز المستقبلي، توليد الأفكار، التنفيذ، الثقة بالنفس، التفاؤل، المثابرة."}, {"chapter": "5", "q": "اذكر عناصر المزيج التسويقي الأربعة.", "a": "المنتج، المكان، السعر، الترويج."}, {"chapter": "5", "q": "ما الفرق بين التكاليف الأولية وتكاليف التشغيل؟", "a": "الأولية تُصرف مرة واحدة عند بداية المشروع، أما التشغيل فهي النفقات المستمرة اللازمة لاستمرار العمل."}, {"chapter": "5", "q": "ما المقصود بالمؤسسة الفردية؟", "a": "هي منشأة يملكها شخص واحد ويتولى إدارتها ونتائجها كاملة."}, {"chapter": "5", "q": "اذكر خيارين من خيارات البدء في مشروع ريادي وفق الفصل الخامس.", "a": "البدء بمشروع جديد، شراء مشروع قائم، الامتياز التجاري، أو العمل من المنزل."}, {"chapter": "5", "q": "ما أهم حقوق العميل التي أكد عليها الفصل الخامس؟", "a": "حرية الاختيار، وضوح المواصفات، الاستبدال أو الاسترجاع عند العيب، وأمان الاستخدام."}, {"chapter": "5", "q": "كيف يحسب الربح الإجمالي؟", "a": "الربح الإجمالي = الإيراد الكلي − التكاليف الكلية."}];
+    const state = {
+      view: 'home',
+      chapter: null,
+      beforeExam: false,
+      quickIndex: 0,
+      quickRevealed: false
+    };
+
+    const homeView = document.getElementById('homeView');
+    const chapterView = document.getElementById('chapterView');
+    const quickView = document.getElementById('quickView');
+    const homeCards = document.getElementById('homeCards');
+    const progressBar = document.getElementById('progressBar');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+
+    const navButtons = {
+      home: document.getElementById('navHome'),
+      ch1: document.getElementById('navCh1'),
+      ch2: document.getElementById('navCh2'),
+      ch3: document.getElementById('navCh3'),
+      ch5: document.getElementById('navCh5')
+    };
+
+    function setActiveNav(id) {
+      Object.values(navButtons).forEach(b => b.classList.remove('active'));
+      if (id && navButtons[id]) navButtons[id].classList.add('active');
+      else navButtons.home.classList.add('active');
+    }
+
+    function chapterPreview(chapterId) {
+      const ch = DATA[chapterId];
+      if (chapterId === '3') {
+        return [
+          'عناوين فقط مع شرح موجز',
+          'نقرة واحدة لعرض المثال',
+          'لا توجد شروح طويلة'
+        ];
+      }
+      return ch.definitions.slice(0,3).map(x => x.term);
+    }
+
+    function renderHomeCards() {
+      homeCards.innerHTML = Object.keys(DATA).map(id => {
+        const ch = DATA[id];
+        const badge = id === '3' ? 'Titles Only' : 'Full Content';
+        const preview = chapterPreview(id).map(item => `<li>${item}</li>`).join('');
+        return `
+          <article class="chapter-card" data-chapter="${id}">
+            <span class="badge">${badge}</span>
+            <h3>${ch.title}</h3>
+            <p>${ch.subtitle}</p>
+            <ul>${preview}</ul>
+          </article>
+        `;
+      }).join('');
+      homeCards.querySelectorAll('.chapter-card').forEach(card => {
+        card.addEventListener('click', () => openChapter(card.dataset.chapter));
+      });
+    }
+
+    function openChapter(id) {
+      state.view = 'chapter';
+      state.chapter = id;
+      state.quickRevealed = false;
+      homeView.classList.remove('active');
+      quickView.classList.remove('active');
+      chapterView.classList.add('active');
+      setActiveNav(null);
+      renderChapter(id);
+      document.getElementById('beforeExamBtn').classList.toggle('active', state.beforeExam);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openQuickReview() {
+      state.view = 'quick';
+      state.chapter = null;
+      homeView.classList.remove('active');
+      chapterView.classList.remove('active');
+      quickView.classList.add('active');
+      setActiveNav(null);
+      renderQuickReview();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openHome() {
+      state.view = 'home';
+      state.chapter = null;
+      homeView.classList.add('active');
+      chapterView.classList.remove('active');
+      quickView.classList.remove('active');
+      setActiveNav('home');
+      document.getElementById('beforeExamBtn').classList.toggle('active', state.beforeExam);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function chapterMeta(chapterId) {
+      const labels = chapterId === '3'
+        ? ['Titles Only', 'Click to explain']
+        : ['Definitions', 'Summary', 'Explanation', 'Revision'];
+      return `
+        <div class="pill-row">${labels.map(x => `<span class="pill">${x}</span>`).join('')}</div>
+      `;
+    }
+
+    function renderDefinitions(items) {
+      return `<div class="defs">${items.map(i => `
+        <div class="def-card">
+          <span class="term">${i.term}</span>
+          <p class="def">${i.definition}</p>
+        </div>
+      `).join('')}</div>`;
+    }
+
+    function renderSummary(points) {
+      return `<ul class="bullet-list">${points.map(p => `<li>${p}</li>`).join('')}</ul>`;
+    }
+
+    function renderExplanation(items) {
+      return `<div class="explain-grid">${items.map(i => `
+        <div class="explain-card">
+          <strong>${i.heading}</strong>
+          <p>${i.text}</p>
+        </div>
+      `).join('')}</div>`;
+    }
+
+    function renderRevision(items) {
+      return items.map((q, idx) => `
+        <details class="review-item">
+          <summary>${idx+1}. ${q.q}</summary>
+          <div class="answer"><strong>الإجابة:</strong> ${q.a}</div>
+        </details>
+      `).join('');
+    }
+
+    function renderChapter(chapterId) {
+      const ch = DATA[chapterId];
+      const before = state.beforeExam && chapterId !== '3';
+      let html = `
+        <div class="chapter-top">
+          <div>
+            <div class="small">الفصل المختار</div>
+            <h2 style="margin:6px 0 0 0">${ch.title}</h2>
+            <p class="subtle">${ch.subtitle}</p>
+          </div>
+          <div class="back-row">
+            <button class="btn" id="backHomeBtn">العودة للرئيسية</button>
+            <button class="btn primary" id="toggleBeforeBtn">${before ? 'Before Exam: On' : 'Before Exam: Off'}</button>
+            <button class="btn" id="goQuickBtn">Quick Review</button>
+          </div>
+        </div>
+        <div class="mode-note">
+          ${chapterId === '3'
+            ? 'الفصل الثالث معروض بعناوين فقط. اضغط على أي عنوان لعرض شرح أكاديمي موجز ومثال بسيط.'
+            : before
+              ? 'وضع Before Exam مفعل: ستظهر التعريفات والنقاط عالية القيمة فقط.'
+              : 'الوضع العادي مفعل: ستظهر التعريفات، والملخص الذكي، والشرح المبسط، والمراجعة.'}
+        </div>
+        ${chapterMeta(chapterId)}
+      `;
+
+      if (chapterId === '3') {
+        html += `
+          <div class="section">
+            <h2>عناوين الفصل الثالث</h2>
+            <p class="lead">المطلوب هنا هو عرض العناوين فقط. عند النقر على أي عنوان تظهر خلاصة قصيرة للغاية مع مثال بسيط، من دون توسع في الشرح.</p>
+            <div class="title-grid">
+              ${ch.titles.map((t, idx) => `
+                <div class="title-card" data-title-index="${idx}">
+                  <h4>${t.title}</h4>
+                  <p>شرح موجز + مثال بسيط</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        if (before) {
+          html += `
+            <section class="section">
+              <h2>A. Definitions</h2>
+              <p class="lead">تعريفات قصيرة ولكن كاملة بما يكفي للحفظ السريع.</p>
+              ${renderDefinitions(ch.definitions)}
+            </section>
+            <section class="section">
+              <h2>B. Smart Summary</h2>
+              <p class="lead">نقاط عالية القيمة للمراجعة السريعة قبل الاختبار.</p>
+              ${renderSummary(ch.summary)}
+            </section>
+          `;
+        } else {
+          html += `
+            <section class="section">
+              <h2>A. Definitions</h2>
+              <p class="lead">تعريفات مختصرة تحفظ المعنى الكامل وتسهّل المذاكرة.</p>
+              ${renderDefinitions(ch.definitions)}
+            </section>
+            <section class="section">
+              <h2>B. Smart Summary</h2>
+              <p class="lead">خلاصة امتحانية مركزة من دون تكرار.</p>
+              ${renderSummary(ch.summary)}
+            </section>
+            <section class="section">
+              <h2>C. Simplified Explanation</h2>
+              <p class="lead">إعادة صياغة تعليمية واضحة للمحتوى مع الحفاظ على المعنى المقرر.</p>
+              ${renderExplanation(ch.explanation)}
+            </section>
+            <section class="section">
+              <h2>D. Revision / Review</h2>
+              <p class="lead">تدريب سريع على أسئلة الامتحان: فراغات، صح أو خطأ، وأسئلة قصيرة.</p>
+              ${renderRevision(ch.review)}
+            </section>
+          `;
+        }
+      }
+
+      chapterView.innerHTML = html;
+
+      document.getElementById('backHomeBtn')?.addEventListener('click', openHome);
+      document.getElementById('toggleBeforeBtn')?.addEventListener('click', () => {
+        state.beforeExam = !state.beforeExam;
+        renderChapter(chapterId);
+      });
+      document.getElementById('goQuickBtn')?.addEventListener('click', openQuickReview);
+
+      if (chapterId === '3') {
+        chapterView.querySelectorAll('.title-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const t = ch.titles[card.dataset.titleIndex];
+            showModal(t.title, `<strong>شرح موجز:</strong> ${t.explanation}<br><br><strong>مثال بسيط:</strong> ${t.example}`);
+          });
+        });
+      }
+    }
+
+    function renderQuickReview() {
+      const q = QUICK[state.quickIndex % QUICK.length];
+      quickView.innerHTML = `
+        <div class="chapter-top">
+          <div>
+            <div class="small">Quick Review</div>
+            <h2 style="margin:6px 0 0 0">مراجعة سريعة</h2>
+            <p class="subtle">بطاقات سؤال وجواب سريعة من الفصول 1 و2 و5.</p>
+          </div>
+          <div class="back-row">
+            <button class="btn" id="quickHomeBtn">العودة للرئيسية</button>
+            <button class="btn" id="quickPrevBtn">السابق</button>
+            <button class="btn primary" id="quickNextBtn">التالي</button>
+          </div>
+        </div>
+        <div class="section quick-hero">
+          <div class="panel flash" style="box-shadow:none; border:1px solid var(--line); background:linear-gradient(180deg,#fff,#f8fbff);">
+            <span class="chapter-tag">الفصل ${q.chapter}</span>
+            <h3>${q.q}</h3>
+            <div class="answer" style="display:${state.quickRevealed ? 'block' : 'none'};">
+              <strong>الإجابة:</strong> ${q.a}
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button class="btn primary" id="revealBtn">${state.quickRevealed ? 'إخفاء الإجابة' : 'إظهار الإجابة'}</button>
+            <div class="pill">بطاقة ${state.quickIndex + 1} من ${QUICK.length}</div>
+            <div class="pill">سريع ومناسب قبل الامتحان</div>
+          </div>
+        </div>
+        <div class="section">
+          <h2>بطاقات إضافية</h2>
+          <div class="review-grid">
+            ${QUICK.slice(state.quickIndex, state.quickIndex + 4).map((item, idx) => `
+              <div class="quiz-card">
+                <div class="meta"><span>الفصل ${item.chapter}</span><span>سؤال سريع</span></div>
+                <h4>${item.q}</h4>
+                <button class="btn reveal-mini" data-index="${(state.quickIndex + idx) % QUICK.length}">إظهار / إخفاء</button>
+                <div class="quiz-answer"><strong>الإجابة:</strong> ${item.a}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('quickHomeBtn').addEventListener('click', openHome);
+      document.getElementById('quickPrevBtn').addEventListener('click', () => {
+        state.quickIndex = (state.quickIndex - 1 + QUICK.length) % QUICK.length;
+        state.quickRevealed = false;
+        renderQuickReview();
+      });
+      document.getElementById('quickNextBtn').addEventListener('click', () => {
+        state.quickIndex = (state.quickIndex + 1) % QUICK.length;
+        state.quickRevealed = false;
+        renderQuickReview();
+      });
+      document.getElementById('revealBtn').addEventListener('click', () => {
+        state.quickRevealed = !state.quickRevealed;
+        renderQuickReview();
+      });
+      quickView.querySelectorAll('.reveal-mini').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const card = btn.closest('.quiz-card');
+          card.classList.toggle('show');
+        });
+      });
+    }
+
+    function showModal(title, body) {
+      modalTitle.textContent = title;
+      modalBody.innerHTML = body;
+      modal.classList.add('show');
+    }
+    document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('show'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+    navButtons.home.addEventListener('click', openHome);
+    navButtons.ch1.addEventListener('click', () => openChapter('1'));
+    navButtons.ch2.addEventListener('click', () => openChapter('2'));
+    navButtons.ch3.addEventListener('click', () => openChapter('3'));
+    navButtons.ch5.addEventListener('click', () => openChapter('5'));
+    document.getElementById('beforeExamBtn').addEventListener('click', () => {
+      state.beforeExam = !state.beforeExam;
+      document.getElementById('beforeExamBtn').classList.toggle('active', state.beforeExam);
+      if (state.chapter) {
+        renderChapter(state.chapter);
+      }
+    });
+    document.getElementById('quickReviewBtn').addEventListener('click', openQuickReview);
+
+    window.addEventListener('scroll', () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const value = max > 0 ? (window.scrollY / max) * 100 : 0;
+      progressBar.style.width = value.toFixed(2) + '%';
+    });
+
+    renderHomeCards();
+    openHome();
+  </script>
+</body>
+</html>
