@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar & Linguistic Drills — South Valley University</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e11;
+    --surface: #1a1820;
+    --surface2: #231f2e;
+    --border: #2e2a3a;
+    --accent: #c8a96e;
+    --accent2: #7c6af0;
+    --text: #e8e4f0;
+    --text-muted: #7a7390;
+    --correct: #3a7d5a;
+    --correct-light: #4aad7a;
+    --wrong: #7d3a3a;
+    --wrong-light: #c45050;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: linear-gradient(135deg, #1a1820 0%, #0f0e11 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .site-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .site-header p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    height: 3px;
+    background: var(--border);
+    position: sticky;
+    top: 73px;
+    z-index: 99;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* PAGES */
+  .page { display: none; padding: 20px 16px; max-width: 680px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .section-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  /* DEFINITION BLOCKS */
+  .def-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+
+  .def-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .def-card p {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: #c8c4d8;
+  }
+
+  .def-card ul {
+    margin: 8px 0 0 18px;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: #c8c4d8;
+  }
+
+  .def-card .rule-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    background: var(--surface2);
+    color: var(--accent2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  /* QUIZ SECTION HEADER */
+  .quiz-header {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .quiz-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .quiz-header .score-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    background: rgba(200,169,110,0.1);
+    border: 1px solid rgba(200,169,110,0.25);
+    border-radius: 20px;
+    padding: 3px 12px;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .q-card.answered { border-color: var(--border); }
+
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .q-text {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  .q-text em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+
+  .opt-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.87rem;
+    line-height: 1.5;
+    padding: 10px 14px;
+    text-align: left;
+    transition: background 0.15s, border-color 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .opt-btn:hover:not(:disabled) {
+    background: #2a2638;
+    border-color: var(--accent2);
+  }
+
+  .opt-btn .opt-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    min-width: 16px;
+    padding-top: 1px;
+  }
+
+  .opt-btn:disabled { cursor: default; }
+
+  .opt-btn.correct {
+    background: rgba(58,125,90,0.2);
+    border-color: var(--correct-light);
+    color: #7eedb0;
+  }
+
+  .opt-btn.correct .opt-label { color: var(--correct-light); }
+
+  .opt-btn.wrong {
+    background: rgba(125,58,58,0.2);
+    border-color: var(--wrong-light);
+    color: #f08080;
+  }
+
+  .opt-btn.wrong .opt-label { color: var(--wrong-light); }
+
+  .opt-btn.reveal {
+    background: rgba(58,125,90,0.12);
+    border-color: var(--correct-light);
+    color: #7eedb0;
+  }
+
+  /* SCORE CARD */
+  .score-card {
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-top: 24px;
+    display: none;
+  }
+
+  .score-card.show { display: block; }
+
+  .score-card .big-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .score-card .score-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .score-card .score-msg {
+    font-size: 0.92rem;
+    color: var(--text);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  .restart-btn {
+    margin-top: 18px;
+    background: var(--accent);
+    border: none;
+    border-radius: 7px;
+    color: #0f0e11;
+    cursor: pointer;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 10px 28px;
+    transition: opacity 0.2s;
+  }
+
+  .restart-btn:hover { opacity: 0.85; }
+
+  /* TAB SWITCHER inside grammar */
+  .tab-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .tab-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.8rem;
+    padding: 6px 16px;
+    transition: all 0.2s;
+  }
+
+  .tab-pill.active {
+    background: rgba(200,169,110,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .quiz-section { display: none; }
+  .quiz-section.active { display: block; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #15131c;
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 200;
+  }
+
+  .nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.75rem;
+    padding: 12px 4px 10px;
+    text-align: center;
+    transition: color 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+  .nav-btn.active {
+    color: var(--accent);
+  }
+
+  .nav-btn.active svg { stroke: var(--accent); }
+
+  /* divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <h1>Grammar &amp; Linguistic Drills</h1>
+  <p>South Valley University · Faculty of Education · First Year · 2025–2026</p>
+</div>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- ══════════════════════════════════════
+     PAGE: GRAMMAR
+══════════════════════════════════════ -->
+<div class="page active" id="page-grammar">
+  <div class="section-title">Grammar</div>
+  <div class="section-sub">Articles &amp; Present Tenses</div>
+
+  <div class="tab-row">
+    <button class="tab-pill active" onclick="switchQuizTab('articles', this)">Articles Quiz</button>
+    <button class="tab-pill" onclick="switchQuizTab('present', this)">Structure Quiz</button>
+  </div>
+
+  <!-- ARTICLES QUIZ -->
+  <div class="quiz-section active" id="quiz-articles">
+    <div class="quiz-header">
+      <h2>Articles: a / an / the</h2>
+      <span class="score-badge" id="score-articles">0 / 0</span>
+    </div>
+    <div id="questions-articles"></div>
+    <div class="score-card" id="final-articles">
+      <div class="big-score" id="big-articles">—</div>
+      <div class="score-label">Final Score</div>
+      <div class="score-msg" id="msg-articles"></div>
+      <button class="restart-btn" onclick="restartQuiz('articles')">Restart Quiz</button>
+    </div>
+  </div>
+
+  <!-- STRUCTURE QUIZ -->
+  <div class="quiz-section" id="quiz-present">
+    <div class="quiz-header">
+      <h2>Structure (Part A)</h2>
+      <span class="score-badge" id="score-present">0 / 0</span>
+    </div>
+    <div id="questions-present"></div>
+    <div class="score-card" id="final-present">
+      <div class="big-score" id="big-present">—</div>
+      <div class="score-label">Final Score</div>
+      <div class="score-msg" id="msg-present"></div>
+      <button class="restart-btn" onclick="restartQuiz('present')">Restart Quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: VOCABULARY
+══════════════════════════════════════ -->
+<div class="page" id="page-vocabulary">
+  <div class="section-title">Vocabulary</div>
+  <div class="section-sub">Part B — Synonym / Replacement</div>
+  <div class="quiz-header">
+    <h2>Vocabulary Quiz</h2>
+    <span class="score-badge" id="score-vocab">0 / 0</span>
+  </div>
+  <div id="questions-vocab"></div>
+  <div class="score-card" id="final-vocab">
+    <div class="big-score" id="big-vocab">—</div>
+    <div class="score-label">Final Score</div>
+    <div class="score-msg" id="msg-vocab"></div>
+    <button class="restart-btn" onclick="restartQuiz('vocab')">Restart Quiz</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: DEFINITIONS
+══════════════════════════════════════ -->
+<div class="page" id="page-definitions">
+  <div class="section-title">Definitions</div>
+  <div class="section-sub">Grammar Reference</div>
+
+  <div class="def-card">
+    <div class="rule-label">ARTICLES</div>
+    <h3>What is an Article?</h3>
+    <p>An article is an adjective. Like adjectives, articles modify nouns. English has two articles: <em>a/an</em> and <em>the</em>. <em>A/an</em> is used to modify non-specific or non-particular nouns; <em>the</em> is used to modify specific or particular nouns. We call <em>a/an</em> the indefinite article and <em>the</em> the definite article.</p>
+  </div>
+
+  <div class="def-card">
+    <div class="rule-label">INDEFINITE ARTICLE</div>
+    <h3>A / An</h3>
+    <p>The indefinite article is an article that does not refer to a specific person or thing — it is used when it is not clearly understood who or what is meant. The form <em>a</em> is used before a word beginning with a consonant, or a vowel sounded like a consonant: <em>a man, a university, a useful thing</em>. The form <em>an</em> is used before words beginning with a vowel or a mute h: <em>an apple, an hour, an honest man</em>. The indefinite article is the same for all genders.</p>
+    <ul>
+      <li>Before a singular countable noun mentioned for the first time representing no particular person or thing</li>
+      <li>Before a singular countable noun used as an example of a class</li>
+      <li>Before names of jobs or professions</li>
+      <li>In certain expressions of quantity: <em>a lot of, a dozen, a hundred</em></li>
+      <li>In exclamations before singular countable nouns: <em>What a nice day!</em></li>
+    </ul>
+  </div>
+
+  <div class="def-card">
+    <div class="rule-label">DEFINITE ARTICLE</div>
+    <h3>The</h3>
+    <p>The definite article refers to a specific person, place or thing. It is the same for singular and plural and for all genders: <em>the man, the men; the woman, the women</em>.</p>
+    <ul>
+      <li>When the object is unique or considered to be unique: <em>the sun, the moon</em></li>
+      <li>Before a noun that has become definite as a result of being mentioned a second time</li>
+      <li>Before a noun made definite by the addition of a phrase or clause</li>
+      <li>Before superlatives and ordinal numbers</li>
+      <li>Before nationality words: <em>the Egyptians, the Chinese</em></li>
+      <li>Before names of musical instruments, rivers, seas, oceans, and chains of mountains</li>
+    </ul>
+  </div>
+
+  <div class="def-card">
+    <div class="rule-label">ZERO ARTICLE</div>
+    <h3>No Article</h3>
+    <p>We use no article in front of nouns like <em>school</em> and <em>hospital</em> when referring to their normal purpose: <em>Aly has gone to school</em> (to learn). Other nouns like this are: <em>bed, church, class, college, prison, sea, town, university, work</em>. However, we use <em>the</em> or <em>a/an</em> with these nouns when not referring to their purpose: <em>Aly has gone to the school for a meeting</em>.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="def-card">
+    <div class="rule-label">SIMPLE PRESENT</div>
+    <h3>The Simple Present Tense</h3>
+    <p>A present verb form that has no auxiliary verb in the affirmative. It is mainly used to express permanent situations or habitual actions — things that happen regularly, repeatedly, or all the time. It is often used with adverbs such as <em>always, usually, sometimes, often, never</em>.</p>
+    <ul>
+      <li>Permanent situations and habitual actions: <em>It never rains here in August.</em></li>
+      <li>Timetabled future events: <em>My plane leaves at 4 p.m.</em></li>
+      <li>With non-progressive verbs: <em>I believe you.</em></li>
+      <li>In conditional sentences (type 1): <em>If it rains, I will stay at home.</em></li>
+      <li>In time clauses: <em>I'll stay here until you get back.</em></li>
+    </ul>
+  </div>
+
+  <div class="def-card">
+    <div class="rule-label">PRESENT CONTINUOUS</div>
+    <h3>The Present Continuous Tense</h3>
+    <p>A verb form made with <em>am/is/are + …ing</em>. It is formed with the present tense of the auxiliary verb <em>to be</em> and the present participle (infinitive + <em>ing</em>).</p>
+    <ul>
+      <li>An action happening now (at the moment of speaking): <em>What are you doing?</em></li>
+      <li>An action happening around this time but not necessarily at this moment: <em>My nephew is working in Saudi Arabia at the moment.</em></li>
+      <li>A definite arrangement in the near future: <em>What are you doing tomorrow evening?</em></li>
+      <li>With <em>always</em> for a frequently repeated action that annoys the speaker: <em>His son is always going away for weekends.</em></li>
+    </ul>
+  </div>
+
+  <div class="def-card">
+    <div class="rule-label">NON-PROGRESSIVE VERBS</div>
+    <h3>Common Non-progressive (Stative) Verbs</h3>
+    <p>These verbs cannot be used in the continuous form. The simple present must be used instead.</p>
+    <ul>
+      <li><strong>Mental states:</strong> believe, know, understand, think, imagine, doubt, suppose, recognize, remember, forget</li>
+      <li><strong>Emotions:</strong> like, love, hate, dislike, wish, want, prefer, please</li>
+      <li><strong>Senses:</strong> see, hear, smell, taste, feel, sound, appear, look</li>
+      <li><strong>Possession:</strong> have, own, possess, belong, contain, consist, include</li>
+      <li><strong>Other:</strong> be, seem, need, matter, mean, measure, weigh, owe, promise</li>
+    </ul>
+  </div>
+
+  <div class="def-card">
+    <div class="rule-label">GOING TO vs WILL</div>
+    <h3>Will and Going to</h3>
+    <p>We use <em>will</em> when we decide to do something at the time of speaking — the decision is made at that moment. We use <em>going to</em> when we have already decided to do something before the moment of speaking. For predictions, we use <em>going to</em> when there is something in the present situation that makes the future outcome clear (e.g., <em>Look at those black clouds! It's going to rain.</em>). Otherwise it is safer to use <em>will</em>.</p>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showPage('grammar', this)">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    Grammar
+  </button>
+  <button class="nav-btn" onclick="showPage('vocabulary', this)">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Vocabulary
+  </button>
+  <button class="nav-btn" onclick="showPage('definitions', this)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Definitions
+  </button>
+</nav>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
+
+const articlesData = [
+  // Part I — a/an (selections from the 35 textbook items)
+  { q: "My neighbour is . . . photographer; let's ask him for . . . advice about color films.", opts: ["a photographer / an advice","a photographer / — (no article)","an photographer / an advice","— / a advice"], ans: 1 },
+  { q: "We had . . . fish and . . . chips for . . . lunch. That doesn't sound . . . very interesting lunch.", opts: ["a / a / a / a","— / — / — / a","a / a / — / a","— / — / — / —"], ans: 1 },
+  { q: "He said, 'Goodnight,' but I had . . . very bad night; I didn't sleep . . . wink.", opts: ["a / a","the / a","a / —","— / a"], ans: 0 },
+  { q: "He is . . . vegetarian; you won't get . . . meat at his house. He'll give you . . . nut cutlet.", opts: ["a / — / a","a / a / a","an / — / an","— / — / a"], ans: 0 },
+  { q: ". . . travel agent would give you . . . information about . . . hotels.", opts: ["The / an / the","A / — / —","A / an / —","An / — / the"], ans: 1 },
+  { q: "We'd better go by . . . taxi — if we can get . . . taxi at such . . . hour as 2 a.m.", opts: ["a / a / an","— / a / the","a / a / a","the / a / an"], ans: 0 },
+  { q: ". . . person who suffers from . . . claustrophobia has . . . dread of being confined in . . . small space.", opts: ["A / — / a / a","The / the / the / a","A / a / a / a","A / — / — / a"], ans: 0 },
+  { q: "Do you take . . . sugar in . . . coffee? I used to, but now I'm on . . . diet.", opts: ["— / — / a","the / the / —","a / a / the","— / — / —"], ans: 0 },
+  { q: ". . . man suffering from . . . shock should be given . . . hot sweet tea.", opts: ["A / — / —","A / a / —","The / — / a","A / — / a"], ans: 0 },
+  { q: "You'll get . . . shock if you touch . . . live wire with that screwdriver. Why don't you get . . . screwdriver with . . . insulated handle?", opts: ["a / a / a / an","the / a / a / the","a / a / the / an","— / a / a / an"], ans: 0 },
+  { q: "It costs fifty and . . . half pence and I've only got . . . fifty-pence piece.", opts: ["a / a","— / a","the / a","a / —"], ans: 0 },
+  { q: ". . . Mr. Smith is . . . old customer and . . . honest man. Has he been accused of . . . dishonesty?", opts: ["A / an / an / —","The / a / a / —","A / a / an / —","A / an / an / a"], ans: 0 },
+  { q: "I'm not . . . wage-earner; I'm . . . self-employed man. I have . . . business of my own.", opts: ["a / a / a","an / a / a","a / an / a","a / a / an"], ans: 0 },
+  { q: "When he was charged with . . . murder he said he had . . . alibi.", opts: ["— / an","a / a","— / a","a / an"], ans: 2 },
+  { q: ". . . friend of mine is expecting . . . baby. If it's . . . girl, she's going to be called Etheldreda.", opts: ["A / a / a","The / a / a","A / the / a","A / a / the"], ans: 0 },
+  { q: "I have . . . hour and . . . half for lunch. I only have . . . half . . . hour.", opts: ["an / a / a / an","a / a / a / a","an / a / a / a","the / a / a / an"], ans: 0 },
+  { q: "I hope you have . . . lovely time and . . . good weather. But I'm not going for . . . holiday; I'm going on . . . business.", opts: ["a / — / a / —","a / a / a / —","— / a / a / —","a / — / — / —"], ans: 0 },
+  { q: "He looked at me with . . . horror when I explained that I was . . . double agent.", opts: ["— / a","a / a","the / a","— / the"], ans: 0 },
+  { q: "I wouldn't climb . . . mountain for £1,000! I have . . . horror of . . . heights.", opts: ["a / a / —","the / — / —","a / — / —","a / the / —"], ans: 2 },
+  { q: "I have . . . headache and . . . sore throat. I think I've got . . . cold. I think you're getting . . . flu.", opts: ["a / a / a / —","a / a / — / a","— / — / a / —","a / a / a / a"], ans: 0 },
+  // Part II — the
+  { q: ". . . youngest boy has just started going to . . . school; . . . eldest boy is at . . . college.", opts: ["The / — / the / —","A / a / a / a","The / the / the / the","The / a / the / a"], ans: 0 },
+  { q: "She lives on . . . top floor of an old house. When . . . wind blows, all . . . windows rattle.", opts: ["the / the / the","a / the / the","the / a / the","— / the / the"], ans: 0 },
+  { q: ". . . darkness doesn't worry . . . cats; . . . cats can see in . . . dark.", opts: ["— / — / — / the","The / the / the / the","— / the / the / the","The / — / — / the"], ans: 0 },
+  { q: "Do you know . . . time? Yes, . . . clock in . . . hall has just struck nine.", opts: ["the / the / the","a / the / a","the / a / the","— / the / the"], ans: 0 },
+  { q: "He was sent to . . . prison for . . . six months for . . . shop-lifting.", opts: ["— / — / —","the / the / —","a / — / —","— / the / —"], ans: 0 },
+  { q: "I went to . . . school to talk to . . . headmaster. I persuaded him to let Ann give up . . . gymnastics and take . . . piano lessons instead.", opts: ["the / the / — / —","a / the / — / —","the / a / — / —","the / the / the / the"], ans: 0 },
+  { q: ". . . gymnastics are not necessary for . . . girls; it is much more useful to be able to play . . . piano.", opts: ["— / — / the","The / the / the","— / the / the","— / — / —"], ans: 0 },
+  { q: "Peter's at . . . office but you could get him on . . . phone. There is a telephone box just round . . . corner.", opts: ["the / the / the","— / the / the","the / the / —","the / — / the"], ans: 0 },
+  { q: "He got . . . bronchitis and was taken to . . . hospital. I expect they'll send him home at . . . end of . . . week.", opts: ["— / — / the / the","the / the / the / the","— / the / the / the","— / the / — / the"], ans: 0 },
+  { q: ". . . family hotels are . . . hotels which welcome . . . parents and . . . children.", opts: ["— / — / — / —","The / the / the / the","— / — / the / the","The / — / — / —"], ans: 0 },
+  // Part III — a/an/the
+  { q: "There was . . . knock on . . . door. I opened it and found . . . small dark man in . . . check overcoat and . . . soft hat.", opts: ["a / the / a / a / a","the / the / a / a / a","a / a / a / a / a","a / the / the / a / a"], ans: 0 },
+  { q: "He said he was . . . employee of . . . gas company and had come to read . . . meter.", opts: ["an / a / the","a / the / a","an / the / the","a / a / the"], ans: 0 },
+  { q: "But I had . . . suspicion that he wasn't speaking . . . truth because . . . meter readers usually wear . . . peaked caps.", opts: ["a / the / — / —","the / the / — / —","a / a / the / —","a / the / the / —"], ans: 0 },
+  { q: "I asked if he had . . . torch; he said he disliked torches and always read . . . meters by . . . light of . . . match.", opts: ["a / — / the / a","the / the / the / a","a / the / the / a","a / — / a / a"], ans: 2 },
+  { q: "Were John and Mary . . . cousins? No, they weren't . . . cousins; they were . . . brother and . . . sister.", opts: ["— / — / — / —","the / the / a / a","— / — / a / a","a / — / a / a"], ans: 2 },
+];
+
+const structureData = [
+  { q: "Aly ----- since he left school.", opts: ["a. has been working","b. is working","c. was working","d. works"], ans: 0 },
+  { q: "\"Please be quiet.\" He told me -----.", opts: ["a. be quiet","b. that be quiet","c. to be quiet","d. to be quite"], ans: 2 },
+  { q: "I am not as clever as you. You are ----- than I.", opts: ["a. clever as","b. cleverest","c. more clever","d. more cleverer"], ans: 2 },
+  { q: "When I was a child I ----- a lot of sweets.", opts: ["a. eat","b. was to eat","c. use to eat","d. used to eat"], ans: 3 },
+  { q: "This house ----- last year.", opts: ["a. built","b. had built","c. has built","d. was built"], ans: 3 },
+  { q: "Hany enjoys ----- in London.", opts: ["a. having lived","b. living","c. to live","d. when lived"], ans: 1 },
+  { q: "I think you would better ----- to the doctor.", opts: ["a. go","b. going","c. to go","d. will go"], ans: 0 },
+  { q: "If it rains, I ----- stay at home.", opts: ["a. can","b. might","c. will","d. would"], ans: 2 },
+  { q: "I ----- to sleep early.", opts: ["a. am use","b. use","c. used","d. using"], ans: 2 },
+  { q: "It's very hot, -----?", opts: ["a. does it","b. is it","c. isn't it","d. isn't its"], ans: 2 },
+  { q: "Let me ----- you a drink.", opts: ["a. buy","b. buys","c. buying","d. to buy"], ans: 0 },
+  { q: "I have decided ----- stop smoking.", opts: ["a. at","b. for","c. to","d. too"], ans: 2 },
+  { q: "I like ----- short stories and history books.", opts: ["a. has read","b. read","c. reading","d. reads"], ans: 2 },
+  { q: "We have moved to Cairo ----- I was ten.", opts: ["a. for","b. four","c. since","d. sins"], ans: 2 },
+  { q: "This is the house ----- I live.", opts: ["a. what","b. when","c. where","d. which"], ans: 2 },
+  { q: "I love ----- pizza.", opts: ["a. ate","b. eat","c. eats","d. eating"], ans: 3 },
+  { q: "The sun ----- every day in our town.", opts: ["a. shine","b. shines","c. is shining","d. shone"], ans: 1 },
+  { q: "In a new culture, many embarrassing situations occur ----- a misunderstanding.", opts: ["a. because","b. because of","c. for","d. of"], ans: 1 },
+  { q: "Neptune is an extremely cold planet, and -----.", opts: ["a. so does Uranus","b. so has Uranus","c. so is Uranus","d. Uranus so"], ans: 2 },
+  { q: "----- that gold was discovered at Sutter's Mill and that the California Gold Rush began.", opts: ["a. Because in 1848","b. in 1848 that it was","c. it was in 1848","d. that in 1848"], ans: 2 },
+  { q: "The crime has continued to rise in Egyptian cities despite efforts on the part of both government and private citizens to curb -----.", opts: ["a. it","b. it's","c. its","d. them"], ans: 0 },
+  { q: "The committee decided to award the trophy to Wael and -----.", opts: ["a. I","b. me","c. myself","d. my self"], ans: 1 },
+  { q: "If Bill is as sick as you say, he ----- a doctor.", opts: ["a. better","b. had better","c. had rather","d. would rather"], ans: 1 },
+  { q: "Employers often require that candidates have not only a degree -----.", opts: ["a. also two years experience","b. but also two years experience","c. but more two years experience","d. but two years experience"], ans: 1 },
+  { q: "The governor had been a lawyer and ----- before he entered politics.", opts: ["a. an officer in the Navy","b. did serve in the Navy as an officer","c. served in the Navy had as an officer","d. the Navy had him as an officer"], ans: 0 },
+  { q: "If one of the participants in a conversation wonders ----- no real communication has taken place.", opts: ["a. what did the other person say","b. what said the other person","c. what the other person said","d. what was the other person saying"], ans: 2 },
+  { q: "The salary of a bus driver is much higher -----.", opts: ["a. in comparison with the salary of a teacher","b. than a teacher","c. than that of a teacher","d. to compare as a teacher"], ans: 2 },
+  { q: "Professional people expect ----- when it is necessary to cancel an appointment.", opts: ["a. that you are calling them","b. that you would call them","c. your calling them","d. you to call them"], ans: 3 },
+  { q: "Sedimentary rocks are formed below the surface of the earth ----- very high temperatures and pressure.", opts: ["a. there are","b. there are where","c. where are there","d. where there are"], ans: 3 },
+  { q: "Farmers look forward to ----- every summer.", opts: ["a. be participating in the country fairs","b. have participated in the country fairs","c. participate in the country fairs","d. participating in the country fairs"], ans: 3 },
+  { q: "A computer is usually chosen because of its simplicity of operation and ease of maintenance ----- its capacity to store information.", opts: ["a. as well","b. as well as","c. the same","d. the same as"], ans: 1 },
+  { q: "If their train arrives ----- not make it to the theatre on time.", opts: ["a. late, we will","b. late, we would","c. lately, we will","d. more later, we would"], ans: 0 },
+  { q: "I went to my advisor to ask him -----.", opts: ["a. I should take what courses","b. should I take what courses","c. what courses I should take","d. what courses should I take"], ans: 2 },
+  { q: "That fire yesterday ----- the whole building.", opts: ["a. could burned down","b. could have burn down","c. could have burned down","d. could of burned down"], ans: 2 },
+  { q: "That town was no longer the sleepy little village -----.", opts: ["a. it has been","b. it has been being","c. it had been","d. it was"], ans: 2 },
+  { q: "----- he was an excellent tennis player.", opts: ["a. Because he practiced constantly","b. Because practiced constantly","c. Because practicing constantly","d. He practiced constantly"], ans: 0 },
+  { q: "They promised to come ----- they find a babysitter.", opts: ["a. except","b. provided","c. providing","d. without"], ans: 1 },
+  { q: "If it ----- so late we could have tea.", opts: ["a. isn't","b. not be","c. wasn't","d. weren't"], ans: 3 },
+  { q: "I would like to leave ----- a message, if I may.", opts: ["a. their","b. theirs","c. them","d. they"], ans: 2 },
+  { q: "The brakes need -----.", opts: ["a. adjusted","b. adjusting","c. to adjust","d. to adjustment"], ans: 1 },
+  { q: "Are you sure you don't have ----- advice to give me? I really need -----.", opts: ["a. an / some","b. any / any","c. any / some","d. some / any"], ans: 2 },
+  { q: "The basketball team had a decided advantage with its two ----- guards.", opts: ["a. six feet","b. six foot","c. six-feet","d. six-foot"], ans: 3 },
+  { q: "She answered, \"I'm busy tonight. I can't go\"; he then asked -----.", opts: ["a. when can she go","b. when could she go","c. when she can go","d. when she could go"], ans: 3 },
+  { q: "Would you mind -----, please?", opts: ["a. answer the telephone","b. answering the telephone","c. to answer the telephone","d. to the telephone answering"], ans: 1 },
+  { q: "Let's buy our tickets while I still have ----- left.", opts: ["a. a few money","b. a few pound","c. a few pounds","d. a little moneys"], ans: 2 },
+  { q: "My friend's wife has a ----- baby.", opts: ["a. two-month-old","b. two-months-old","c. two-month-olds","d. two-months-olds"], ans: 0 },
+  { q: "I was surprised to see ----- at the concert.", opts: ["a. that amount of people","b. that number of people","c. those amounts of people","d. those number of people"], ans: 1 },
+  { q: "----- that the hope for Covid 19 control may lie in the use of vaccine.", opts: ["a. Believing","b. It is believed","c. The belief","d. To believe"], ans: 1 },
+  { q: "Everyone was ----- the threat of military intervention in the area.", opts: ["a. frightened","b. frightened by","c. frightened for","d. frightened to"], ans: 1 },
+  { q: "Our success depends ----- the project by January.", opts: ["a. about finishing","b. finishing","c. on finishing","d. on to finish"], ans: 2 },
+];
+
+const vocabData = [
+  { q: "We <em>inferred</em> from his remarks that he was happy about the project.", opts: ["a. assumed","b. answered","c. hear","d. misunderstood"], ans: 0 },
+  { q: "He was fined 100 pounds by the <em>magistrate</em> and given a strong warning.", opts: ["a. emperor","b. judge","c. lawyer","d. policeman"], ans: 1 },
+  { q: "Without Ahmad's constant <em>presence of mind</em>, we never would have come through as we did.", opts: ["a. composure","b. gifts","c. ideas","d. nervousness"], ans: 0 },
+  { q: "Three victories in three events! What a <em>red-letter day</em> this is!", opts: ["a. colorful","b. forgettable","c. memorable","d. terrible"], ans: 2 },
+  { q: "I don't think I'll <em>make</em> that conference in Cairo.", opts: ["a. attend","b. construct","c. decide","d. do"], ans: 0 },
+  { q: "The veterans, <em>on the other hand</em>, usually play well under pressure.", opts: ["a. consequently","b. conversely","c. in addition","d. regularly"], ans: 1 },
+  { q: "This serum is supposed to make you <em>immune</em> from further infection.", opts: ["a. contagious","b. not susceptible to","c. open","d. sick"], ans: 1 },
+  { q: "The new government regulation disallows <em>disclosure</em> of personal tax information.", opts: ["a. announcement","b. closing","c. opening","d. public revelation"], ans: 3 },
+  { q: "The artist was always ready with a <em>bon mot</em>, making him an asset at small cocktail parties.", opts: ["a. bad joke","b. nice tale","c. clever remark","d. boring joke"], ans: 2 },
+  { q: "The reference she made to her friend, the poet, was interesting but too <em>obscure</em> for anyone to appreciate.", opts: ["a. dismal","b. delightful","c. helpful","d. hidden"], ans: 3 },
+  { q: "How many people do you <em>figure on</em> inviting to the grand opening?", opts: ["a. add","b. desire","c. estimate","d. keep away"], ans: 2 },
+  { q: "When Elizabeth was little, she <em>picked on</em> her younger sister quite a bit.", opts: ["a. cared for","b. picked up","c. selected","d. teased"], ans: 3 },
+  { q: "It <em>crossed my mind</em> yesterday that you might want to accompany us.", opts: ["a. escaped my attention","b. made me angry","c. memorized","d. occurred to me"], ans: 3 },
+  { q: "The director was <em>dubious</em> about the new performer's acting ability.", opts: ["a. anxious","b. doubtful","c. happy","d. nervous"], ans: 1 },
+  { q: "Just how <em>pertinent</em> were her observations?", opts: ["a. filled with lies","b. honest","c. relevant","d. well received"], ans: 2 },
+  { q: "It was no surprise when we were told that our grandfather had <em>passed away</em>.", opts: ["a. died","b. gone on a trip","c. slipped","d. survived"], ans: 0 },
+  { q: "Sue was <em>astounded</em> at her brother's news.", opts: ["a. amazed","b. bothered","c. confused","d. perplexed"], ans: 0 },
+  { q: "The Joneses wondered how they were going to <em>make ends meet</em>.", opts: ["a. do their fair share","b. produce two effects","c. succeed in paying their own way","d. tie the laces"], ans: 2 },
+  { q: "We were <em>gratified</em> to learn of his interest in our case.", opts: ["a. good-natured","b. overwhelmed","c. sorry and displeased","d. thankful and pleased"], ans: 3 },
+  { q: "The <em>martial</em> music roused everyone to a peak of excitement.", opts: ["a. dirge-like","b. pertaining to marriage","c. seasoned","d. warlike"], ans: 3 },
+  { q: "Were their <em>vows</em> made publicly or privately?", opts: ["a. emotions","b. opening remarks","c. promises","d. thoughts"], ans: 2 },
+  { q: "The salesman <em>stood up for</em> his product when challenged.", opts: ["a. defended","b. fought","c. sold","d. spoke of"], ans: 0 },
+  { q: "The <em>affection</em> they felt for each other was obvious to everyone.", opts: ["a. adherence","b. fondness","c. hatred","d. sickness"], ans: 1 },
+  { q: "The reporter described the scene as one of total <em>chaos</em>.", opts: ["a. complete disorder","b. complete order","c. intensity","d. wonder"], ans: 0 },
+  { q: "I understand that Eliot can play the piano <em>by ear</em>; is that true?", opts: ["a. by hitting the keys with his ears","b. timidly","c. with his eyes closed","d. without dependence on written music"], ans: 3 },
+  { q: "The rule states that if a boxer is knocked down, he must stay down for a <em>mandatory</em> eight seconds.", opts: ["a. crucial","b. delayed","c. long","d. obligatory"], ans: 3 },
+  { q: "He surprised everyone by <em>showing up</em> in his mother's dress.", opts: ["a. administering","b. arriving","c. standing out","d. watching a film"], ans: 1 },
+  { q: "Their conversation was <em>stilted</em> but friendly.", opts: ["a. drawn out","b. exhausting","c. secretive","d. stiffly formal"], ans: 3 },
+  { q: "Nancy <em>thwarted</em> her sister's every effort to sell the old house.", opts: ["a. assisted","b. blocked","c. hoped","d. reported"], ans: 1 },
+  { q: "She was naturally <em>apprehensive</em> at the prospect of meeting her future mother-in-law.", opts: ["a. fearful","b. quiet","c. resigned","d. strong"], ans: 0 },
+  { q: "They were <em>loath</em> to say so, but they didn't want Pip invited to the party.", opts: ["a. hateful","b. ready","c. unprepared","d. unwilling"], ans: 3 },
+  { q: "After a trial lasting five weeks, the defendant was <em>exonerated</em> of all charges.", opts: ["a. convicted","b. freed","c. imprisoned","d. exonerated"], ans: 1 },
+  { q: "If you send me a <em>memorandum</em>, I'll surely remember to attend the meeting.", opts: ["a. calling card","b. invitation","c. itinerary","d. short note"], ans: 3 },
+  { q: "The team's <em>morale</em> was at its lowest point of the season.", opts: ["a. ability to read","b. scores","c. spirit","d. talent"], ans: 2 },
+  { q: "By her clothes one could see that she was quite <em>prosperous</em>.", opts: ["a. calm","b. peaceful","c. poor","d. well-to-do"], ans: 3 },
+  { q: "Be careful not to mention the matter to him; he's still a bit <em>touchy</em>.", opts: ["a. handy","b. ill-mannered","c. manual","d. sensitive"], ans: 3 },
+  { q: "It seemed as though every third sentence he spoke was a <em>cliché</em>.", opts: ["a. nice phrase","b. paragraph","c. pun","d. trite phrase"], ans: 3 },
+  { q: "The tour guide who led us through the museum seemed <em>experienced</em>.", opts: ["a. like a new comer","b. old","c. thoroughly versed","d. young"], ans: 2 },
+  { q: "The hotel he recommended <em>proved to be</em> too expensive.", opts: ["a. demanded proof","b. looked","c. turned out to be","d. wasn't"], ans: 2 },
+  { q: "My brother is almost six and a half feet tall.", opts: ["a. an acre","b. three yards","c. two meters","d. 120 centimeters"], ans: 2 },
+  { q: "Santiago <em>dozed off</em> and couldn't be roused for hours.", opts: ["a. drove","b. napped","c. left","d. spaced out"], ans: 1 },
+  { q: "He <em>reciprocated</em> by sending the general a silver tray.", opts: ["a. gave","b. opened","c. received","d. responded"], ans: 3 },
+  { q: "He was <em>deft</em> at handling complaints as he was at tennis.", opts: ["a. angry","b. crude","c. intelligent","d. skillful"], ans: 3 },
+  { q: "The <em>intricate</em> mechanisms of government seemed awesome to the visitors.", opts: ["a. complex","b. interesting","c. new","d. subtle"], ans: 0 },
+  { q: "The <em>irate</em> crowd edged closer to the police barricades.", opts: ["a. angry","b. calm","c. gawking","d. large"], ans: 0 },
+  { q: "He <em>rescinded</em> his offer to take pictures at the graduation party.", opts: ["a. fired up","b. reinforced","c. renewed","d. withdrew"], ans: 3 },
+  { q: "My brother is <em>ill</em>.", opts: ["a. sad","b. sorry","c. well","d. unwell"], ans: 3 },
+  { q: "The film <em>lasted</em> three hours.", opts: ["a. ended","b. finished","c. went","d. went on"], ans: 3 },
+  { q: "My uncle's son stayed with us for a week.", opts: ["a. my aunt","b. my cousin","c. my nephew","d. my niece"], ans: 1 },
+  { q: "We sometimes visit the people that live <em>next-door</em>.", opts: ["a. our enemies","b. our friends","c. our neighbors","d. our relatives"], ans: 2 },
+];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+
+const state = {
+  articles: { answered: 0, correct: 0, total: articlesData.length },
+  present:  { answered: 0, correct: 0, total: structureData.length },
+  vocab:    { answered: 0, correct: 0, total: vocabData.length },
+};
+
+// ══════════════════════════════════════════════════════
+// RENDER QUIZ
+// ══════════════════════════════════════════════════════
+
+function renderQuiz(id, data) {
+  const container = document.getElementById('questions-' + id);
+  container.innerHTML = '';
+  data.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + id + '-' + i;
+
+    const qNum = document.createElement('div');
+    qNum.className = 'q-num';
+    qNum.textContent = 'Q ' + (i + 1) + ' / ' + data.length;
+
+    const qText = document.createElement('div');
+    qText.className = 'q-text';
+    qText.innerHTML = item.q;
+
+    const optWrap = document.createElement('div');
+    optWrap.className = 'options';
+
+    item.opts.forEach((opt, j) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      const label = opt.charAt(0);
+      const text = opt.slice(2).trim();
+      btn.innerHTML = '<span class="opt-label">' + label + '</span><span>' + text + '</span>';
+      btn.addEventListener('click', () => handleAnswer(id, data, i, j, optWrap));
+      optWrap.appendChild(btn);
+    });
+
+    card.appendChild(qNum);
+    card.appendChild(qText);
+    card.appendChild(optWrap);
+    container.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// HANDLE ANSWER
+// ══════════════════════════════════════════════════════
+
+function handleAnswer(id, data, qIndex, chosen, optWrap) {
+  const correct = data[qIndex].ans;
+  const btns = optWrap.querySelectorAll('.opt-btn');
+
+  btns.forEach((btn, j) => {
+    btn.disabled = true;
+    if (j === correct && j === chosen) btn.classList.add('correct');
+    else if (j === chosen) btn.classList.add('wrong');
+    else if (j === correct) btn.classList.add('reveal');
+  });
+
+  state[id].answered++;
+  if (chosen === correct) state[id].correct++;
+
+  updateScore(id);
+  updateProgress();
+
+  if (state[id].answered === state[id].total) {
+    setTimeout(() => showFinal(id), 400);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// SCORE & PROGRESS
+// ══════════════════════════════════════════════════════
+
+function updateScore(id) {
+  const el = document.getElementById('score-' + id);
+  if (el) el.textContent = state[id].correct + ' / ' + state[id].answered;
+}
+
+function updateProgress() {
+  const total = state.articles.total + state.present.total + state.vocab.total;
+  const done  = state.articles.answered + state.present.answered + state.vocab.answered;
+  document.getElementById('progressBar').style.width = (done / total * 100) + '%';
+}
+
+function showFinal(id) {
+  const el = document.getElementById('final-' + id);
+  const big = document.getElementById('big-' + id);
+  const msg = document.getElementById('msg-' + id);
+  const s = state[id];
+  const pct = Math.round(s.correct / s.total * 100);
+  big.textContent = s.correct + ' / ' + s.total;
+  msg.textContent = pct >= 80
+    ? 'Excellent work — ' + pct + '% correct.'
+    : pct >= 60
+    ? 'Good effort — ' + pct + '% correct. Review the highlighted questions.'
+    : 'Keep practising — ' + pct + '% correct. Revisit the definitions section.';
+  el.classList.add('show');
+}
+
+// ══════════════════════════════════════════════════════
+// RESTART
+// ══════════════════════════════════════════════════════
+
+function restartQuiz(id) {
+  state[id].answered = 0;
+  state[id].correct  = 0;
+  document.getElementById('final-' + id).classList.remove('show');
+  updateScore(id);
+  const dataMap = { articles: articlesData, present: structureData, vocab: vocabData };
+  renderQuiz(id, dataMap[id]);
+  updateProgress();
+}
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function switchQuizTab(name, btn) {
+  document.querySelectorAll('.quiz-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+  document.getElementById('quiz-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+
+renderQuiz('articles', articlesData);
+renderQuiz('present',  structureData);
+renderQuiz('vocab',    vocabData);
+updateProgress();
+</script>
+</body>
+</html>
