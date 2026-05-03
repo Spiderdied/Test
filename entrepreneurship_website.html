@@ -1,914 +1,1007 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ريادة الأعمال | منصة مراجعة ذكية</title>
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --card: rgba(255,255,255,0.88);
-      --card-solid:#ffffff;
-      --text: #152033;
-      --muted: #62708a;
-      --primary: #2457d6;
-      --primary-2:#1f7a8c;
-      --accent:#e7efff;
-      --line:#dbe4f2;
-      --shadow: 0 12px 34px rgba(18, 34, 76, 0.08);
-      --shadow2: 0 20px 50px rgba(18,34,76,0.12);
-      --radius: 22px;
-      --radius-sm: 16px;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin:0;
-      font-family: Tahoma, Arial, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top right, rgba(36,87,214,.11), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(31,122,140,.10), transparent 28%),
-        linear-gradient(180deg, #fbfcff 0%, var(--bg) 100%);
-      color:var(--text);
-      min-height:100vh;
-    }
-    .progress-wrap {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      z-index: 9999;
-      background: rgba(220,229,246,.8);
-    }
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--primary-2));
-      border-radius: 999px;
-    }
-    header {
-      position: sticky;
-      top: 5px;
-      z-index: 1000;
-      backdrop-filter: blur(16px);
-      background: rgba(248,250,255,0.75);
-      border-bottom: 1px solid rgba(219,228,242,0.9);
-    }
-    .header-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 18px 18px 14px;
-    }
-    .top-row {
-      display:flex;
-      gap:16px;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .brand {
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .brand h1 {
-      margin:0;
-      font-size: clamp(1.2rem, 2.1vw, 2rem);
-      line-height:1.2;
-    }
-    .brand p {
-      margin:0;
-      color:var(--muted);
-      font-size:.96rem;
-      max-width: 820px;
-    }
-    .toolbar {
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-    button {
-      font-family: inherit;
-    }
-    .btn {
-      border:1px solid var(--line);
-      background: rgba(255,255,255,0.92);
-      color: var(--text);
-      padding: 11px 15px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: .2s ease;
-      box-shadow: 0 4px 14px rgba(18,34,76,.05);
-      font-size: .95rem;
-    }
-    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
-    .btn.primary {
-      background: linear-gradient(135deg, var(--primary), #4f7df2);
-      color: white;
-      border-color: transparent;
-    }
-    .btn.ghost {
-      background: transparent;
-    }
-    .btn.active {
-      background: linear-gradient(135deg, rgba(36,87,214,.12), rgba(31,122,140,.10));
-      border-color: rgba(36,87,214,.35);
-      color: var(--primary);
-      font-weight: 700;
-    }
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 22px 18px 70px;
-    }
-    .hero {
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:20px;
-      align-items: stretch;
-      margin-bottom: 22px;
-    }
-    .panel {
-      background: var(--card);
-      border: 1px solid rgba(219,228,242,.9);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px;
-    }
-    .panel h2 {
-      margin:0 0 10px 0;
-      font-size:1.5rem;
-    }
-    .panel p { margin: 0; color: var(--muted); line-height: 1.9; }
-    .stats {
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 18px;
-    }
-    .stat {
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(247,250,255,.98));
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-    }
-    .stat strong {
-      display:block;
-      font-size:1.12rem;
-      margin-bottom:4px;
-    }
-    .stat span { color: var(--muted); font-size:.92rem; line-height:1.7; }
-    .grid {
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .chapter-card {
-      position:relative;
-      overflow:hidden;
-      cursor:pointer;
-      transition: .22s ease;
-      background: var(--card-solid);
-      border: 1px solid rgba(219,228,242,.95);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px;
-      min-height: 186px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .chapter-card:hover { transform: translateY(-3px); box-shadow: var(--shadow2); }
-    .chapter-card .badge {
-      align-self:flex-start;
-      background: linear-gradient(135deg, #edf3ff, #e9fbff);
-      color: var(--primary);
-      border:1px solid rgba(36,87,214,.15);
-      border-radius:999px;
-      padding: 7px 12px;
-      font-weight:700;
-      font-size:.84rem;
-    }
-    .chapter-card h3 { margin:0; font-size:1.18rem; line-height:1.4; }
-    .chapter-card p { margin:0; color:var(--muted); line-height:1.8; }
-    .chapter-card ul {
-      margin: 0;
-      padding: 0 18px 0 0;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: .93rem;
-    }
-    .chapter-wrap {
-      display:none;
-      animation: fadeIn .35s ease;
-    }
-    .chapter-wrap.active, .home-wrap.active, .quick-wrap.active { display:block; }
-    .home-wrap, .quick-wrap { display:none; animation: fadeIn .35s ease; }
-    .section {
-      background: var(--card-solid);
-      border: 1px solid rgba(219,228,242,.95);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      margin-top: 16px;
-    }
-    .section h2 {
-      margin: 0 0 12px 0;
-      font-size: 1.34rem;
-    }
-    .section h3 {
-      margin: 0 0 10px 0;
-      font-size: 1.08rem;
-    }
-    .section .lead {
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 16px;
-    }
-    .section-header {
-      display:flex;
-      justify-content: space-between;
-      align-items:flex-start;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 4px;
-    }
-    .pill-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top: 12px;
-    }
-    .pill {
-      background: #f2f6ff;
-      border: 1px solid var(--line);
-      color: #27406a;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: .84rem;
-    }
-    .defs {
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .def-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      background: linear-gradient(180deg, #fff, #f8fbff);
-    }
-    .def-card .term {
-      display:block;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
-      font-size: 1rem;
-    }
-    .def-card .def {
-      color: var(--muted);
-      line-height: 1.9;
-      margin:0;
-    }
-    .bullet-list {
-      margin:0;
-      padding: 0 22px 0 0;
-      color: var(--text);
-      line-height: 1.9;
-    }
-    .bullet-list li {
-      margin: 8px 0;
-      color: #2c374d;
-    }
-    .explain-grid {
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .explain-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      background: #fff;
-    }
-    .explain-card strong {
-      display:block;
-      margin-bottom: 8px;
-      color: #193063;
-      font-size: 1rem;
-    }
-    .explain-card p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.9;
-    }
-    details.review-item {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px 16px;
-      background: #fff;
-    }
-    details.review-item + details.review-item { margin-top: 10px; }
-    details.review-item summary {
-      cursor:pointer;
-      font-weight:700;
-      color:#20355d;
-      list-style:none;
-    }
-    details.review-item summary::-webkit-details-marker { display:none; }
-    .answer {
-      margin-top: 10px;
-      color: var(--muted);
-      line-height: 1.9;
-      border-top: 1px dashed var(--line);
-      padding-top: 10px;
-    }
-    .title-grid {
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    .title-card {
-      cursor:pointer;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: linear-gradient(180deg, #fff, #f7fbff);
-      padding: 16px;
-      box-shadow: 0 8px 24px rgba(18,34,76,.05);
-      transition: .2s ease;
-      min-height: 112px;
-    }
-    .title-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-    .title-card h4 { margin: 0 0 8px 0; font-size: 1rem; }
-    .title-card p { margin:0; color:var(--muted); line-height:1.7; font-size:.92rem; }
-    .subtle {
-      color: var(--muted);
-      line-height: 1.9;
-      margin: 6px 0 0 0;
-    }
-    .chapter-top {
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .back-row {
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .toolbar-group {
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .review-grid {
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .quiz-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      background: linear-gradient(180deg, #fff, #f8fbff);
-      box-shadow: 0 8px 22px rgba(18,34,76,.05);
-    }
-    .quiz-card .meta {
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      margin-bottom: 10px;
-      color: var(--muted);
-      font-size: .88rem;
-    }
-    .quiz-card h4 {
-      margin: 0 0 10px 0;
-      font-size: 1.02rem;
-      line-height: 1.7;
-    }
-    .quiz-answer {
-      display:none;
-      margin-top: 10px;
-      color: var(--muted);
-      line-height: 1.9;
-      border-top: 1px dashed var(--line);
-      padding-top: 10px;
-    }
-    .quiz-card.show .quiz-answer { display:block; }
-    .quick-hero {
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      align-items:center;
-    }
-    .flash {
-      min-height: 210px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
-    .flash .chapter-tag {
-      display:inline-flex;
-      align-self:flex-start;
-      margin-bottom: 10px;
-      border-radius: 999px;
-      padding: 6px 10px;
-      background:#eef4ff;
-      color: var(--primary);
-      border:1px solid rgba(36,87,214,.16);
-      font-weight:700;
-      font-size:.85rem;
-    }
-    .flash h3 { margin:0 0 14px 0; font-size:1.25rem; line-height:1.8; }
-    .flash .answer {
-      margin-top: 0;
-      padding-top: 14px;
-    }
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(10,18,33,.52);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index: 2000;
-      padding: 16px;
-    }
-    .modal.show { display:flex; }
-    .modal-card {
-      width: min(760px, 100%);
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: var(--shadow2);
-      border: 1px solid rgba(219,228,242,.95);
-      overflow:hidden;
-      animation: pop .22s ease;
-    }
-    .modal-head {
-      padding: 18px 20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 12px;
-      border-bottom:1px solid var(--line);
-      background: linear-gradient(180deg, #fbfdff, #f4f8ff);
-    }
-    .modal-head h3 { margin:0; font-size:1.15rem; }
-    .modal-body {
-      padding: 20px;
-      line-height: 1.95;
-      color: var(--muted);
-    }
-    .modal-body strong { color:#20355d; }
-    .footer-note {
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: .92rem;
-      line-height: 1.8;
-    }
-    .hidden { display:none !important; }
-    .mode-note {
-      background: linear-gradient(135deg, rgba(36,87,214,.08), rgba(31,122,140,.08));
-      border:1px solid rgba(36,87,214,.14);
-      color:#234067;
-      border-radius: 16px;
-      padding: 12px 14px;
-      line-height:1.8;
-      margin-bottom: 16px;
-    }
-    .small {
-      font-size:.9rem;
-      color:var(--muted);
-    }
-    @keyframes fadeIn {
-      from { opacity:0; transform: translateY(10px); }
-      to { opacity:1; transform: translateY(0); }
-    }
-    @keyframes pop {
-      from { opacity:0; transform: scale(.97); }
-      to { opacity:1; transform: scale(1); }
-    }
-    @media (max-width: 1100px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .hero { grid-template-columns: 1fr; }
-      .title-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 760px) {
-      header { top: 4px; }
-      .grid, .defs, .explain-grid, .review-grid, .title-grid, .quick-hero { grid-template-columns: 1fr; }
-      .stats { grid-template-columns:1fr; }
-      .header-inner, .container { padding-left: 14px; padding-right: 14px; }
-      .chapter-card { min-height:auto; }
-      .toolbar, .back-row { width: 100%; }
-      .btn { flex: 1 1 auto; text-align:center; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تعليم ريادة الأعمال والابتكار</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080b14;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.09);
+  --gold: #f5c842;
+  --teal: #00d4aa;
+  --blue: #4f8ef7;
+  --purple: #a78bfa;
+  --rose: #fb7185;
+  --text: #dde3f0;
+  --muted: #7a8399;
+  --c1: #f5c842;
+  --c2: #00d4aa;
+  --c3: #4f8ef7;
+  --c5: #a78bfa;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Cairo','Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal),var(--blue),var(--purple));width:0%;z-index:9999;transition:width .15s linear;box-shadow:0 0 14px rgba(245,200,66,.5)}
+
+/* SIDEBAR */
+#sidebar{position:fixed;top:0;right:0;width:252px;height:100vh;background:rgba(8,11,20,.97);backdrop-filter:blur(24px);border-left:1px solid var(--border);z-index:900;display:flex;flex-direction:column;overflow:hidden}
+#sb-head{padding:22px 18px 18px;border-bottom:1px solid var(--border);text-align:center}
+#sb-head .icon{font-size:2rem;display:block;margin-bottom:6px}
+#sb-head h2{font-size:.78rem;font-weight:700;color:var(--gold);line-height:1.5}
+#sb-nav{flex:1;overflow-y:auto;padding:12px 0}
+#sb-nav::-webkit-scrollbar{width:3px}
+#sb-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.nb{width:100%;padding:9px 18px;background:none;border:none;color:var(--muted);font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:600;text-align:right;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .2s;border-right:3px solid transparent}
+.nb:hover{color:var(--text);background:var(--surface)}
+.nb.active{color:var(--text);background:var(--surface2)}
+.nb .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* MAIN */
+#main{margin-right:252px;min-height:100vh}
+
+/* HERO */
+#hero{position:relative;padding:80px 60px 70px;overflow:hidden;border-bottom:1px solid var(--border)}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 60% 50%,rgba(245,200,66,.07) 0%,transparent 65%),radial-gradient(ellipse 40% 50% at 20% 80%,rgba(0,212,170,.05) 0%,transparent 60%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);border-radius:100px;padding:6px 16px;font-size:.75rem;font-weight:700;color:var(--gold);margin-bottom:24px}
+#hero h1{font-size:2.8rem;font-weight:900;line-height:1.2;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,var(--gold) 50%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+#hero p{font-size:1.05rem;color:var(--muted);max-width:560px;line-height:1.8;margin-bottom:36px}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-n{font-size:2rem;font-weight:900;color:var(--gold);display:block;line-height:1}
+.stat-l{font-size:.75rem;color:var(--muted);margin-top:4px}
+
+/* CHAPTER SECTION */
+.ch-section{padding:60px 60px 40px;border-bottom:1px solid var(--border);opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.ch-section.visible{opacity:1;transform:translateY(0)}
+.ch-header{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.ch-num{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;flex-shrink:0}
+.ch-meta{flex:1}
+.ch-meta h2{font-size:1.6rem;font-weight:900;margin-bottom:2px}
+.ch-meta p{font-size:.82rem;color:var(--muted)}
+.ch-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;border-bottom:1px solid var(--border);padding-bottom:16px}
+.tab-btn{padding:7px 18px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+.tab-btn.on{color:#000;border-color:transparent;font-weight:700}
+.tab-panel{display:none}
+.tab-panel.on{display:block}
+
+/* SECTION LABEL */
+.sec-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CARDS GRID */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:28px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .25s;cursor:default;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s}
+.card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-2px)}
+.card:hover::before{opacity:1}
+.card-icon{font-size:1.5rem;margin-bottom:10px;display:block}
+.card h3{font-size:.92rem;font-weight:700;margin-bottom:8px;line-height:1.4}
+.card p{font-size:.8rem;color:var(--muted);line-height:1.7}
+.card .tag{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:100px;font-size:.68rem;font-weight:700}
+
+/* WIDE CARD */
+.card-wide{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:16px;transition:border-color .2s}
+.card-wide:hover{border-color:rgba(255,255,255,.15)}
+.card-wide h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.card-wide p{font-size:.82rem;color:var(--muted);line-height:1.75}
+
+/* NUMBERED ITEMS */
+.n-items{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.n-item{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:border-color .2s}
+.n-item:hover{border-color:rgba(255,255,255,.15)}
+.n-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:900;flex-shrink:0}
+.n-body h4{font-size:.88rem;font-weight:700;margin-bottom:4px}
+.n-body p{font-size:.78rem;color:var(--muted);line-height:1.65}
+
+/* PRINCIPLES ROW */
+.principles{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+.principle{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:7px 16px;font-size:.78rem;font-weight:600}
+.principle .arrow{color:var(--muted);font-size:.7rem}
+
+/* TWO-COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}}
+
+/* COMPARE TABLE */
+.compare{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:.82rem}
+.compare th{padding:10px 14px;background:var(--surface2);font-weight:700;text-align:right;border-bottom:2px solid var(--border)}
+.compare td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted)}
+.compare tr:hover td{background:var(--surface);color:var(--text)}
+
+/* QUOTE BLOCK */
+.qblock{background:var(--surface);border-right:3px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:20px;font-size:.85rem;line-height:1.8;color:var(--text-muted)}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0;margin-bottom:24px;position:relative}
+.steps::before{content:'';position:absolute;right:20px;top:0;bottom:0;width:2px;background:var(--border);z-index:0}
+.step{display:flex;gap:16px;align-items:flex-start;padding:16px 0;position:relative;z-index:1}
+.step-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:900;flex-shrink:0;background:var(--bg);border:2px solid}
+.step-body{padding-top:8px}
+.step-body h4{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.step-body p{font-size:.78rem;color:var(--muted);line-height:1.65}
+
+/* SKILLS GRID */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:24px}
+.skill-pill{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.skill-pill .sk-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* COMPANY CARD */
+.company-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start;transition:border-color .2s;margin-bottom:12px}
+.company-card:hover{border-color:rgba(255,255,255,.18)}
+.company-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.company-body h4{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.company-body p{font-size:.78rem;color:var(--muted);line-height:1.65}
+
+/* IP CARDS */
+.ip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:650px){.ip-grid{grid-template-columns:1fr}}
+.ip-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.ip-card .ip-icon{font-size:2rem;display:block;margin-bottom:10px}
+.ip-card h4{font-size:.9rem;font-weight:700;margin-bottom:8px}
+.ip-card p{font-size:.75rem;color:var(--muted);line-height:1.65}
+
+/* CH5 PRACTICE CARDS */
+.practice-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.practice-card h4{font-size:.92rem;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.practice-card p{font-size:.8rem;color:var(--muted);line-height:1.7}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 60px;color:var(--muted);font-size:.78rem;border-top:1px solid var(--border)}
+
+/* MOBILE TOGGLE */
+#menu-toggle{display:none;position:fixed;top:14px;left:14px;z-index:1100;background:var(--surface2);border:1px solid var(--border);border-radius:10px;width:42px;height:42px;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;color:var(--text)}
+
+@media(max-width:900px){
+  #sidebar{transform:translateX(100%)}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-right:0}
+  #menu-toggle{display:flex}
+  .ch-section{padding:40px 20px 30px}
+  #hero{padding:60px 20px 50px}
+  #hero h1{font-size:1.9rem}
+  .cards{grid-template-columns:1fr}
+  .ip-grid{grid-template-columns:1fr 1fr}
+  footer{padding:30px 20px}
+}
+
+/* CHAPTER COLOR CLASSES */
+.c1{color:var(--c1)} .bg1{background:rgba(245,200,66,.12)} .bd1{border-color:rgba(245,200,66,.3)} .dot1{background:var(--c1)}
+.c2{color:var(--c2)} .bg2{background:rgba(0,212,170,.12)} .bd2{border-color:rgba(0,212,170,.3)} .dot2{background:var(--c2)}
+.c3{color:var(--c3)} .bg3{background:rgba(79,142,247,.12)} .bd3{border-color:rgba(79,142,247,.3)} .dot3{background:var(--c3)}
+.c5{color:var(--c5)} .bg5{background:rgba(167,139,250,.12)} .bd5{border-color:rgba(167,139,250,.3)} .dot5{background:var(--c5)}
+.tag1{background:rgba(245,200,66,.15);color:var(--c1)}
+.tag2{background:rgba(0,212,170,.15);color:var(--c2)}
+.tag3{background:rgba(79,142,247,.15);color:var(--c3)}
+.tag5{background:rgba(167,139,250,.15);color:var(--c5)}
+</style>
 </head>
 <body>
-  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-  <header>
-    <div class="header-inner">
-      <div class="top-row">
-        <div class="brand">
-          <h1>منصة مراجعة ذكية لمقرر ريادة الأعمال</h1>
-          <p>محتوى أكاديمي مبني على الكتاب المقرر، مع تنظيم يساعد الطالب على الفهم، والحفظ، والمراجعة السريعة قبل الامتحان.</p>
-        </div>
-        <div class="toolbar">
-          <button class="btn active" id="navHome">الرئيسية</button>
-          <button class="btn" id="navCh1">الفصل الأول</button>
-          <button class="btn" id="navCh2">الفصل الثاني</button>
-          <button class="btn" id="navCh3">الفصل الثالث</button>
-          <button class="btn" id="navCh5">الفصل الخامس</button>
-          <button class="btn" id="beforeExamBtn">Before Exam</button>
-          <button class="btn" id="quickReviewBtn">Quick Review</button>
-        </div>
-      </div>
+
+<div id="prog"></div>
+<button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div id="sb-head">
+    <span class="icon">🚀</span>
+    <h2>ريادة الأعمال<br>والابتكار</h2>
+  </div>
+  <nav id="sb-nav">
+    <div class="nb active" onclick="scrollTo('hero')" style="color:var(--gold)">
+      <span class="dot" style="background:var(--gold)"></span> الرئيسية
     </div>
-  </header>
+    <div style="padding:8px 18px 4px;font-size:.65rem;color:var(--muted);font-weight:700;letter-spacing:.1em">الفصل الأول</div>
+    <div class="nb" onclick="scrollTo('ch1')"><span class="dot dot1"></span> أساسيات ريادة الأعمال</div>
+    <div style="padding:8px 18px 4px;font-size:.65rem;color:var(--muted);font-weight:700;letter-spacing:.1em">الفصل الثاني</div>
+    <div class="nb" onclick="scrollTo('ch2')"><span class="dot dot2"></span> تطوير العقول الريادية</div>
+    <div style="padding:8px 18px 4px;font-size:.65rem;color:var(--muted);font-weight:700;letter-spacing:.1em">الفصل الثالث</div>
+    <div class="nb" onclick="scrollTo('ch3')"><span class="dot dot3"></span> سمات ومهارات رائد الأعمال</div>
+    <div style="padding:8px 18px 4px;font-size:.65rem;color:var(--muted);font-weight:700;letter-spacing:.1em">الفصل الخامس</div>
+    <div class="nb" onclick="scrollTo('ch5')"><span class="dot dot5"></span> إدارة الأعمال وفرص المستقبل</div>
+  </nav>
+</div>
 
-  <main class="container">
-    <section class="home-wrap active" id="homeView">
-      <div class="hero">
-        <div class="panel">
-          <h2>ابدأ من هنا</h2>
-          <p>اختر الفصل الذي تريد مراجعته. العرض يقتصر على الفصول المطلوبة، بينما يظهر الفصل الثالث على هيئة عناوين فقط مع شرح موجز عند النقر. في وضع Before Exam ستظهر التعريفات والنقاط عالية الأهمية فقط، وفي وضع Quick Review ستظهر بطاقات مراجعة سريعة.</p>
-          <div class="pill-row">
-            <span class="pill">تصميم أكاديمي نظيف</span>
-            <span class="pill">متجاوب مع الهاتف والكمبيوتر</span>
-            <span class="pill">تعلم سريع قبل الامتحان</span>
-            <span class="pill">بدون أطر خارجية</span>
-          </div>
-          <div class="footer-note">المحتوى في الفصول 1 و2 و5 يُقدَّم بصياغة تعليمية واضحة تحافظ على المعنى المقرر وتُسهل التذكر.</div>
-        </div>
-        <div class="panel">
-          <h2>خريطة الدراسة</h2>
-          <div class="stats">
-            <div class="stat"><strong>الفصل الأول</strong><span>أساسيات ريادة الأعمال، المنظومة، ورواد الأعمال.</span></div>
-            <div class="stat"><strong>الفصل الثاني</strong><span>العقلية الريادية، نموها، وطرق تطويرها.</span></div>
-            <div class="stat"><strong>الفصل الثالث</strong><span>عناوين فقط مع شرح قصير عند النقر.</span></div>
-            <div class="stat"><strong>الفصل الخامس</strong><span>الإدارة، التمويل، التسويق، المشروع، وحقوق المستهلك.</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="grid" id="homeCards"></div>
-    </section>
+<!-- MAIN -->
+<div id="main">
 
-    <section class="chapter-wrap" id="chapterView"></section>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">📚 مقرر جامعي — كلية التربية بقنا — الفرقة الأولى</div>
+  <h1>تعليم ريادة الأعمال<br>والابتكار</h1>
+  <p>مقرر شامل يُعرِّفك بمفاهيم ريادة الأعمال من الأساسيات وحتى إنشاء مشروعك الريادي الخاص، مع التركيز على الإبداع والابتكار وتطوير العقلية الريادية.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n">5</span><div class="stat-l">فصول دراسية</div></div>
+    <div class="stat"><span class="stat-n">4</span><div class="stat-l">فصول معروضة</div></div>
+    <div class="stat"><span class="stat-n">140</span><div class="stat-l">صفحة محتوى</div></div>
+    <div class="stat"><span class="stat-n">EDU</span><div class="stat-l">كود المقرر</div></div>
+  </div>
+</section>
 
-    <section class="quick-wrap" id="quickView"></section>
-  </main>
-
-  <div class="modal" id="modal">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3 id="modalTitle">عنوان</h3>
-        <button class="btn" id="closeModal">إغلاق</button>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CHAPTER 1 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch1">
+  <div class="ch-header">
+    <div class="ch-num bg1 c1" style="border:1px solid rgba(245,200,66,.3)">١</div>
+    <div class="ch-meta">
+      <h2 class="c1">أساسيات ريادة الأعمال</h2>
+      <p>المفهوم — التوجهات — المنظومة — دور المؤسسات التعليمية</p>
     </div>
   </div>
 
-  <script>
-    const DATA = {"1": {"title": "الفصل الأول: أساسيات ريادة الأعمال", "subtitle": "مفهوم ريادة الأعمال، أسباب ظهورها، دور رواد الأعمال، والمنظومة الداعمة لها", "definitions": [{"term": "ريادة الأعمال", "definition": "عملية أو منظومة تبدأ بتحديد فكرة غير تقليدية ثم تحويلها إلى مشروع تجاري جديد أو تطوير مشروع قائم باستخدام موارد محدودة، مع موازنة العائد والمخاطرة."}, {"term": "رائد الأعمال", "definition": "شخص مبادر يسبق غيره، يلتقط الفرص، ويمهد الطريق لمشروع جديد، ويقود تحويل الفكرة إلى واقع عملي."}, {"term": "ثقافة ريادة الأعمال", "definition": "مجموعة من القيم والسلوكيات مثل المبادرة وتحمل المخاطرة والاستقلالية عندما تتكرر داخل جماعة أو مجتمع."}, {"term": "منظومة ريادة الأعمال", "definition": "بيئة متكاملة تضم أطرافًا متعددة تعمل بصورة مترابطة لتحويل الأفكار الريادية إلى مشاريع ومنشآت منتجة."}, {"term": "الاقتصاد الريادي", "definition": "اتجاه اقتصادي يجعل ريادة الأعمال محركًا للنمو، وخلق الفرص، وتعزيز القدرة التنافسية."}, {"term": "البيئة المحفزة لريادة الأعمال", "definition": "بيئة مرنة وداعمة تتوافر فيها البنية المناسبة، وتسهّل المبادرة، والتعاون، واتخاذ القرار، وتحويل الأفكار إلى عمل."}], "summary": ["ريادة الأعمال ليست مجرد عمل فردي؛ بل منظومة متكاملة تربط الفرد بالمؤسسات والبيئة.", "التعريفات تتفق على: المبادرة، الإبداع، الابتكار، المخاطرة، والقيادة.", "رائد الأعمال يبحث عن الفرص قبل الموارد، ثم يطوّع الموارد المتاحة لتحقيق الفكرة.", "ريادة الأعمال ترتبط بالنمو الاقتصادي، وفتح الأسواق، وخلق فرص العمل.", "التوجه الريادي يزداد مع البطالة، والتطور التكنولوجي، والاقتصاد المعرفي، والتجارة الإلكترونية.", "الجامعات والمدارس مطالبة ببناء ثقافة ومهارات ريادة الأعمال لدى الطلاب.", "نجاح الريادة يتطلب إدارة وقيادة وريادة معًا، لا الاعتماد على الحماس الفردي وحده.", "عدد الشركات الناشئة وحده ليس مؤشر نجاح؛ الأهم جودة الوظائف والأثر التنموي."], "explanation": [{"heading": "1) مفهوم ريادة الأعمال", "text": "يرى الكتاب أن ريادة الأعمال تعني البحث عن الفرص وبناء مشروع جديد أو تطوير مشروع قائم بطريقة مبتكرة، مع استخدام الموارد المتاحة بكفاءة وتحمل المخاطرة المحسوبة. وهي ترتبط بالقيادة، والمبادرة، والأسبقية، والجرأة، والتطوير، والاستقلالية."}, {"heading": "2) دور رواد الأعمال وروائداته", "text": "رواد الأعمال يملكون الرغبة والقدرة على تحويل الأفكار إلى مشاريع منتجة ومنافسة، وتكوين فرق عمل، وتحمل المسؤولية، والعمل نحو أهداف طموحة مدروسة. كما يبرز الكتاب أهمية رائدات الأعمال في التنمية، وضرورة تهيئة بيئة اجتماعية وثقافية وتدريبية تدعم دخولهن هذا المجال."}, {"heading": "3) لماذا يظهر التوجه نحو الريادة؟", "text": "تزايد الاهتمام بريادة الأعمال بسبب التحولات الاقتصادية والتكنولوجية، وضغط البطالة، وتقلص فرص الوظائف الحكومية، واتساع التجارة الإلكترونية، وحاجة المجتمعات إلى أفكار ومشاريع جديدة تحقق التنمية وتفتح مجالات عمل مستقلة."}, {"heading": "4) منظومة ريادة الأعمال", "text": "الكتاب يؤكد أن الريادة لا تقوم على البطولة الفردية فقط، بل على منظومة تشمل التعليم، والتمويل، والدعم الفني، والتشريعات، والثقافة، والتواصل مع المجتمع. وتتميز هذه المنظومة بالمبادأة، والمشاركة، والتكامل، والهدفية، والالتزام."}, {"heading": "5) دور المؤسسات التعليمية", "text": "الجامعات والمدارس ليست أماكن لتلقّي المعرفة فقط، بل أطراف فاعلة في بناء العقل الريادي: فهي تُدرّب، وتُرشد، وتُنتج معرفة تطبيقية، وتربط الطالب بالمجتمع وسوق العمل، وتساعده على تحويل المعرفة إلى قيمة ومشروع."}], "review": [{"type": "fill", "q": "أكمل: ريادة الأعمال هي عملية تحويل الفكرة غير التقليدية إلى ________ جديد أو تطوير مشروع قائم.", "a": "مشروع تجاري"}, {"type": "tf", "q": "صح أم خطأ: عدد الشركات الناشئة وحده يكفي للحكم على نجاح منظومة ريادة الأعمال.", "a": "خطأ"}, {"type": "short", "q": "اذكر ثلاثة عناصر تتفق عليها معظم تعريفات ريادة الأعمال.", "a": "المبادرة، الإبداع، المخاطرة."}, {"type": "fill", "q": "أكمل: المنظومة الريادية تعتمد على بيئة ________ ومتعاونة.", "a": "محفزة"}, {"type": "short", "q": "لماذا يهتم الكتاب بدور الجامعات في ريادة الأعمال؟", "a": "لأنها تبني الثقافة الريادية، وتدرّب الطلاب، وتربط المعرفة بالتطبيق والمجتمع."}]}, "2": {"title": "الفصل الثاني: تطوير وتدريب العقول الريادية", "subtitle": "العقلية الريادية، خصائصها، طرق تطويرها، وفوائدها العملية", "definitions": [{"term": "العقلية الريادية", "definition": "حالة ذهنية توجه السلوك نحو الفرص، والابتكار، وخلق قيمة جديدة، وتحفّز المبادرة والتصرف السريع."}, {"term": "عقلية النمو", "definition": "الاعتقاد بأن القدرات والذكاء يمكن تطويرهما عبر الجهد، والتعلم، والممارسة، والتعامل مع الفشل بوصفه فرصة للتعلم."}, {"term": "الاستقلالية", "definition": "رغبة الشخص في العمل بحرية، واتخاذ قراراته، وعدم الارتياح للتبعية الكاملة لقواعد الآخرين."}, {"term": "التوجه الإجرائي", "definition": "ميل الشخص إلى المبادرة واتخاذ القرار بسرعة، وعدم تأجيل العمل، والبحث عن التنفيذ العملي."}, {"term": "المثابرة", "definition": "القدرة على الاستمرار بعد النكسات وخيبات الأمل، وعدم الاستسلام بسهولة عند مواجهة الصعوبات."}, {"term": "توليد الأفكار", "definition": "القدرة على إنتاج أفكار متعددة وجديدة، وفتح أكثر من مسار لتحقيق الهدف."}], "summary": ["العقلية الريادية ليست موهبة ثابتة؛ بل يمكن تطويرها بالتعلم والخبرة.", "العقلية الريادية ترتبط بالفرص، والابتكار، وخلق القيمة، والقدرة على التحرك السريع.", "من سماتها: الاستقلالية، قبول المخاطر، الشغف، الحاجة إلى الإنجاز، والمرونة.", "من مهاراتها: التركيز المستقبلي، توليد الأفكار، التنفيذ، الثقة بالنفس، التفاؤل، والمثابرة.", "تنمية العقلية الريادية تتم عبر التعليم، والقراءة، والتجربة، والتعلم من الخطأ.", "الابتعاد عن منطقة الراحة، والمخاطرة المحسوبة، والسلوك الاستباقي عوامل أساسية للتطوير.", "وجود أشخاص متشابهين في التفكير، ومرشدين، وداعمين يعزز هذه العقلية.", "الفشل في الريادة يُقرأ كخبرة تعليمية إذا حُلل واستُفيد منه."], "explanation": [{"heading": "1) معنى العقلية الريادية", "text": "العقلية الريادية هي طريقة تفكير توجه صاحبها إلى الفرص والابتكار والتصرف الفعال في بيئات غير واضحة. وهي تقوم على القدرة على تحليل الواقع، وفهم المستقبل، وتحويل الأفكار إلى عمل ملموس."}, {"heading": "2) السمات المرتبطة بها", "text": "من أبرز السمات التي يذكرها الكتاب: الاستقلالية، تفضيل الهياكل المحدودة، عدم المطابقة، قبول المخاطر، التوجه الإجرائي، الشغف، والحاجة إلى الإنجاز. وهذه السمات لا تعمل منفصلة بل تكمل بعضها بعضًا."}, {"heading": "3) المهارات المرتبطة بها", "text": "تشمل المهارات: التركيز المستقبلي، توليد الأفكار، التنفيذ، الثقة بالنفس، التفاؤل، المثابرة، والحساسية للآخرين. وهذه المهارات تساعد الطالب على تحويل الرؤية إلى خطوة عملية ناجحة."}, {"heading": "4) كيف تُنمَّى العقلية الريادية؟", "text": "يوضح الكتاب أن التطوير يحدث عبر التعليم والتدريب، والقراءة، والتجربة العملية، وبناء فضول التعلم، وتحمل المخاطرة المحسوبة، والنهج الاستباقي، ومرافقة أشخاص يشاركونك العقلية نفسها."}, {"heading": "5) فوائدها لأصحاب الأعمال", "text": "العقلية الريادية تحسن حل المشكلات، وترفع القدرة على التكيف، وتزيد الوعي بالمخاطر، وتساعد على تحديد الفرص، وتنمّي عقلية النمو التي ترى الفشل خطوة تعلم لا نهاية الطريق."}], "review": [{"type": "fill", "q": "أكمل: العقلية الريادية توجه السلوك نحو ________ وخلق قيمة جديدة.", "a": "الفرص"}, {"type": "tf", "q": "صح أم خطأ: عقلية النمو تعني أن القدرات لا يمكن تغييرها.", "a": "خطأ"}, {"type": "short", "q": "اذكر أربعًا من مهارات العقلية الريادية.", "a": "التركيز المستقبلي، توليد الأفكار، التنفيذ، المثابرة."}, {"type": "fill", "q": "أكمل: من استراتيجيات تنمية العقلية الريادية تحمل المخاطر ________.", "a": "المحسوبة"}, {"type": "short", "q": "كيف يفيد الفشل في تنمية العقلية الريادية؟", "a": "إذا حُلِّل جيدًا، يصبح مصدرًا للتعلم والتحسين لا مجرد نكسة."}]}, "3": {"title": "الفصل الثالث: سمات ومهارات رائد الأعمال", "subtitle": "عناوين فقط مع شرح موجز عند النقر عليها", "titles": [{"title": "خصائص ريادة الأعمال", "explanation": "توضح الخصائص العامة التي تميّز السلوك الريادي، مثل المبادرة والجرأة والرؤية والمرونة.", "example": "طالب يلتقط فكرة نافعة ويحوّلها إلى مشروع صغير."}, {"title": "سمات رواد الأعمال المجتمعية", "explanation": "تصف صفات من يقودون حلولًا لمشكلات المجتمع عبر مشروعات أو خدمات ذات أثر اجتماعي.", "example": "مبادرة تقدم خدمة تقلل مشكلة مجتمعية وتدعم الفئات المحتاجة."}, {"title": "الإبداع والابتكار وريادة الأعمال", "explanation": "يربط هذا العنوان بين إنتاج الفكرة الجديدة وتحويلها إلى تطبيق ذي قيمة في السوق أو المجتمع.", "example": "تصميم خدمة جديدة ثم تحويلها إلى منتج قابل للاستخدام."}, {"title": "مفهوم الإبداع", "explanation": "الإبداع هو إنتاج فكرة أو حل جديد ذي أصالة وقيمة، وقد يكون ذهنيًا أو تطبيقيًا.", "example": "اقتراح طريقة جديدة لحل مشكلة قديمة."}, {"title": "الاختراع", "explanation": "الاختراع هو فكرة جديدة مفيدة قابلة للتطبيق، وغالبًا ترتبط بحل مشكلة قائمة.", "example": "جهاز أو أداة جديدة تحقق وظيفة لم تكن موجودة من قبل."}, {"title": "براءة الاختراع", "explanation": "حماية قانونية تمنح المخترع حقًا يمنع الآخرين من استغلال اختراعه تجاريًا لمدة محددة.", "example": "حماية ابتكار تقني قبل طرحه في السوق."}, {"title": "معايير الحصول على براءة الاختراع", "explanation": "تتلخص في الجدة، والابتكار الحقيقي، وإمكانية التحويل إلى منتج، وألا يكون المجال محظورًا.", "example": "فكرة جديدة قابلة للتصنيع والتسويق."}, {"title": "الابتكار", "explanation": "الابتكار هو تحويل الفكرة أو الاختراع إلى تطبيق أو خدمة أو منتج يضيف قيمة واضحة.", "example": "إنتاج فكرة جيدة ثم تقديمها للسوق بصورة عملية."}, {"title": "خصائص الإبداع والابتكار", "explanation": "الإبداع يبدأ صغيرًا، ويمكن أن ينمو، ويحتاج إلى بيئة محفزة، ويهدف إلى المنفعة المجتمعية.", "example": "فكرة بسيطة تتطور تدريجيًا حتى تصبح مشروعًا."}, {"title": "عوامل دعم الإبداع والابتكار", "explanation": "يدعم الإبداع التعليم، والأسرة، والتواصل مع المجتمع، والجهات الداعمة.", "example": "مدرسة تشجع التفكير الحر والمشروعات التطبيقية."}, {"title": "سمات المبدع", "explanation": "المبدع يمتلك طلاقة ومرونة وحساسية للمشكلات وأصالة ومواصلة الاتجاه.", "example": "طالب يقترح حلولًا متعددة وغير مألوفة لنفس المشكلة."}, {"title": "سمات رائد الأعمال المبدع الناجح", "explanation": "من أهمها الانفتاح، الشغف، الإبداع، التوجه نحو الهدف، الشخصية العملية، وقبول الآراء الأخرى.", "example": "رائد أعمال يطوّر فكرته باستمرار ويستفيد من النقد."}, {"title": "الطلاقة", "explanation": "الطلاقة هي القدرة على إنتاج عدد كبير من الأفكار في وقت محدد.", "example": "ذكر حلول متعددة بسرعة لمشكلة واحدة."}, {"title": "المرونة", "explanation": "المرونة هي القدرة على التفكير في بدائل متعددة وتغيير طريقة النظر للموقف.", "example": "استخدام الشيء الواحد في أكثر من وظيفة."}, {"title": "الحساسية للمشكلات", "explanation": "هي الانتباه السريع لوجود المشكلة والنظر إليها من زوايا متعددة.", "example": "اكتشاف مشكلة في خدمة واقتراح تحسينها."}, {"title": "الأصالة", "explanation": "الأصالة تعني إنتاج ما هو غير مألوف وعدم تكرار أفكار الآخرين.", "example": "فكرة جديدة لا تشبه الحلول التقليدية."}, {"title": "مواصلة الاتجاه", "explanation": "هي القدرة على الاستمرار والتركيز في مجال الاهتمام رغم المشتتات والمعوقات.", "example": "الاستمرار في تطوير فكرة حتى تنضج."}, {"title": "عوائق الإبداع", "explanation": "منها الخوف، وقلة الدعم، والتفكير قصير المدى، وضعف التعاون، وقلة التركيز، وعدم وجود منهجية واضحة.", "example": "فريق يتراجع عن فكرة جيدة بسبب الخوف من الفشل."}, {"title": "حقوق الملكية الفكرية", "explanation": "هي حقوق قانونية تحمي الإبداعات والاختراعات والنتاج الفكري.", "example": "حماية إنتاج ذهني أو فني من الاستغلال غير المشروع."}, {"title": "الملكية الصناعية", "explanation": "تشمل الاختراعات والعلامات التجارية والرسوم والنماذج الصناعية وبيانات المصدر الجغرافية.", "example": "تسجيل علامة أو تصميم صناعي."}, {"title": "حق المؤلف", "explanation": "يحمي الأعمال الأدبية والفنية والتكنولوجية مثل النصوص والبرمجيات وقواعد البيانات.", "example": "حماية كتاب أو برنامج حاسوبي."}, {"title": "العلامة التجارية", "explanation": "إشارة يميز بها التاجر منتجاته عن منتجات غيره.", "example": "اسم أو رمز يميز سلعة عن منافساتها."}, {"title": "أمثلة عالمية لشركات مبدعة", "explanation": "يعرض الكتاب أمثلة مثل آبل وجوجل وتسلا وفيسبوك بوصفها شركات اعتمدت على الابتكار المؤسسي.", "example": "إطلاق منتج جديد غيّر السوق."}]}, "5": {"title": "الفصل الخامس: إدارة الأعمال وفرص العمل المستقبلية", "subtitle": "المهارات الريادية، التسويق، التمويل، الإدارة، وبناء المشروع", "definitions": [{"term": "التسويق", "definition": "إتاحة المنتج المناسب، بالكمية المناسبة، في المكان المناسب، وفي الوقت المناسب، مع تحقيق ربح."}, {"term": "المنتج", "definition": "كل ما يمكن بيعه أو تقديمه للسوق، سواء كان سلعة ملموسة أو خدمة غير ملموسة."}, {"term": "المكان / التوزيع", "definition": "العملية التي تنقل السلع والخدمات من مصادر إنتاجها إلى المستهلك عبر منافذ توزيع مناسبة."}, {"term": "السعر", "definition": "القيمة التي تُحدد للمنتج، ويُعد من أصعب القرارات التسويقية لأنه يؤثر مباشرة في قرار الشراء."}, {"term": "الترويج", "definition": "عملية الاتصال بالجمهور بهدف التأثير في سلوكه نحو المنتج أو الخدمة."}, {"term": "الموارد المالية", "definition": "المصادر التي يعتمد عليها الفرد أو المؤسسة لتمويل أنشطتها وتحقيق أهدافها المالية."}, {"term": "حاضنة الأعمال", "definition": "وحدة خدمية تحول الأفكار والابتكارات إلى مشروعات اقتصادية منتجة عبر التأهيل والدعم والإرشاد."}, {"term": "التكاليف الأولية", "definition": "نفقات تُصرف مرة واحدة عند بداية المشروع، وتسمى أيضًا تكاليف البداية أو التأسيس."}, {"term": "تكاليف التشغيل", "definition": "النفقات اللازمة لتشغيل المشروع باستمرار مثل الإيجار والرواتب والخدمات."}, {"term": "المؤسسة الفردية", "definition": "منشأة يملكها شخص واحد ويتولى إدارتها ونتائجها كاملة."}, {"term": "الشركة", "definition": "منشأة يملكها أكثر من شخص، ويشارك كل منهم بحصة من المال أو العمل لاقتسام الربح أو الخسارة."}, {"term": "مصفوفة الأولويات", "definition": "أداة تقسّم الأنشطة إلى مهم/غير مهم وعاجل/غير عاجل لتحديد ما يجب البدء به أولًا."}, {"term": "حقوق الملكية الفكرية", "definition": "حقوق قانونية تحمي الإبداع الفكري والابتكار من الاستغلال غير المصرح به."}, {"term": "براءة الاختراع", "definition": "حق قانوني يمنع الآخرين من استغلال الاختراع تجاريًا لمدة محددة مقابل الإفصاح عنه."}, {"term": "حقوق النشر", "definition": "حقوق تحمي الأعمال الأدبية والفنية والبرمجيات وقواعد البيانات من النسخ غير المشروع."}], "summary": ["تطوير العقول الريادية يشمل الابتكار، والمخاطرة، والتفكير الاستراتيجي، وإدارة الوقت، والقيادة.", "اكتساب مهارات الريادة يتم عبر التعليم، والتدريب، والتجربة العملية.", "سياسة الابتكار ترتبط بالتعليم، والبحث والتطوير، والحاضنات، ورأس المال الاستثماري، والملكية الفكرية.", "فرص العمل المستقبلية تتأثر بالتمويل، والظروف الاقتصادية، والتكنولوجيا، والتنافس الصناعي، وتأهيل الكفاءات.", "الشباب والنساء يملكون فرصًا مهمة في الابتكار وريادة الأعمال، لكنهم يواجهون نقص التمويل والخبرة والدعم.", "من فوائد ريادة الأعمال: الاستقلالية، والتأثير الإيجابي، والدخل، مع وجود تحديات مثل عدم اليقين والمنافسة والتمويل والتشريعات.", "التسويق الناجح يبدأ بفهم المنتج، والمكان، والسعر، والترويج، ثم بناء الثقة مع العميل.", "الموارد المالية متعددة: ذاتية، عائلية، بنكية، استثمارية، حكومية، جماعية، وحاضنات وبرامج تسريع.", "الربح يُحسب بطرح التكاليف الكلية من الإيراد الكلي، ويبدأ ذلك بتسعير منطقي مدروس.", "القرارات الأولى للمشروع تشمل: إنشاء مشروع جديد، شراء مشروع قائم، امتياز تجاري، أو العمل من المنزل."], "explanation": [{"heading": "1) تطوير وتدريب العقول الريادية", "text": "يعرض الكتاب مجموعة من الممارسات التي تشكّل عقل رائد الأعمال: الابتكار، وتحمل المخاطرة، والتفكير الاستراتيجي، وإدارة الوقت، والقيادة، والتسويق، والمبيعات، وإدارة الموارد البشرية، والإدارة المالية. وتُكتسب هذه المهارات بالتعليم، والتدريب، والتجربة العملية."}, {"heading": "2) سياسة الابتكار والتنمية", "text": "يربط الكتاب بين الابتكار والتنمية الشاملة المستدامة، ويجعل التعليم والتدريب، والبحث والتطوير، وحاضنات الأعمال، ورأس المال الاستثماري، وحماية الملكية الفكرية، والتنظيم المناسب، عناصر أساسية لبناء بيئة ابتكارية فعالة."}, {"heading": "3) فرص العمل والتحديات", "text": "يبرز النص أن فرص العمل المستقبلية تتأثر بنقص الموارد المالية، والتغيرات الاقتصادية، والتقنيات الجديدة، والتنافس الصناعي، وصعوبة تأهيل العاملين. وفي المقابل، يفتح الابتكار وريادة الأعمال فرصًا للشباب والنساء في النمو، والاستقلال، وتحقيق الدخل، والمساهمة في التنمية."}, {"heading": "4) متطلبات ومخاطر ريادة الأعمال", "text": "رائد الأعمال يحصل على مزايا مثل الاستقلال والتأثير والدخل، لكنه يواجه عدم اليقين، والمنافسة، وصعوبة التمويل، والتشريعات، إضافة إلى ضغط العمل، وساعات العمل الطويلة، والمسؤولية الكاملة، واحتمال الإحباط."}, {"heading": "5) التسويق والمزيج التسويقي", "text": "التسويق عند الكتاب هو إيصال المنتج المناسب إلى المكان والوقت المناسبين بالسعر المناسب. ويعتمد على أربعة عناصر: المنتج، والمكان، والسعر، والترويج، مع وسائل ترويج مثل الإعلان والبيع الشخصي والدعاية وتنشيط المبيعات والتسويق المباشر."}, {"heading": "6) الموارد المالية وتكاليف المشروع", "text": "يوضح الكتاب مصادر التمويل: رأس المال الخاص، الأسرة والأصدقاء، البنوك، الإيرادات، الاستثمارات، التمويل الحكومي، الدعم الخارجي، التمويل الجماعي، والاستدانة. كما يفرق بين التكاليف الأولية وتكاليف التشغيل، ويشرح طريقة حساب الربح والاعتماد على تسعير مناسب."}, {"heading": "7) إدارة الأعمال وخيارات البداية", "text": "إدارة الأعمال هي تنظيم وتنسيق الأعمال التجارية وتوجيهها نحو الأهداف. ولرائد الأعمال خيارات متعددة للبدء: مشروع جديد، مشروع قائم، امتياز تجاري، أو عمل من المنزل. ولكل خيار مزايا وقيود."}, {"heading": "8) الشكل القانوني والتوازن مع الدراسة", "text": "يفرق النص بين المؤسسة الفردية والشركة من حيث الملكية وتوزيع المسؤولية، ثم يوضح كيف يوازن الطالب بين مشروعه ودراسته عبر الواقعية، والتخطيط، وإدارة الوقت، والاستفادة المزدوجة، والراحة، والتفويض."}, {"heading": "9) حقوق المستهلك", "text": "من المهم أن يراعي رائد الأعمال حقوق العميل: حرية الاختيار، ووضوح المواصفات، وسياسة الاستبدال، وأمان الاستخدام، وإتاحة الشكوى والاعتراض والاقتراح عبر قناة اتصال واضحة."}], "review": [{"type": "fill", "q": "أكمل: التسويق هو إتاحة المنتج المناسب، في المكان المناسب، وفي الوقت المناسب، وتحقيق ________.", "a": "ربح"}, {"type": "tf", "q": "صح أم خطأ: المؤسسة الفردية يملكها أكثر من شخص.", "a": "خطأ"}, {"type": "short", "q": "اذكر أربعة من عناصر المزيج التسويقي.", "a": "المنتج، المكان، السعر، الترويج."}, {"type": "fill", "q": "أكمل: التكاليف التي تُصرف مرة واحدة عند بداية المشروع تسمى ________.", "a": "التكاليف الأولية"}, {"type": "short", "q": "ما الفرق بين المشروع الجديد وشراء مشروع قائم؟", "a": "المشروع الجديد يحتاج بناءً وتخطيطًا من الصفر، أما المشروع القائم فيبدأ من أصل موجود وسوق وعملاء سابقين."}]}};
-    const QUICK = [{"chapter": "1", "q": "ما المقصود بريادة الأعمال كما ورد في الفصل الأول؟", "a": "هي عملية تحديد فكرة غير تقليدية ثم تحويلها إلى مشروع تجاري جديد أو تطوير مشروع قائم باستخدام موارد محدودة مع موازنة العائد والمخاطرة."}, {"chapter": "1", "q": "اذكر ثلاثة عناصر تتفق عليها معظم تعريفات ريادة الأعمال.", "a": "المبادرة، الإبداع، المخاطرة."}, {"chapter": "1", "q": "لماذا تعد الجامعات طرفًا مهمًا في منظومة ريادة الأعمال؟", "a": "لأنها تبني الثقافة الريادية، وتدرّب الطلاب، وتربط المعرفة بالتطبيق والمجتمع."}, {"chapter": "2", "q": "ما معنى العقلية الريادية؟", "a": "هي حالة ذهنية توجه السلوك نحو الفرص والابتكار وخلق قيمة جديدة."}, {"chapter": "2", "q": "ما الفرق بين عقلية النمو والعقلية الثابتة؟", "a": "عقلية النمو ترى أن القدرات يمكن تطويرها بالتعلم والجهد، بينما العقلية الثابتة تفترض أن القدرات محددة."}, {"chapter": "2", "q": "اذكر ثلاثًا من مهارات العقلية الريادية.", "a": "التركيز المستقبلي، توليد الأفكار، التنفيذ، الثقة بالنفس، التفاؤل، المثابرة."}, {"chapter": "5", "q": "اذكر عناصر المزيج التسويقي الأربعة.", "a": "المنتج، المكان، السعر، الترويج."}, {"chapter": "5", "q": "ما الفرق بين التكاليف الأولية وتكاليف التشغيل؟", "a": "الأولية تُصرف مرة واحدة عند بداية المشروع، أما التشغيل فهي النفقات المستمرة اللازمة لاستمرار العمل."}, {"chapter": "5", "q": "ما المقصود بالمؤسسة الفردية؟", "a": "هي منشأة يملكها شخص واحد ويتولى إدارتها ونتائجها كاملة."}, {"chapter": "5", "q": "اذكر خيارين من خيارات البدء في مشروع ريادي وفق الفصل الخامس.", "a": "البدء بمشروع جديد، شراء مشروع قائم، الامتياز التجاري، أو العمل من المنزل."}, {"chapter": "5", "q": "ما أهم حقوق العميل التي أكد عليها الفصل الخامس؟", "a": "حرية الاختيار، وضوح المواصفات، الاستبدال أو الاسترجاع عند العيب، وأمان الاستخدام."}, {"chapter": "5", "q": "كيف يحسب الربح الإجمالي؟", "a": "الربح الإجمالي = الإيراد الكلي − التكاليف الكلية."}];
-    const state = {
-      view: 'home',
-      chapter: null,
-      beforeExam: false,
-      quickIndex: 0,
-      quickRevealed: false
-    };
+  <div class="ch-tabs">
+    <button class="tab-btn on" style="background:var(--c1);color:#000" onclick="switchTab('ch1','def',this)">المفهوم والتعريف</button>
+    <button class="tab-btn" onclick="switchTab('ch1','roles',this)">رواد الأعمال ودورهم</button>
+    <button class="tab-btn" onclick="switchTab('ch1','system',this)">منظومة ريادة الأعمال</button>
+    <button class="tab-btn" onclick="switchTab('ch1','edu',this)">المؤسسات التعليمية</button>
+  </div>
 
-    const homeView = document.getElementById('homeView');
-    const chapterView = document.getElementById('chapterView');
-    const quickView = document.getElementById('quickView');
-    const homeCards = document.getElementById('homeCards');
-    const progressBar = document.getElementById('progressBar');
-    const modal = document.getElementById('modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalBody = document.getElementById('modalBody');
+  <!-- TAB: المفهوم -->
+  <div class="tab-panel on" id="ch1-def">
+    <div class="sec-label c1">أولاً — مفهوم ريادة الأعمال</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(245,200,66,.2)">
+        <span class="card-icon">📖</span>
+        <h3>في اللغة العربية</h3>
+        <p>الريادة مشتقة من "راد يرود"، أي بحث واستكشف. والرائد هو من يسبق قومه ويمهّد السبل المستقبلية لهم — ابن منظور.</p>
+        <span class="tag tag1">أصل لغوي</span>
+      </div>
+      <div class="card" style="border-color:rgba(245,200,66,.2)">
+        <span class="card-icon">🌍</span>
+        <h3>قاموس كامبريدج</h3>
+        <p>مجموعة من المهارات التي تُسهم في بدء عمل جديد من خلال ربطه بقدرات المتعلمين لتحقيق فرص جديدة، خاصة عندما تتضمن رؤية مبتكرة.</p>
+        <span class="tag tag1">تعريف دولي</span>
+      </div>
+      <div class="card" style="border-color:rgba(245,200,66,.2)">
+        <span class="card-icon">📘</span>
+        <h3>مرجع أوكسفورد</h3>
+        <p>النشاط الذي يعمل على إيجاد خدمات وبضائع جديدة تؤثر في السوق وتنتج أموالاً وأرباحاً. ورائد الأعمال هو الشخصية القيادية التي تؤدي إلى النمو الاقتصادي.</p>
+        <span class="tag tag1">تعريف دولي</span>
+      </div>
+      <div class="card" style="border-color:rgba(245,200,66,.2)">
+        <span class="card-icon">⚡</span>
+        <h3>بكري (2018)</h3>
+        <p>النشاط الديناميكي الذي يسعى إلى إنشاء وتوسيع النشاط الاقتصادي من خلال تحديد واستثمار المنتجات والأساليب والأسواق الجديدة.</p>
+        <span class="tag tag1">تعريف اصطلاحي</span>
+      </div>
+      <div class="card" style="border-color:rgba(245,200,66,.2)">
+        <span class="card-icon">🎯</span>
+        <h3>مارتينيز (2015)</h3>
+        <p>القدرة على تنظيم وتطوير الأعمال وإدارتها في ظل وجود مخاطر وتحقيق الربح. ورواد الأعمال لديهم القدرة على رؤية الفرص واستثمارها بالشكل الأمثل.</p>
+        <span class="tag tag1">تعريف اصطلاحي</span>
+      </div>
+      <div class="card" style="border-color:rgba(245,200,66,.2)">
+        <span class="card-icon">💡</span>
+        <h3>ليندر (2018)</h3>
+        <p>الرغبة في إنشاء مشروع جديد من خلال أفكار إبداعية بهدف استثمار الموارد الاقتصادية بكفاءة، مع القدرة على توفير طرق النمو وتحمل المخاطر.</p>
+        <span class="tag tag1">تعريف اصطلاحي</span>
+      </div>
+    </div>
 
-    const navButtons = {
-      home: document.getElementById('navHome'),
-      ch1: document.getElementById('navCh1'),
-      ch2: document.getElementById('navCh2'),
-      ch3: document.getElementById('navCh3'),
-      ch5: document.getElementById('navCh5')
-    };
+    <div class="sec-label c1">المبادئ الأساسية لريادة الأعمال</div>
+    <div class="principles">
+      <div class="principle"><span class="c1">المبادرة</span><span class="arrow">←</span> الجرأة</div>
+      <div class="principle"><span class="c1">المبادأة</span><span class="arrow">←</span> الأسبقية</div>
+      <div class="principle"><span class="c1">الإبداع</span><span class="arrow">←</span> الجديد</div>
+      <div class="principle"><span class="c1">الابتكار</span><span class="arrow">←</span> التطوير</div>
+      <div class="principle"><span class="c1">المخاطرة</span><span class="arrow">←</span> المجازفة</div>
+      <div class="principle"><span class="c1">القيادة</span><span class="arrow">←</span> التأثير</div>
+      <div class="principle"><span class="c1">العمل الحر</span><span class="arrow">←</span> الاستقلالية</div>
+    </div>
 
-    function setActiveNav(id) {
-      Object.values(navButtons).forEach(b => b.classList.remove('active'));
-      if (id && navButtons[id]) navButtons[id].classList.add('active');
-      else navButtons.home.classList.add('active');
-    }
+    <div class="sec-label c1">أبرز ما تشترك فيه التعريفات</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg1 c1">١</div><div class="n-body"><h4>إيجاد أنشطة اقتصادية جديدة</h4><p>من خلال عمليات البحث والتطوير والإنتاج والتوزيع سواء في المنتجات أو الخدمات المبتكرة.</p></div></div>
+      <div class="n-item"><div class="n-num bg1 c1">٢</div><div class="n-body"><h4>منهج البحث عن الفرص</h4><p>دون التقيد بالإمكانيات أو الموارد المتاحة — هذا ما يميّز رائد الأعمال عن رجل الأعمال التقليدي.</p></div></div>
+      <div class="n-item"><div class="n-num bg1 c1">٣</div><div class="n-body"><h4>منظومة متكاملة</h4><p>تساهم في إيجاد أنشطة اقتصادية ومنشآت ناشئة وفرص وظيفية جديدة تدعم التنمية الشاملة المستدامة.</p></div></div>
+      <div class="n-item"><div class="n-num bg1 c1">٤</div><div class="n-body"><h4>تأسيس مشروع على فكرة مبدعة</h4><p>قائمة على المبادرة والمبادأة والعصامية، مع تحمل مخاطر مدروسة وفق اعتبارات العائد والمجازفة.</p></div></div>
+    </div>
+  </div>
 
-    function chapterPreview(chapterId) {
-      const ch = DATA[chapterId];
-      if (chapterId === '3') {
-        return [
-          'عناوين فقط مع شرح موجز',
-          'نقرة واحدة لعرض المثال',
-          'لا توجد شروح طويلة'
-        ];
-      }
-      return ch.definitions.slice(0,3).map(x => x.term);
-    }
+  <!-- TAB: رواد الأعمال -->
+  <div class="tab-panel" id="ch1-roles">
+    <div class="sec-label c1">ثانياً — توجهات رواد الأعمال ودورهم</div>
+    <div class="cards">
+      <div class="card"><span class="card-icon">🔄</span><h3>تحويل الأفكار إلى مشاريع</h3><p>الرغبة والقدرة على تحويل الأفكار الريادية إلى مشاريع منتجة منافسة في السوق.</p></div>
+      <div class="card"><span class="card-icon">👥</span><h3>بناء فرق عمل قوية</h3><p>امتلاك مهارة تأسيس الفرق لتحويل الأفكار الريادية إلى واقع عملي ملموس.</p></div>
+      <div class="card"><span class="card-icon">🌟</span><h3>أحلام قابلة للتحقيق</h3><p>المغامرة والتمتع برؤية قريبة من الأحلام مع المثابرة على تحويلها إلى مشاريع منتجة.</p></div>
+      <div class="card"><span class="card-icon">📊</span><h3>موارد محدودة وأهداف طموحة</h3><p>يحملون أفكاراً طموحة ودراسة جدوى دقيقة مع قدر محدود من الموارد لتحويل الأفكار إلى مشاريع.</p></div>
+    </div>
 
-    function renderHomeCards() {
-      homeCards.innerHTML = Object.keys(DATA).map(id => {
-        const ch = DATA[id];
-        const badge = id === '3' ? 'Titles Only' : 'Full Content';
-        const preview = chapterPreview(id).map(item => `<li>${item}</li>`).join('');
-        return `
-          <article class="chapter-card" data-chapter="${id}">
-            <span class="badge">${badge}</span>
-            <h3>${ch.title}</h3>
-            <p>${ch.subtitle}</p>
-            <ul>${preview}</ul>
-          </article>
-        `;
-      }).join('');
-      homeCards.querySelectorAll('.chapter-card').forEach(card => {
-        card.addEventListener('click', () => openChapter(card.dataset.chapter));
-      });
-    }
+    <div class="sec-label c1">رائدات الأعمال — الدور والاعتبارات</div>
+    <div class="card-wide">
+      <h3>🏆 أهمية رائدات الأعمال</h3>
+      <p>يُعد وجود عدد كافٍ من رائدات الأعمال أحد الأهداف الاستراتيجية لأي مجتمع يتوجه نحو تنمية شاملة مستدامة متوازنة. ويستلزم تحفيزهن مراعاة اعتبارات أساسية: تهيئة بيئة ثقافية داعمة — تصميم برامج نوعية لريادة الأعمال النسائية — تحديد القطاعات الأكثر ملاءمة — بناء فريق من المرشدات المتخصصات في الجوانب التسويقية والإدارية والمالية.</p>
+    </div>
 
-    function openChapter(id) {
-      state.view = 'chapter';
-      state.chapter = id;
-      state.quickRevealed = false;
-      homeView.classList.remove('active');
-      quickView.classList.remove('active');
-      chapterView.classList.add('active');
-      setActiveNav(null);
-      renderChapter(id);
-      document.getElementById('beforeExamBtn').classList.toggle('active', state.beforeExam);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    <div class="sec-label c1">دور وأهمية رواد ورائدات الأعمال</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg1 c1">١</div><div class="n-body"><h4>إيجاد موارد جديدة</h4><p>وتوليد فرص للاستثمار أو لإنشاء مشاريع جديدة تُضيف قيمة للاقتصاد الوطني.</p></div></div>
+      <div class="n-item"><div class="n-num bg1 c1">٢</div><div class="n-body"><h4>إيجاد أسواق جديدة</h4><p>وعملاء جدد، وإيجاد طلب فعّال على المنتجات في مجالات لم تكن موجودة من قبل.</p></div></div>
+      <div class="n-item"><div class="n-num bg1 c1">٣</div><div class="n-body"><h4>تقديم تكنولوجيا الأعمال</h4><p>وتوليد أساليب إدارية غير تقليدية تُسهم في رفع كفاءة المنظومة الاقتصادية.</p></div></div>
+      <div class="n-item"><div class="n-num bg1 c1">٤</div><div class="n-body"><h4>تنشيط دورة الإنتاج</h4><p>وإيجاد فرص عمل جديدة وتحسين مستوى الدخل لشرائح واسعة من المجتمع.</p></div></div>
+      <div class="n-item"><div class="n-num bg1 c1">٥</div><div class="n-body"><h4>رفع كفاءة استخدام الموارد</h4><p>واكتشاف مصادر غير تقليدية لتقديم منتجات جديدة وتطوير المنتجات القائمة.</p></div></div>
+    </div>
 
-    function openQuickReview() {
-      state.view = 'quick';
-      state.chapter = null;
-      homeView.classList.remove('active');
-      chapterView.classList.remove('active');
-      quickView.classList.add('active');
-      setActiveNav(null);
-      renderQuickReview();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    <div class="sec-label c1">ثالثاً — عوامل ظهور ونمو ريادة الأعمال</div>
+    <div class="cards">
+      <div class="card"><span class="card-icon">📈</span><h3>وضوح العلاقة بين التنمية والريادة</h3><p>الربط القوي بين خطط وبرامج التنمية وسياسات الدولة بشأن المشاريع الصغيرة وثقافة ريادة الأعمال.</p></div>
+      <div class="card"><span class="card-icon">🌐</span><h3>الاتفاق الدولي</h3><p>يؤكد الخبراء أن ريادة الأعمال خيار استراتيجي لتحقيق تنمية شاملة مستدامة وهي السبيل الصحيح لمواجهة التحديات.</p></div>
+      <div class="card"><span class="card-icon">🔬</span><h3>الدراسات العلمية</h3><p>تؤكد أن ريادة الأعمال هي المنهج العلمي التطبيقي لتنمية مهارات الإبداع والابتكار واكتشاف المبدعين.</p></div>
+      <div class="card"><span class="card-icon">💼</span><h3>ضعف الطاقة الاستيعابية الحكومية</h3><p>دفع تضخم الأجهزة الحكومية الشبابَ نحو تحويل الأفكار الريادية إلى مشاريع إنتاجية تجد وظائف لهم ولغيرهم.</p></div>
+    </div>
+  </div>
 
-    function openHome() {
-      state.view = 'home';
-      state.chapter = null;
-      homeView.classList.add('active');
-      chapterView.classList.remove('active');
-      quickView.classList.remove('active');
-      setActiveNav('home');
-      document.getElementById('beforeExamBtn').classList.toggle('active', state.beforeExam);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  <!-- TAB: المنظومة -->
+  <div class="tab-panel" id="ch1-system">
+    <div class="sec-label c1">رابعاً — تشكيل منظومة ريادة الأعمال</div>
+    <div class="qblock">ريادة الأعمال ليست قائمة على جهد فردي بطولي، وإنما هي منظومة تستند على بيئة ريادية متكاملة وعمل جماعي منظم مترابط تمارسه أطراف متعددة. التركيز على الفرد دون المنظومة ككل — مدخل خاطئ.</div>
 
-    function chapterMeta(chapterId) {
-      const labels = chapterId === '3'
-        ? ['Titles Only', 'Click to explain']
-        : ['Definitions', 'Summary', 'Explanation', 'Revision'];
-      return `
-        <div class="pill-row">${labels.map(x => `<span class="pill">${x}</span>`).join('')}</div>
-      `;
-    }
+    <div class="n-items">
+      <div class="n-item">
+        <div class="n-num bg1 c1">١</div>
+        <div class="n-body"><h4>منظومة متكاملة تستوعب الجهود الفردية</h4><p>لا بد من مسؤولية فردية وجماعية مؤسسية لتوليد الأفكار الريادية، وتعاون وتنسيق بين كافة الأطراف لتحويلها إلى مشاريع إنتاجية.</p></div>
+      </div>
+      <div class="n-item">
+        <div class="n-num bg1 c1">٢</div>
+        <div class="n-body"><h4>ترفع كفاءة اتخاذ القرارات</h4><p>في المنشآت الصغيرة يكون نطاق القرار أكثر تحديداً وأضيق زمنياً، مما يجعل القرارات أعلى سرعةً وأكثر عمقاً. سمات القرار الريادي: المبادأة — المشاركة — التكامل — الهادفية — الالتزام.</p></div>
+      </div>
+      <div class="n-item">
+        <div class="n-num bg1 c1">٣</div>
+        <div class="n-body"><h4>تربط بين الإدارة والريادة والقيادة</h4><p>الثلاثة ليسوا بدائل لبعضهم بل أضلاع ثلاثة متلازمة لتحقيق كفاءة وفعالية الأداء في المشروع الريادي الناجح.</p></div>
+      </div>
+      <div class="n-item">
+        <div class="n-num bg1 c1">٤</div>
+        <div class="n-body"><h4>مؤشر كفاءة المنظومة</h4><p>لم يعد زيادة عدد الشركات الناشئة مؤشراً كافياً بذاته. الأهم هو جودة الوظائف الجديدة التي تخلقها هذه المنشآت وتحسين مستواها.</p></div>
+      </div>
+    </div>
+  </div>
 
-    function renderDefinitions(items) {
-      return `<div class="defs">${items.map(i => `
-        <div class="def-card">
-          <span class="term">${i.term}</span>
-          <p class="def">${i.definition}</p>
+  <!-- TAB: التعليم -->
+  <div class="tab-panel" id="ch1-edu">
+    <div class="sec-label c1">خامساً — المؤسسات التعليمية ومنظومة ريادة الأعمال</div>
+
+    <div class="two-col">
+      <div class="card-wide">
+        <h3>🎓 الجامعات — مكوّن أساسي في المنظومة</h3>
+        <p>تقع على الجامعات مسؤولية أداء مهام نوعية: توفير رأس المال البشري الموجه للعمل الحر — التدريب على توليد الأفكار الإبداعية — التدريب على تأسيس وإدارة المشاريع الريادية — إجراء البحوث العلمية وتقديم الاستشارات.</p>
+      </div>
+      <div class="card-wide">
+        <h3>🏫 التعليم قبل الجامعي</h3>
+        <p>المدارس مصدر رئيسي للفكر الريادي. لكي يؤدي التعليم قبل الجامعي دوراً هادفاً في ترسيخ ثقافة العمل الحر يجب مشاركة الأسرة والفصول التعليمية والبرامج التربوية والأنشطة الاجتماعية والثقافية معاً.</p>
+      </div>
+    </div>
+
+    <div class="sec-label c1">المؤسسة التعليمية الذكية وريادة الأعمال</div>
+    <div class="card-wide">
+      <h3>🤖 المعرفة الهشة vs المعرفة العميقة</h3>
+      <p>تُميّز نظريات التعلم الحديثة بين المعرفة الهشة السطحية التي لا تتحول إلى تطبيق عملي، والمعرفة العميقة التي تُبنى عليها المناهج في المؤسسات الذكية لتمكين الطالب من تطبيق المعرفة وتحويلها إلى منتجات تُقدم قيمة مضافة للمجتمع. المعلم المبدع في هذا السياق يتسم بـ: النظرة الإيجابية للطالب — الاتزان الانفعالي — العقلية التساؤلية — التعليم الذاتي — التقويم غير المباشر.</p>
+    </div>
+
+    <div class="sec-label c1">خلاصة الفصل الأول</div>
+    <div class="cards">
+      <div class="card"><span class="card-icon">✅</span><h3>أهمية ريادة الأعمال</h3><p>تزايد أهميتها ونمو التوجه نحوها على المستوى العالمي.</p></div>
+      <div class="card"><span class="card-icon">✅</span><h3>دور رواد ورائدات الأعمال</h3><p>تزايد أهميتهم في إحداث تغيير اقتصادي واجتماعي حقيقي.</p></div>
+      <div class="card"><span class="card-icon">✅</span><h3>ريادة الأعمال كمنظومة</h3><p>التعامل معها كمنظومة متكاملة وليست كجهود فردية معزولة.</p></div>
+      <div class="card"><span class="card-icon">✅</span><h3>مسؤولية مؤسسات التعليم</h3><p>الجامعات وما قبلها مسؤولة عن توفير البيئة المحفزة لاكتساب ثقافة ومهارات ريادة الأعمال.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CHAPTER 2 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch2">
+  <div class="ch-header">
+    <div class="ch-num bg2 c2" style="border:1px solid rgba(0,212,170,.3)">٢</div>
+    <div class="ch-meta">
+      <h2 class="c2">تطوير وتدريب العقول الريادية</h2>
+      <p>العقلية الريادية — أبعادها — تطويرها — مصطلحات ذات صلة</p>
+    </div>
+  </div>
+
+  <div class="ch-tabs">
+    <button class="tab-btn on" style="background:var(--c2);color:#000" onclick="switchTab('ch2','mindset',this)">العقلية الريادية</button>
+    <button class="tab-btn" onclick="switchTab('ch2','dims',this)">الأبعاد والخصائص</button>
+    <button class="tab-btn" onclick="switchTab('ch2','develop',this)">تطوير العقلية</button>
+    <button class="tab-btn" onclick="switchTab('ch2','terms',this)">مصطلحات ذات صلة</button>
+  </div>
+
+  <!-- TAB: العقلية -->
+  <div class="tab-panel on" id="ch2-mindset">
+    <div class="sec-label c2">أولاً — مفهوم العقلية الريادية</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(0,212,170,.2)">
+        <span class="card-icon">🧠</span>
+        <h3>تعريف العقل — Thum (2012)</h3>
+        <p>العقل هو مجموع المعرفة بما تتضمنه من معتقدات وأفكار حول العالم وحول الذات. يمكن أن تكون العقلية ثابتة أو موجهة نحو النمو.</p>
+        <span class="tag tag2">تعريف</span>
+      </div>
+      <div class="card" style="border-color:rgba(0,212,170,.2)">
+        <span class="card-icon">📗</span>
+        <h3>Carol Dweck (2006)</h3>
+        <p>العقلية الثابتة تفترض أن مواهبك محددة لا تتغير، بينما عقلية النمو تعتقد أن مواهبك وقدراتك يمكن تطويرها من خلال الجهد والممارسة.</p>
+        <span class="tag tag2">بحث علمي</span>
+      </div>
+      <div class="card" style="border-color:rgba(0,212,170,.2)">
+        <span class="card-icon">🎯</span>
+        <h3>العقلية الريادية</h3>
+        <p>حالة ذهنية محددة تُوجّه السلوك البشري نحو أنشطة ونتائج ريادية. يُجذب أصحابها إلى الفرص والابتكار وخلق قيمة جديدة في السوق.</p>
+        <span class="tag tag2">تعريف جوهري</span>
+      </div>
+      <div class="card" style="border-color:rgba(0,212,170,.2)">
+        <span class="card-icon">🔍</span>
+        <h3>Ferrero & Fioro (2014)</h3>
+        <p>العقلية الريادية تدور حول تحليل العالم وفرصه وإمكانياته، وفهم كيفية المساهمة في بناء النظام الاقتصادي والاجتماعي، وتحويل الأفكار إلى عمل.</p>
+        <span class="tag tag2">تعريف</span>
+      </div>
+      <div class="card" style="border-color:rgba(0,212,170,.2)">
+        <span class="card-icon">⚙️</span>
+        <h3>McGrath & MacMillan (2000)</h3>
+        <p>تقوم على ثلاثة عوامل: القدرة على الإحساس بالفرص — القدرة على التصرف بسرعة — القدرة على تعبئة الموارد في ظل ظروف غير مستقرة.</p>
+        <span class="tag tag2">نموذج</span>
+      </div>
+    </div>
+
+    <div class="sec-label c2">الخصائص الخمس المشتركة للرياديين</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg2 c2">١</div><div class="n-body"><h4>يبحثون بحماس عن فرص جديدة</h4><p>دائماً في حالة استكشاف، ولا يكتفون بما هو متاح من خيارات.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٢</div><div class="n-body"><h4>يتابعون الفرص بانضباط هائل</h4><p>لا يتركون الفرص تفلت منهم بعد تحديدها.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٣</div><div class="n-body"><h4>يسعون فقط لأفضل الفرص</h4><p>ويتجنبون استنزاف أنفسهم ومنظماتهم في فرص غير واعدة.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٤</div><div class="n-body"><h4>يركزون على التنفيذ التكيّفي</h4><p>لا يكتفون بالتخطيط، بل يُحكمون التنفيذ مع القدرة على التكيف.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٥</div><div class="n-body"><h4>يشاركون طاقات الجميع</h4><p>يبنون فرقاً وشبكات تضاعف من قدراتهم على الإنجاز.</p></div></div>
+    </div>
+  </div>
+
+  <!-- TAB: الأبعاد -->
+  <div class="tab-panel" id="ch2-dims">
+    <div class="sec-label c2">ثانياً — السمات والمهارات للعقلية الريادية — Davis et al. (2015)</div>
+
+    <div class="two-col">
+      <div>
+        <div class="sec-label c2" style="font-size:.65rem">السمات الشخصية</div>
+        <div class="n-items">
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">أ</div><div class="n-body"><h4>الاستقلالية</h4><p>الرغبة في العمل بدرجة عالية من الاستقلالية بعيداً عن الهياكل الصارمة.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">ب</div><div class="n-body"><h4>تفضيل الهيكل المحدود</h4><p>يفضلون المهام والمواقف ذات الهيكل الرسمي القليل والمرن.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">ج</div><div class="n-body"><h4>عدم المطابقة</h4><p>تفضيل العمل بطرق فريدة والاهتمام بأن يُنظر إليهم باعتبارهم مختلفين.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">د</div><div class="n-body"><h4>قبول المخاطر</h4><p>الرغبة في متابعة هدف مرغوب حتى عندما يكون احتمال النجاح منخفضاً.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">هـ</div><div class="n-body"><h4>التوجه الإجرائي</h4><p>ميل لإظهار المبادرة واتخاذ القرارات بسرعة والشعور بعدم الصبر من أجل النتائج.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">و</div><div class="n-body"><h4>الشغف</h4><p>الميل لتجربة العمل باعتباره مثيراً وممتعاً أكثر من كونه مملاً ومرهقاً.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">ز</div><div class="n-body"><h4>الحاجة إلى تحقيق</h4><p>الرغبة في تحقيق مستوى عالٍ والسعي لأن يكون الأفضل في ما يقومون به.</p></div></div>
         </div>
-      `).join('')}</div>`;
-    }
-
-    function renderSummary(points) {
-      return `<ul class="bullet-list">${points.map(p => `<li>${p}</li>`).join('')}</ul>`;
-    }
-
-    function renderExplanation(items) {
-      return `<div class="explain-grid">${items.map(i => `
-        <div class="explain-card">
-          <strong>${i.heading}</strong>
-          <p>${i.text}</p>
+      </div>
+      <div>
+        <div class="sec-label c2" style="font-size:.65rem">المهارات</div>
+        <div class="n-items">
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">أ</div><div class="n-body"><h4>التركيز المستقبلي</h4><p>القدرة على التفكير بعيداً عن الموقف المباشر والتخطيط للمدى الطويل.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">ب</div><div class="n-body"><h4>توليد الأفكار</h4><p>القدرة على توليد أفكار متعددة وجديدة وإيجاد مناهج متعددة لتحقيق الأهداف.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">ج</div><div class="n-body"><h4>التنفيذ</h4><p>القدرة على تحويل الأفكار إلى خطط قابلة للتنفيذ والقدرة على تنفيذها بشكل جيد.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">د</div><div class="n-body"><h4>الثقة بالنفس</h4><p>اعتقاد عام بقدرة المرء على الاستفادة من مهاراته لتحقيق أهداف مهمة.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">هـ</div><div class="n-body"><h4>التفاؤل</h4><p>الحفاظ على موقف إيجابي عام حتى عندما لا تسير الأمور بشكل جيد.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">و</div><div class="n-body"><h4>المثابرة</h4><p>الارتداد بسرعة من خيبة الأمل والبقاء صامداً في مواجهة النكسات والعقبات.</p></div></div>
+          <div class="n-item"><div class="n-num bg2 c2" style="font-size:.65rem">ز</div><div class="n-body"><h4>حساسية الشخصية</h4><p>مستوى عالٍ من الحساسية والاهتمام برفاهية من يعملون معهم.</p></div></div>
         </div>
-      `).join('')}</div>`;
-    }
+      </div>
+    </div>
+  </div>
 
-    function renderRevision(items) {
-      return items.map((q, idx) => `
-        <details class="review-item">
-          <summary>${idx+1}. ${q.q}</summary>
-          <div class="answer"><strong>الإجابة:</strong> ${q.a}</div>
-        </details>
-      `).join('');
-    }
+  <!-- TAB: تطوير -->
+  <div class="tab-panel" id="ch2-develop">
+    <div class="sec-label c2">ثالثاً — استراتيجيات تطوير العقلية الريادية</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg2 c2">١</div><div class="n-body"><h4>تبنّي عقلية النمو</h4><p>الاعتقاد بأن الذكاء والقدرات يمكن تطويرها. يسمح برؤية التحديات فرصاً للنمو بدلاً من كونها عقبات.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٢</div><div class="n-body"><h4>تنمية فضول التعلم</h4><p>البحث بنشاط عن فرص التعلم: قراءة الكتب، حضور ورش العمل، الانضمام إلى الشبكات المهنية.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٣</div><div class="n-body"><h4>تحمّل المخاطر المحسوبة</h4><p>الخروج من منطقة الراحة وتقييم المخاطر والمكافآت المحتملة قبل اتخاذ القرار.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٤</div><div class="n-body"><h4>تعزيز النهج الاستباقي</h4><p>تطوير عادة تحديد الأهداف والتخطيط للمستقبل واتخاذ الإجراءات بدلاً من الانتظار.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٥</div><div class="n-body"><h4>الإحاطة بأفراد متشابهين</h4><p>التواصل مع رواد الأعمال والبحث عن مرشدين لاكتساب رؤى قيمة ودعم مستمر.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٦</div><div class="n-body"><h4>تقبّل الفشل فرصةً للتعلم</h4><p>تحليل حالات الفشل وتحديد الدروس المستفادة وإجراء التعديلات اللازمة للمضي قدماً.</p></div></div>
+      <div class="n-item"><div class="n-num bg2 c2">٧</div><div class="n-body"><h4>العقلية الموجهة نحو الحلول</h4><p>إعادة صياغة المشكلات فرصاً، والتفكير بشكل إبداعي، والبحث عن وجهات نظر بديلة.</p></div></div>
+    </div>
 
-    function renderChapter(chapterId) {
-      const ch = DATA[chapterId];
-      const before = state.beforeExam && chapterId !== '3';
-      let html = `
-        <div class="chapter-top">
-          <div>
-            <div class="small">الفصل المختار</div>
-            <h2 style="margin:6px 0 0 0">${ch.title}</h2>
-            <p class="subtle">${ch.subtitle}</p>
-          </div>
-          <div class="back-row">
-            <button class="btn" id="backHomeBtn">العودة للرئيسية</button>
-            <button class="btn primary" id="toggleBeforeBtn">${before ? 'Before Exam: On' : 'Before Exam: Off'}</button>
-            <button class="btn" id="goQuickBtn">Quick Review</button>
-          </div>
+    <div class="sec-label c2">المفاهيم الخاطئة الشائعة حول ريادة الأعمال</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">❌</span><h3>المجازفة = التهور</h3><p>رواد الأعمال يتحملون المخاطر بطريقة محسوبة بعد تحليل دقيق، وليسوا مجازفين متهورين.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">❌</span><h3>رواد الأعمال يُولدون لا يُصنعون</h3><p>ريادة الأعمال مهارة يمكن تطويرها وتعلمها. مع العقلية الصحيحة والتصميم، يمكن لأي شخص أن يصبح رائد أعمال.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">❌</span><h3>الدافع هو المال فقط</h3><p>الدافع الحقيقي غالباً هو الشغف بالأفكار والرغبة في إحداث تأثير إيجابي وخلق شيء ذي معنى.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">❌</span><h3>يعملون بمفردهم</h3><p>رواد الأعمال الناجحون يبنون فرقاً قوية ويحيطون أنفسهم بأفراد موهوبين يكملون مهاراتهم.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">❌</span><h3>يركزون دائماً على الفكرة الكبيرة التالية</h3><p>الناجحون منهم يركزون على نوعية الأفكار وتنفيذها، لا على كميتها.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">❌</span><h3>الفشل نهاية الطريق</h3><p>رواد الأعمال يرون الفشل فرصة تعلم قيمة، ويستخدمونه نقطة انطلاق نحو النجاح.</p></div>
+    </div>
+  </div>
+
+  <!-- TAB: مصطلحات -->
+  <div class="tab-panel" id="ch2-terms">
+    <div class="sec-label c2">رابعاً — مصطلحات مرتبطة بالعقلية الريادية</div>
+
+    <div class="card-wide">
+      <h3>📚 التعليم الريادي</h3>
+      <p>يُعد التعليم الريادي أحد المحركات الأساسية للتنمية المستدامة؛ إذ يعمل على بناء مجتمع المعرفة ويُسهم في تغيير هيكل الثروة في المجتمع نحو التملك الحقيقي لعناصر الإنتاج. يُعرّفه اليونسكو ويونيفوك بأنه "خلق عقلية وثقافة الريادة والابتكار وحل المشاكل وترسيخ الثقة بالنفس لدى الأفراد، ومساعدة الشباب ليصبحوا مبتكرين ومشاركين نشطاء في سوق العمل".</p>
+    </div>
+
+    <div class="sec-label c2">مهارات التعليم الريادي — الحشوة (2012)</div>
+    <div class="skills-grid">
+      <div class="skill-pill"><span class="sk-dot dot2"></span> التخطيط والتفكير الاستراتيجي</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> القيادة والإدارة</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> التسويق</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> الإبداع والابتكار</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> الاتصال والإقناع والتفاوض</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> المخاطرة واتخاذ القرار</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> حل المشكلات والتفكير الناقد</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> معرفة الذات وفاعليتها</div>
+      <div class="skill-pill"><span class="sk-dot dot2"></span> القراءة والكتابة والحساب</div>
+    </div>
+
+    <div class="sec-label c2">ثقافة ريادة الأعمال — الخصائص</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">🏢</span><h3>نمو العمل الخاص</h3><p>تظهر وتزداد في مجالات العمل الخاص سواء كان فردياً أو جماعياً على هيئة شركات ومؤسسات أعمال.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">🙋</span><h3>التشغيل الذاتي</h3><p>يأخذ التشغيل الذاتي محوراً أساسياً حيث يعتمد الإنسان على نفسه في شؤون حياته واستغلال خصائصه.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">🌱</span><h3>تشجيع المبادرات الفردية</h3><p>المناخ السائد في المجتمع يشجع المبادرات الذاتية ويحترمها، حتى ولو حدثت سقطات أو فشل في البداية.</p></div>
+      <div class="card" style="border-color:rgba(0,212,170,.15)"><span class="card-icon">🌍</span><h3>الخروج من المحلية للعالمية</h3><p>التزايد المستمر لتأثير العولمة على نمط التفكير والسلوك، ومحاولة الاستفادة منها للوصول للأسواق العالمية.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CHAPTER 3 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch3">
+  <div class="ch-header">
+    <div class="ch-num bg3 c3" style="border:1px solid rgba(79,142,247,.3)">٣</div>
+    <div class="ch-meta">
+      <h2 class="c3">سمات ومهارات رائد الأعمال</h2>
+      <p>الخصائص — الإبداع والابتكار — حقوق الملكية الفكرية — نماذج عالمية</p>
+    </div>
+  </div>
+
+  <div class="ch-tabs">
+    <button class="tab-btn on" style="background:var(--c3);color:#fff" onclick="switchTab('ch3','traits',this)">سمات رائد الأعمال</button>
+    <button class="tab-btn" onclick="switchTab('ch3','innov',this)">الإبداع والابتكار</button>
+    <button class="tab-btn" onclick="switchTab('ch3','ip',this)">الملكية الفكرية</button>
+    <button class="tab-btn" onclick="switchTab('ch3','models',this)">نماذج عالمية</button>
+  </div>
+
+  <!-- TAB: السمات -->
+  <div class="tab-panel on" id="ch3-traits">
+    <div class="sec-label c3">أولاً — خصائص رائد الأعمال</div>
+    <div class="qblock" style="border-color:var(--c3)">"الشخص الذي لديه الإرادة والقدرة لتحويل فكرة جديدة أو اختراع جديد إلى ابتكار ناجح"</div>
+
+    <div class="cards">
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">⏰</span><h3>إدارة الوقت</h3><p>أهم صفة لرائد الأعمال — قدرته على إدارة الوقت انطلاقاً من مصفوفة الأولويات لستيفن كوفي.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">🎯</span><h3>هدف طموح</h3><p>القوة التي تدفعه لبناء الشركة وتحمّل التحديات اليومية بصبر وإصرار.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">💎</span><h3>رؤية مدعومة بأفكار قوية</h3><p>أفكار محددة وفريدة أي جديدة في السوق تشكّل أساس الميزة التنافسية.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">🗺️</span><h3>رؤية شاملة واضحة</h3><p>رؤية لكيفية تحقيق الهدف حتى وإن لم تكتمل التفاصيل، مع المرونة والقابلية للتطوير.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">💪</span><h3>تقوية النفس والأمل</h3><p>دعم الذات بأمل كبير وعاطفة جياشة نحو تحقيق الهدف في مواجهة الصعاب.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">⚡</span><h3>المبادرة</h3><p>الوصول لنجاح الفكرة من خلال المبادرة والإصرار والتصميم على التنفيذ.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">📊</span><h3>المخاطرة المحسوبة</h3><p>مخاطرة محسوبة التكاليف والكيفية من حيث الوصول إلى السوق والعملاء.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)"><span class="card-icon">✅</span><h3>إيجابية اتخاذ القرار</h3><p>القدرة على اتخاذ القرار الصحيح في الوقت المناسب بثقة وحسم.</p></div>
+    </div>
+
+    <div class="sec-label c3">أخلاقيات رائد الأعمال</div>
+    <div class="skills-grid">
+      <div class="skill-pill"><span class="sk-dot dot3"></span> الكسب الحلال</div>
+      <div class="skill-pill"><span class="sk-dot dot3"></span> حسن الخُلق</div>
+      <div class="skill-pill"><span class="sk-dot dot3"></span> قدوة حسنة</div>
+      <div class="skill-pill"><span class="sk-dot dot3"></span> العدل</div>
+      <div class="skill-pill"><span class="sk-dot dot3"></span> الرحمة</div>
+      <div class="skill-pill"><span class="sk-dot dot3"></span> النصيحة الصادقة</div>
+      <div class="skill-pill"><span class="sk-dot dot3"></span> الشورى — لا يستبد بالرأي</div>
+    </div>
+
+    <div class="sec-label c3">ست نصائح لتنجح كرائد أعمال</div>
+    <div class="steps">
+      <div class="step"><div class="step-dot c3 bd3">١</div><div class="step-body"><h4>ضع هدفاً نصب عينيك</h4><p>الهدف لا يجب أن يكون جني المال فقط، بل تقديم قيمة يمكن للناس الاستفادة منها. الهدف الحقيقي يُعينك حين تواجه شكوكاً وانتقادات.</p></div></div>
+      <div class="step"><div class="step-dot c3 bd3">٢</div><div class="step-body"><h4>أحبّ ما تقوم به</h4><p>الشغف نحو مشروعك ضروري؛ إذا لم تحبّ فكرتك لن تستمتع بعملك وسيؤثر ذلك سلباً على إبداعك وأدائك.</p></div></div>
+      <div class="step"><div class="step-dot c3 bd3">٣</div><div class="step-body"><h4>لا تخشَ الفشل</h4><p>لا توجد لحظة مثالية للبدء. إذا لم تفشل فأنت لا تحاول بما يكفي. لا تتخلَّ عن أحلامك واتبع شغفك.</p></div></div>
+      <div class="step"><div class="step-dot c3 bd3">٤</div><div class="step-body"><h4>اعرف السوق الذي تستهدفه</h4><p>أجرِ أبحاثاً لمعرفة حجم جمهورك واتجاهات المستخدمين الحالية والمستقبلية. ادرس منافسيك والبدائل لما تقدمه.</p></div></div>
+      <div class="step"><div class="step-dot c3 bd3">٥</div><div class="step-body"><h4>العلم حليفك</h4><p>تعلّم بشكل مستمر في مجالك وما يرتبط بعملك. اشارك في فعاليات وورش عمل واقضِ وقتاً مع رواد الأعمال.</p></div></div>
+      <div class="step"><div class="step-dot c3 bd3">٦</div><div class="step-body"><h4>اختر الفريق المناسب</h4><p>أحط نفسك بأشخاص مناسبين يؤمنون بما تبنيه. السفينة لا تصل إلى وجهتها إذا كان القبطان البحارَ الوحيد على متنها.</p></div></div>
+    </div>
+
+    <div class="sec-label c3">سمات رواد الأعمال المجتمعية</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(79,142,247,.15)"><span class="card-icon">🔥</span><h3>اندفاعيون نحو التغيير</h3><p>عدم الرضا عن الوضع الراهن هو الدافع الأساسي لرغبتهم في التحسين والتطوير المستمر.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.15)"><span class="card-icon">💡</span><h3>إبداعيون ومبتكرون</h3><p>يرون في كل مشكلة فرصة للإبداع بطريقة مبتكرة تتغلب على العقبات التي تواجهها القضية المجتمعية.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.15)"><span class="card-icon">📋</span><h3>يمتلكون المهارات الريادية</h3><p>الشغف وحده لا يكفي — لا بد من الإدارة السليمة والتخطيط الاستراتيجي في جوانب التمويل والموارد.</p></div>
+      <div class="card" style="border-color:rgba(79,142,247,.15)"><span class="card-icon">🏋️</span><h3>العزيمة والإصرار</h3><p>مواجهة الفشل كخطوة ضرورية في سلم النجاح بدلاً من الاستسلام، مع الاستماع للانتقادات بصدر رحب.</p></div>
+    </div>
+  </div>
+
+  <!-- TAB: الإبداع -->
+  <div class="tab-panel" id="ch3-innov">
+    <div class="sec-label c3">ثانياً — الإبداع والابتكار وريادة الأعمال</div>
+
+    <div class="two-col">
+      <div class="card-wide">
+        <h3>🎨 مفهوم الإبداع — المدخل الأول</h3>
+        <p>الإبداع عملية فكرية ذهنية. تعريف George Knelles: "إعادة ترتيب ما تعرفه وما لا تعرفه بهدف الوصول إلى ما لا تعرفه". وتعريف القاموس الإنجليزي: نشاط إنساني يقدم أفكاراً ومعارف أصلية تقدم نتائج متفردة Unique.</p>
+      </div>
+      <div class="card-wide">
+        <h3>🏭 مفهوم الإبداع — المدخل الثاني</h3>
+        <p>الإبداع تحقيق إنتاج جديد وذو قيمة. تعريف روشكا: "النشاط أو العملية التي تقود إلى إنتاج يتصف بالجودة والأصالة والقيمة لأجل المجتمع". المنتج الإبداعي قد يكون مادياً محسوساً (صناعي/تقني/اختراع) أو غير ملموس (أدبي/معرفة/خدمة).</p>
+      </div>
+    </div>
+
+    <div class="sec-label c3">خصائص الإبداع والابتكار العشر</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg3 c3">١</div><div class="n-body"><h4>الفكرة الإبداعية دائماً صغيرة في البداية</h4><p>ثم تمر بمراحل متعددة من التطوير حتى تصل إلى صورتها النهائية.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٢</div><div class="n-body"><h4>الإبداع يحتاج دعم القادة</h4><p>إذا لم تصل فكرة الإبداع إلى القادة فقد لا تصل إلى نتيجة، وإن وصلت فقد لا ترى النور في التطبيق.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٣</div><div class="n-body"><h4>لا يقتصر على الأذكياء</h4><p>توافر الذكاء يرفع القدرة على الإبداع، لكنه ليس شرطاً حصرياً للإبداع.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٤</div><div class="n-body"><h4>يجب أن يكون حديثاً وجديداً</h4><p>الإبداع غير المسبوق هو الذي يُضيف قيمة حقيقية للسوق والمجتمع.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٥</div><div class="n-body"><h4>موجود في كل فرد بدرجات مختلفة</h4><p>الإبداع كامن في الجميع، ويمكن تنميته من خلال التدريب والتجريب والبيئة المحفزة.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٦</div><div class="n-body"><h4>يهدف لتحقيق فوائد ومنافع</h4><p>للفرد والمنظمة والمجتمع معاً — ليس لخدمة مصالح ضيقة.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٧</div><div class="n-body"><h4>يمكن تنميته ودعمه</h4><p>ليس صفة ثابتة بل قابلة للتطوير من خلال التدريب والممارسة والبيئة المناسبة.</p></div></div>
+    </div>
+
+    <div class="sec-label c3">سمات المبدع الخمس</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(79,142,247,.2)">
+        <span class="card-icon">💬</span><h3>الطلاقة</h3>
+        <p>القدرة على إنتاج عدد كبير من الأفكار في فترة زمنية محددة. أنواعها: طلاقة فكرية (غزارة الأفكار) — طلاقة تعبيرية (بناء جمل ذات معانٍ مختلفة) — طلاقة ترابطية (إكمال العلاقات).</p>
+        <span class="tag tag3">سمة ١</span>
+      </div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)">
+        <span class="card-icon">🌊</span><h3>المرونة</h3>
+        <p>القدرة على التفكير في بدائل أخرى متعددة. نوعان: مرونة عفوية (استجابات متنوعة في نفس الفئة) ومرونة تكيفية (تغيير طريقة الاستعمال والاستراتيجية).</p>
+        <span class="tag tag3">سمة ٢</span>
+      </div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)">
+        <span class="card-icon">🔍</span><h3>الحساسية للمشاكل</h3>
+        <p>إحساس مرهف للتعرف على المشكلات في الموقف الواحد. المبدع ينظر للأشياء من زوايا متعددة ومبتكرة ويرى ما لا يراه الشخص العادي.</p>
+        <span class="tag tag3">سمة ٣</span>
+      </div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)">
+        <span class="card-icon">⭐</span><h3>الأصالة</h3>
+        <p>إنتاج ما هو غير مألوف. المبدع لا يكرر أفكار الآخرين وينفر من الحلول التقليدية لأن أفكاره متجددة. تُنمَّى عبر التفكير في المتتابعات المستقبلية للأحداث.</p>
+        <span class="tag tag3">سمة ٤</span>
+      </div>
+      <div class="card" style="border-color:rgba(79,142,247,.2)">
+        <span class="card-icon">🎯</span><h3>مواصلة الاتجاه</h3>
+        <p>القدرة على التركيز لفترات طويلة في مجال الاهتمام رغم المشتتات والمعوقات الخارجية وتغير مضمون الهدف.</p>
+        <span class="tag tag3">سمة ٥</span>
+      </div>
+    </div>
+
+    <div class="sec-label c3">الإبداع vs الابتكار</div>
+    <table class="compare">
+      <tr><th>الإبداع</th><th>الابتكار</th></tr>
+      <tr><td>نشاط تفكير ذهني</td><td>عمليات تحويلية للأفكار</td></tr>
+      <tr><td>يقدم حلولاً نظرية للمشكلات</td><td>يقدم منتجات واقعية للسوق</td></tr>
+      <tr><td>يأتي أولاً من حيث الزمن</td><td>يأتي ثانياً ويقوم على الأفكار الإبداعية</td></tr>
+      <tr><td>يصعب قياس نجاحه</td><td>يمكن قياس نجاحه ومناسبته للسوق</td></tr>
+      <tr><td>لا يتضمن أخطار الخسارة</td><td>يتضمن أخطار فشل الابتكار</td></tr>
+    </table>
+    <div class="qblock" style="border-color:var(--c3)">كل ابتكار إبداع؛ وليس كل إبداع ابتكاراً — علاقة طردية أحادية الاتجاه.</div>
+
+    <div class="sec-label c3">عوائق الإبداع والابتكار</div>
+    <div class="cards">
+      <div class="card"><span class="card-icon">😨</span><h3>الخوف</h3><p>من الفشل أو الخطأ أو التنمر من الآخرين. صموئيل بيكيت: "أفشل، أفشل مرة أخرى، أفشل بشكل أفضل."</p></div>
+      <div class="card"><span class="card-icon">🤲</span><h3>قلة الدعم</h3><p>الوجود في محيط فقير لا يوفر الدعم يُخفض نسبة الابتكار في مختلف المجالات.</p></div>
+      <div class="card"><span class="card-icon">📅</span><h3>التفكير قصير المدى</h3><p>يؤدي إلى إنجازات محدودة وحرمان من القدرة على التطور والإبداع في المدى الطويل.</p></div>
+      <div class="card"><span class="card-icon">💰</span><h3>نقص الموارد</h3><p>الإبداع يتطلب موارد مالية وقدرات مخصصة للبحث والتطوير، وغيابها يُعيق الإبداع.</p></div>
+      <div class="card"><span class="card-icon">🤝</span><h3>عدم التعاون</h3><p>انعدام التعاون بين الفرق يعني فقدان القدرة على التطور من خلال تبادل التجارب والخبرات.</p></div>
+      <div class="card"><span class="card-icon">⌛</span><h3>قلة الوقت</h3><p>الأفكار الخلاقة لا تنتج بين ليلة وضحاها. ضغط نفاد الوقت سبب رئيسي في الفشل وانعدام الإبداع.</p></div>
+    </div>
+  </div>
+
+  <!-- TAB: الملكية الفكرية -->
+  <div class="tab-panel" id="ch3-ip">
+    <div class="sec-label c3">ثالثاً — حقوق الملكية الفكرية</div>
+    <div class="card-wide">
+      <h3>⚖️ تعريف الملكية الفكرية</h3>
+      <p>حقوق قانونية تحمي الابتكارات والاختراعات الصادرة عن نشاط فكري في المجالات الصناعية والعلمية والأدبية والفنية. تشمل أكثرها شيوعاً: براءات الاختراع — حقوق التأليف والنشر — العلامات التجارية — الأسرار التجارية.</p>
+    </div>
+
+    <div class="ip-grid">
+      <div class="ip-card" style="border-color:rgba(79,142,247,.2)">
+        <span class="ip-icon">🔬</span>
+        <h4>براءة الاختراع<br>Patent</h4>
+        <p>حق يمنحه القانون للمخترع يمنع بموجبه الآخرين من استغلال اختراعه تجارياً لفترة زمنية محددة مقابل الكشف عنه عند انقضاء مدة الحماية.</p>
+      </div>
+      <div class="ip-card" style="border-color:rgba(79,142,247,.2)">
+        <span class="ip-icon">™️</span>
+        <h4>العلامة التجارية<br>Trademark</h4>
+        <p>إشارة يستخدمها تاجر لتمييز منتجاته عن منتجات غيره. يحميها القانون بشرط أن تكون مميزة وغير مضللة وغير مخالفة للنظام العام.</p>
+      </div>
+      <div class="ip-card" style="border-color:rgba(79,142,247,.2)">
+        <span class="ip-icon">©️</span>
+        <h4>حقوق النشر<br>Copyright</h4>
+        <p>يحمي نتاج العمل الفكري من الأعمال الأدبية والفنية، بما يشمل الموسيقى والرسوم واللوحات والبرمجيات وقواعد البيانات.</p>
+      </div>
+    </div>
+
+    <div class="sec-label c3">معايير الحصول على براءة الاختراع</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg3 c3">١</div><div class="n-body"><h4>الجِدّة</h4><p>يجب أن يكون الاختراع متضمناً شيئاً جديداً لم يسبق معرفته من قبل.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٢</div><div class="n-body"><h4>الخطوات المبتكرة</h4><p>عمليات التطوير لا يجب أن تكون معلومة لأي شخص عادي في المجال — لا بد أن تكون نقلة لا تعديلاً عادياً.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٣</div><div class="n-body"><h4>قابلية التطبيق الصناعي</h4><p>يجب أن يكون الاختراع ممكن التحويل إلى منتج تجاري أو صناعي قابل للتطبيق.</p></div></div>
+      <div class="n-item"><div class="n-num bg3 c3">٤</div><div class="n-body"><h4>الامتثال القانوني</h4><p>ألا يكون الاختراع في مجالات محظورة أو غير مقبولة وفق الأطر القانونية المعمول بها.</p></div></div>
+    </div>
+  </div>
+
+  <!-- TAB: نماذج عالمية -->
+  <div class="tab-panel" id="ch3-models">
+    <div class="sec-label c3">أمثلة عالمية لشركات مبدعة في مجال ريادة الأعمال</div>
+
+    <div class="company-card">
+      <div class="company-logo" style="background:rgba(79,142,247,.15);color:var(--c3)">🍎</div>
+      <div class="company-body">
+        <h4>Apple — آبل</h4>
+        <p>واحدة من أكثر المؤسسات نجاحاً في سوق التكنولوجيا، يُعزى ذلك جزئياً إلى اعتمادها على التخيل الإبداعي المؤسسي في عملياتها. قدمت منتجات رائدة مثل iPhone وiPad وMac التي تحظى بشعبية كبيرة عالمياً.</p>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-logo" style="background:rgba(79,142,247,.15);color:var(--c3)">🔍</div>
+      <div class="company-body">
+        <h4>Google — جوجل</h4>
+        <p>اعتمدت على التخيل الإبداعي المؤسسي وطوّرت تقنيات مبتكرة مثل خدمة البحث ونظام Android وخدمات السحابة والعديد من التطبيقات التي حققت نجاحات كبيرة.</p>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-logo" style="background:rgba(79,142,247,.15);color:var(--c3)">⚡</div>
+      <div class="company-body">
+        <h4>Tesla — تسلا</h4>
+        <p>من أهم الشركات المبتكرة في مجال السيارات الكهربائية. تميزت بتطوير تقنيات جديدة مثل نظام التحكم بالشاشة في مقدمة السيارة كأحد أهم ميزاتها.</p>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-logo" style="background:rgba(79,142,247,.15);color:var(--c3)">📱</div>
+      <div class="company-body">
+        <h4>Facebook — ميتا</h4>
+        <p>اعتمدت على الإبداع المؤسسي في تصميم وتطوير منصتها وقدمت ميزات مبتكرة في مشاركة الصور والفيديوهات والتفاعل مع المحتوى بطرق مختلفة.</p>
+      </div>
+    </div>
+    <div class="company-card">
+      <div class="company-logo" style="background:rgba(79,142,247,.15);color:var(--c3)">📦</div>
+      <div class="company-body">
+        <h4>Amazon — أمازون</h4>
+        <p>واحدة من أكبر شركات التجارة الإلكترونية في العالم، طوّرت خدمات مبتكرة مثل الشحن السريع والبث المباشر ومنصة السحابة AWS التي حققت شعبية واسعة.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CHAPTER 5 (Chapter 4 is excluded per instructions) -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section class="ch-section" id="ch5">
+  <div class="ch-header">
+    <div class="ch-num bg5 c5" style="border:1px solid rgba(167,139,250,.3)">٥</div>
+    <div class="ch-meta">
+      <h2 class="c5">إدارة الأعمال وفرص العمل المستقبلية</h2>
+      <p>ممارسات ريادة الأعمال — المشروعات الريادية — خطوات الإنشاء — خطة الأعمال</p>
+    </div>
+  </div>
+
+  <div class="ch-tabs">
+    <button class="tab-btn on" style="background:var(--c5);color:#fff" onclick="switchTab('ch5','practices',this)">ممارسات ريادة الأعمال</button>
+    <button class="tab-btn" onclick="switchTab('ch5','projects',this)">المشروعات الريادية</button>
+    <button class="tab-btn" onclick="switchTab('ch5','steps',this)">خطوات الإنشاء</button>
+    <button class="tab-btn" onclick="switchTab('ch5','plan',this)">خطة الأعمال</button>
+  </div>
+
+  <!-- TAB: الممارسات -->
+  <div class="tab-panel on" id="ch5-practices">
+    <div class="sec-label c5">أولاً — ممارسات ريادة الأعمال الأساسية</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">💡</span><h3>الابتكار</h3><p>تطوير منتجات أو خدمات جديدة أو تحسين المنتجات والخدمات الحالية لتقديم قيمة أكبر للعملاء.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">⚡</span><h3>المخاطرة</h3><p>استعداد رائد الأعمال لتحمل الخسائر المحتملة في سبيل تحقيق النجاح والنمو.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">♟️</span><h3>التفكير الاستراتيجي</h3><p>القدرة على التخطيط للمستقبل واتخاذ القرارات التي ستساعد على تحقيق الأهداف بعيدة المدى.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">⏱️</span><h3>إدارة الوقت</h3><p>القدرة على استثمار الوقت بفعالية لإنجاز المهام والأهداف في إطار زمني محدد.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">🏆</span><h3>القيادة</h3><p>القدرة على إلهام وتحفيز الآخرين لتحقيق الأهداف المشتركة وبناء ثقافة مؤسسية قوية.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">📣</span><h3>التسويق</h3><p>عملية الترويج للمنتجات أو الخدمات لجذب العملاء والوصول إلى الشريحة المستهدفة بفعالية.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">💼</span><h3>المبيعات</h3><p>عملية إقناع العملاء بشراء المنتجات أو الخدمات وتحويل العملاء المحتملين إلى عملاء فعليين.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">👥</span><h3>إدارة الموارد البشرية</h3><p>عملية توظيف وتدريب وإدارة الموظفين لبناء فريق متميز وقادر على تحقيق أهداف المشروع.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)"><span class="card-icon">💰</span><h3>الإدارة المالية</h3><p>عملية إدارة الأموال اللازمة لتشغيل الشركة بكفاءة وضمان الاستدامة المالية للمشروع.</p></div>
+    </div>
+
+    <div class="sec-label c5">طرق اكتساب مهارات ريادة الأعمال</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg5 c5">١</div><div class="n-body"><h4>التعليم</h4><p>الدراسة في الجامعات والكليات التي تقدم برامج في ريادة الأعمال، وحضور الدورات التدريبية وورش العمل المتخصصة.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٢</div><div class="n-body"><h4>التدريب</h4><p>العمل في شركة ناشئة أو صغيرة أو متوسطة الحجم، والمشاركة في برامج التدريب المهني التي تقدمها الحكومات والمنظمات.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٣</div><div class="n-body"><h4>التجربة العملية</h4><p>من أهم طرق الاكتساب — بدء مشروع صغير أو العمل في شركة ناشئة يمنح خبرة عملية لا تعوضها الكتب.</p></div></div>
+    </div>
+  </div>
+
+  <!-- TAB: المشروعات -->
+  <div class="tab-panel" id="ch5-projects">
+    <div class="sec-label c5">أنواع المشروعات التجارية الأربعة</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(167,139,250,.2)">
+        <span class="card-icon">🛒</span><h3>التجارة</h3>
+        <p>تعتمد على إعادة البيع والوساطة. أمثلة: البقالة — الصيدليات — المتاجر الإلكترونية — محال الملابس — بيع مستلزمات الجوال.</p>
+        <span class="tag tag5">نشاط تجاري</span>
+      </div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)">
+        <span class="card-icon">🏭</span><h3>الصناعة</h3>
+        <p>تحويل المدخالت إلى منتجات تامة الصنع. أمثلة: الحرف اليدوية — صناعة الأثاث — تصنيع الحلوى والمكسرات — المنظفات.</p>
+        <span class="tag tag5">نشاط صناعي</span>
+      </div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)">
+        <span class="card-icon">🔧</span><h3>الخدمات</h3>
+        <p>منتجات غير ملموسة لا تتطلب تخزيناً. أمثلة: السياحة والسفر — التجميل — البرمجة — التوصيل والنقل — صيانة الجوالات.</p>
+        <span class="tag tag5">نشاط خدمي</span>
+      </div>
+      <div class="card" style="border-color:rgba(167,139,250,.2)">
+        <span class="card-icon">🌱</span><h3>الزراعة</h3>
+        <p>تعتمد على منتجات الزراعة وتتميز بالموسمية. أمثلة: مزارع التمور — الخضروات — البيوت المحمية — المشاتل الصغيرة.</p>
+        <span class="tag tag5">نشاط زراعي</span>
+      </div>
+    </div>
+
+    <div class="sec-label c5">خصائص المشروعات الصغيرة</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg5 c5">١</div><div class="n-body"><h4>سهولة التأسيس</h4><p>محدودية التكاليف اللازمة للتأسيس والتشغيل مقارنة بالمنشآت الأكبر، مع انخفاض المصروفات الإدارية نظراً لبساطة الهيكل التنظيمي.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٢</div><div class="n-body"><h4>نمط الملكية المحلية</h4><p>في الغالب يملكها أشخاص يقيمون في المجتمع المحلي، مما يؤدي إلى زيادة استقرار العمالة وإحساس سريع بحركة السوق.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٣</div><div class="n-body"><h4>المعرفة التفصيلية بالعملاء</h4><p>السوق المحدود نسبياً يتيح المعرفة الشخصية بالعملاء وتحديد احتياجاتهم بشكل مباشر مع قدرة على التحديث المستمر.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٤</div><div class="n-body"><h4>قوة العلاقات بالمجتمع</h4><p>صاحب المشروع تربطه علاقة شخصية بعملائه ومستخدميه، مما يجعله مشاركاً في شؤون المنطقة اجتماعياً وثقافياً.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٥</div><div class="n-body"><h4>مرونة الإدارة</h4><p>بساطة التنظيم لمحدودية العاملين، مع سهولة توزيع الاختصاصات ووضوح المسؤوليات وسرعة إسناد الصلاحيات.</p></div></div>
+    </div>
+
+    <div class="sec-label c5">كيف تتجنب الفشل؟</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg5 c5">١</div><div class="n-body"><h4>افهم مشروعك بعمق</h4><p>احصل على الخبرة والمعرفة المناسبة واجمع المعلومات من جميع المصادر قبل البدء.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٢</div><div class="n-body"><h4>طوّر خطة عمل مناسبة</h4><p>إعداد Business Plan يُمهّد طريق النجاح ويساعد على المقارنة وقياس الإنجازات الحقيقية.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٣</div><div class="n-body"><h4>أَدِر مصادر التمويل</h4><p>أفضل وسيلة لمواجهة الصعوبات المالية هي تطوير نظام عمل واضح للرقابة على الاستثمار.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٤</div><div class="n-body"><h4>افهم القوائم المالية</h4><p>السجلات والقوائم المالية وسيلة إدارية ضرورية للتأكد من صحة الاستثمار أو التعرف على المشكلات المحتملة.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٥</div><div class="n-body"><h4>أَدِر الأشخاص بنجاح</h4><p>استقطاب كفاءات متدربة وتقديم حوافز مناسبة لها — كفاءة الأشخاص هي التي تحدد مدى نجاح المشروع.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٦</div><div class="n-body"><h4>اهتم بنفسك</h4><p>نجاح أي مشروع يعتمد على سلامتك الجسدية والنفسية. إدارة الوقت بنجاح لا تتحقق بدون عزيمة وإصرار وصبر.</p></div></div>
+    </div>
+  </div>
+
+  <!-- TAB: خطوات الإنشاء -->
+  <div class="tab-panel" id="ch5-steps">
+    <div class="sec-label c5">مراحل تحويل الأفكار إلى فرص</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">١</div>
+        <div class="step-body">
+          <h4>توليد الأفكار</h4>
+          <p>نقطة البداية والأساس لنجاح المشروع الصغير. الأفكار الجيدة هي المتناسبة مع البيئة والنابعة من رائد الأعمال نفسه، لا المنقولة أو المقلدة حرفياً من الآخرين.</p>
         </div>
-        <div class="mode-note">
-          ${chapterId === '3'
-            ? 'الفصل الثالث معروض بعناوين فقط. اضغط على أي عنوان لعرض شرح أكاديمي موجز ومثال بسيط.'
-            : before
-              ? 'وضع Before Exam مفعل: ستظهر التعريفات والنقاط عالية القيمة فقط.'
-              : 'الوضع العادي مفعل: ستظهر التعريفات، والملخص الذكي، والشرح المبسط، والمراجعة.'}
+      </div>
+      <div class="step">
+        <div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">٢</div>
+        <div class="step-body">
+          <h4>صياغة الأفكار</h4>
+          <p>القدرة على شرح الفكرة والتعبير عنها بشكل واضح يحدد معالمها ويصف مكوناتها. تُعرض الأفكار وفق معايير ثلاثة: أن تكون واقعية — قابلة للقياس — محددة.</p>
         </div>
-        ${chapterMeta(chapterId)}
-      `;
-
-      if (chapterId === '3') {
-        html += `
-          <div class="section">
-            <h2>عناوين الفصل الثالث</h2>
-            <p class="lead">المطلوب هنا هو عرض العناوين فقط. عند النقر على أي عنوان تظهر خلاصة قصيرة للغاية مع مثال بسيط، من دون توسع في الشرح.</p>
-            <div class="title-grid">
-              ${ch.titles.map((t, idx) => `
-                <div class="title-card" data-title-index="${idx}">
-                  <h4>${t.title}</h4>
-                  <p>شرح موجز + مثال بسيط</p>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      } else {
-        if (before) {
-          html += `
-            <section class="section">
-              <h2>A. Definitions</h2>
-              <p class="lead">تعريفات قصيرة ولكن كاملة بما يكفي للحفظ السريع.</p>
-              ${renderDefinitions(ch.definitions)}
-            </section>
-            <section class="section">
-              <h2>B. Smart Summary</h2>
-              <p class="lead">نقاط عالية القيمة للمراجعة السريعة قبل الاختبار.</p>
-              ${renderSummary(ch.summary)}
-            </section>
-          `;
-        } else {
-          html += `
-            <section class="section">
-              <h2>A. Definitions</h2>
-              <p class="lead">تعريفات مختصرة تحفظ المعنى الكامل وتسهّل المذاكرة.</p>
-              ${renderDefinitions(ch.definitions)}
-            </section>
-            <section class="section">
-              <h2>B. Smart Summary</h2>
-              <p class="lead">خلاصة امتحانية مركزة من دون تكرار.</p>
-              ${renderSummary(ch.summary)}
-            </section>
-            <section class="section">
-              <h2>C. Simplified Explanation</h2>
-              <p class="lead">إعادة صياغة تعليمية واضحة للمحتوى مع الحفاظ على المعنى المقرر.</p>
-              ${renderExplanation(ch.explanation)}
-            </section>
-            <section class="section">
-              <h2>D. Revision / Review</h2>
-              <p class="lead">تدريب سريع على أسئلة الامتحان: فراغات، صح أو خطأ، وأسئلة قصيرة.</p>
-              ${renderRevision(ch.review)}
-            </section>
-          `;
-        }
-      }
-
-      chapterView.innerHTML = html;
-
-      document.getElementById('backHomeBtn')?.addEventListener('click', openHome);
-      document.getElementById('toggleBeforeBtn')?.addEventListener('click', () => {
-        state.beforeExam = !state.beforeExam;
-        renderChapter(chapterId);
-      });
-      document.getElementById('goQuickBtn')?.addEventListener('click', openQuickReview);
-
-      if (chapterId === '3') {
-        chapterView.querySelectorAll('.title-card').forEach(card => {
-          card.addEventListener('click', () => {
-            const t = ch.titles[card.dataset.titleIndex];
-            showModal(t.title, `<strong>شرح موجز:</strong> ${t.explanation}<br><br><strong>مثال بسيط:</strong> ${t.example}`);
-          });
-        });
-      }
-    }
-
-    function renderQuickReview() {
-      const q = QUICK[state.quickIndex % QUICK.length];
-      quickView.innerHTML = `
-        <div class="chapter-top">
-          <div>
-            <div class="small">Quick Review</div>
-            <h2 style="margin:6px 0 0 0">مراجعة سريعة</h2>
-            <p class="subtle">بطاقات سؤال وجواب سريعة من الفصول 1 و2 و5.</p>
-          </div>
-          <div class="back-row">
-            <button class="btn" id="quickHomeBtn">العودة للرئيسية</button>
-            <button class="btn" id="quickPrevBtn">السابق</button>
-            <button class="btn primary" id="quickNextBtn">التالي</button>
-          </div>
+      </div>
+      <div class="step">
+        <div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">٣</div>
+        <div class="step-body">
+          <h4>تقييم الأفكار</h4>
+          <p>ليست كل فكرة مشروعاً ناجحاً. يُقيّم رائد الأعمال الفكرة وفق خمسة معايير: المالي — البشري — التسويقي — الشخصي — المعرفي. الفكرة المناسبة هي التي تحصل على أعلى تقييم.</p>
         </div>
-        <div class="section quick-hero">
-          <div class="panel flash" style="box-shadow:none; border:1px solid var(--line); background:linear-gradient(180deg,#fff,#f8fbff);">
-            <span class="chapter-tag">الفصل ${q.chapter}</span>
-            <h3>${q.q}</h3>
-            <div class="answer" style="display:${state.quickRevealed ? 'block' : 'none'};">
-              <strong>الإجابة:</strong> ${q.a}
-            </div>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <button class="btn primary" id="revealBtn">${state.quickRevealed ? 'إخفاء الإجابة' : 'إظهار الإجابة'}</button>
-            <div class="pill">بطاقة ${state.quickIndex + 1} من ${QUICK.length}</div>
-            <div class="pill">سريع ومناسب قبل الامتحان</div>
-          </div>
+      </div>
+      <div class="step">
+        <div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">٤</div>
+        <div class="step-body">
+          <h4>اختيار الفكرة</h4>
+          <p>تحديد الخيار المناسب وزيارة أصحاب مشاريع مماثلة للاستشارة. ترتيب الأفكار وإعداد جدول زمني محدد بالأهداف والإجراءات لكل مرحلة من مراحل المشروع.</p>
         </div>
-        <div class="section">
-          <h2>بطاقات إضافية</h2>
-          <div class="review-grid">
-            ${QUICK.slice(state.quickIndex, state.quickIndex + 4).map((item, idx) => `
-              <div class="quiz-card">
-                <div class="meta"><span>الفصل ${item.chapter}</span><span>سؤال سريع</span></div>
-                <h4>${item.q}</h4>
-                <button class="btn reveal-mini" data-index="${(state.quickIndex + idx) % QUICK.length}">إظهار / إخفاء</button>
-                <div class="quiz-answer"><strong>الإجابة:</strong> ${item.a}</div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
+      </div>
+    </div>
 
-      document.getElementById('quickHomeBtn').addEventListener('click', openHome);
-      document.getElementById('quickPrevBtn').addEventListener('click', () => {
-        state.quickIndex = (state.quickIndex - 1 + QUICK.length) % QUICK.length;
-        state.quickRevealed = false;
-        renderQuickReview();
-      });
-      document.getElementById('quickNextBtn').addEventListener('click', () => {
-        state.quickIndex = (state.quickIndex + 1) % QUICK.length;
-        state.quickRevealed = false;
-        renderQuickReview();
-      });
-      document.getElementById('revealBtn').addEventListener('click', () => {
-        state.quickRevealed = !state.quickRevealed;
-        renderQuickReview();
-      });
-      quickView.querySelectorAll('.reveal-mini').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const card = btn.closest('.quiz-card');
-          card.classList.toggle('show');
-        });
-      });
-    }
+    <div class="sec-label c5">خطوات إنشاء المشروع الصغير</div>
+    <div class="steps">
+      <div class="step"><div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">١</div><div class="step-body"><h4>تحديد المشروع</h4><p>تطوير الفكرة لتصبح فرصة، وتحديد المنتج المختار ومدى حاجة السوق له، ومن هم العملاء، وكم رأس المال التقريبي.</p></div></div>
+      <div class="step"><div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">٢</div><div class="step-body"><h4>الإعداد للمشروع</h4><p>يشمل خطة الأعمال وتحديد العاملين وموقع المشروع وكيفية الإنتاج أو تقديم الخدمة والإيرادات المتوقعة.</p></div></div>
+      <div class="step"><div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">٣</div><div class="step-body"><h4>تقييم خيارات المشروع</h4><p>تحديد مصادر التمويل — الشراكة أم المنفرد — الموقع — الشكل القانوني — الخطة التسويقية والتمويلية.</p></div></div>
+      <div class="step"><div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">٤</div><div class="step-body"><h4>تنفيذ المشروع</h4><p>البرنامج الزمني للتنفيذ ومتى يبدأ، وكيفية إدارة عملياته وتقسيم الأعمال بين فريق العمل والجهات الداعمة.</p></div></div>
+      <div class="step"><div class="step-dot c5 bd5" style="border-color:rgba(167,139,250,.4)">٥</div><div class="step-body"><h4>مراجعة المشروع وتقييمه</h4><p>تقييم أداء المشروع والعاملين ومدى ربحيته وتحقيق الأهداف، ووضع خطة احتياطية للخروج إن لزم.</p></div></div>
+    </div>
+  </div>
 
-    function showModal(title, body) {
-      modalTitle.textContent = title;
-      modalBody.innerHTML = body;
-      modal.classList.add('show');
-    }
-    document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('show'));
-    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+  <!-- TAB: خطة الأعمال -->
+  <div class="tab-panel" id="ch5-plan">
+    <div class="sec-label c5">خطة الأعمال Business Plan</div>
+    <div class="qblock" style="border-color:var(--c5)">خطة الأعمال هي خارطة الطريق التي تنير للمشروع دربه وتضع له معالم المسير. المشروع الناجح هو ذلك الذي يسير وفق خطة محددة توصله إلى الأهداف المنشودة.</div>
 
-    navButtons.home.addEventListener('click', openHome);
-    navButtons.ch1.addEventListener('click', () => openChapter('1'));
-    navButtons.ch2.addEventListener('click', () => openChapter('2'));
-    navButtons.ch3.addEventListener('click', () => openChapter('3'));
-    navButtons.ch5.addEventListener('click', () => openChapter('5'));
-    document.getElementById('beforeExamBtn').addEventListener('click', () => {
-      state.beforeExam = !state.beforeExam;
-      document.getElementById('beforeExamBtn').classList.toggle('active', state.beforeExam);
-      if (state.chapter) {
-        renderChapter(state.chapter);
-      }
-    });
-    document.getElementById('quickReviewBtn').addEventListener('click', openQuickReview);
+    <div class="sec-label c5">فوائد خطة الأعمال</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">🗂️</span><h3>ترتيب الأفكار</h3><p>توضح المهام والأعمال التي يجب القيام بها وتساعد على تنظيم المسيرة بشكل منطقي.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">💹</span><h3>معرفة التكاليف والإيرادات</h3><p>تساعد على معرفة تكاليف المشروع والإيرادات المتوقعة وما إذا كانت ستتحقق أرباح.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">🔭</span><h3>التعرف إلى السوق</h3><p>عن طريق جمع المعلومات الضرورية عن السوق والمنافسين والعملاء المحتملين.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">🚧</span><h3>استطلاع الصعوبات</h3><p>التعرف مسبقاً على التحديات المتوقعة والاستعداد لها قبل وقوعها.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">🤝</span><h3>تسهيل الحصول على الدعم</h3><p>تسهيل تقييم المشروع من قبل الآخرين للحصول على دعم أو تمويل أو مشاركة.</p></div>
+    </div>
 
-    window.addEventListener('scroll', () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const value = max > 0 ? (window.scrollY / max) * 100 : 0;
-      progressBar.style.width = value.toFixed(2) + '%';
-    });
+    <div class="sec-label c5">مكوّنات خطة الأعمال الستة</div>
+    <div class="n-items">
+      <div class="n-item"><div class="n-num bg5 c5">١</div><div class="n-body"><h4>الملخص التنفيذي</h4><p>يهدف إلى إقناع القراء بأن المشروع يستحق الدعم. يجب أن يكون مختصراً ولا يزيد على صفحة واحدة، ويتضمن النقاط الرئيسية لخطة الأعمال.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٢</div><div class="n-body"><h4>وصف تفصيلي عن المشروع</h4><p>يوضح: المنتج المقدَّم — المواد الخام والآلات المطلوبة — عدد الموظفين وأعمالهم — ساعات العمل — موقع المشروع.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٣</div><div class="n-body"><h4>وصف السوق</h4><p>تحديد العملاء وإثبات وجود عدد كافٍ منهم. يتضمن تحليل المنافسين ونقاط قوتهم وما يُميّزك عنهم.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٤</div><div class="n-body"><h4>وصف خطة التسويق</h4><p>كيف ستصل إلى عملائك باستخدام وسائل التسويق: المنشورات، الملصقات الإعلانية، وسائل التواصل الاجتماعي، تطبيقات الجوال.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٥</div><div class="n-body"><h4>وصف الإدارة والقدرات</h4><p>إظهار أنك الشخص المناسب لإنشاء المشروع وإدارته من خلال سيرة تُظهر إنجازاتك وخبراتك ذات الصلة.</p></div></div>
+      <div class="n-item"><div class="n-num bg5 c5">٦</div><div class="n-body"><h4>التقديرات المالية</h4><p>تكاليف البداية — تقديرات الربح والخسارة — الميزانية العامة — قائمة الدخل — جدول تدفق النقد — تحليل التعادل.</p></div></div>
+    </div>
 
-    renderHomeCards();
-    openHome();
-  </script>
+    <div class="sec-label c5">المؤشرات المالية الأساسية</div>
+    <div class="cards">
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">📊</span><h3>الميزانية العامة</h3><p>تضع تصوراً لأصول النشاط ومسؤوليات المالكين وحصصهم على مدى ثلاث سنوات قادمة على الأقل.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">📈</span><h3>قائمة الدخل</h3><p>تسلط الضوء على صافي أرباح أو خسائر النشاط خلال مدة تتراوح من ثلاث إلى خمس سنوات.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">💸</span><h3>جدول تدفق النقد</h3><p>يوضح أين ومتى يتم إنفاق النقد وجمعه خلال ثلاث سنوات قادمة لضمان السيولة المستمرة.</p></div>
+      <div class="card" style="border-color:rgba(167,139,250,.15)"><span class="card-icon">⚖️</span><h3>تحليل التعادل</h3><p>يوضح نقطة الزمن التي تبدأ فيها الشركة في جني الربح — أي عندما يساوي إجمالي المبيعات إجمالي التكاليف.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>مقرر تعليم ريادة الأعمال والابتكار — كلية التربية بقنا — الفرقة الأولى</p>
+  <p style="margin-top:8px;color:var(--muted)">إعداد: قسم أصول التربية — الصحة النفسية — علم النفس التربوي — المناهج وطرق التدريس — التربية المقارنة والإدارة التعليمية | 1447هـ — 2026م</p>
+</footer>
+
+</div><!-- /main -->
+
+<script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  const prog = (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100;
+  document.getElementById('prog').style.width = prog + '%';
+});
+
+// Sidebar scroll highlight
+const sections = document.querySelectorAll('.ch-section, #hero');
+const navBtns = document.querySelectorAll('#sb-nav .nb');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 200) current = s.id;
+  });
+  navBtns.forEach(b => {
+    b.classList.remove('active');
+    const fn = b.getAttribute('onclick');
+    if (fn && fn.includes("'" + current + "'")) b.classList.add('active');
+  });
+});
+
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({behavior: 'smooth'});
+  if (window.innerWidth <= 900) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function switchTab(chId, tabId, btn) {
+  const sec = document.getElementById(chId);
+  sec.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('on'));
+  sec.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('on');
+    b.style.background = '';
+    b.style.color = '';
+  });
+  const panel = document.getElementById(chId + '-' + tabId);
+  if (panel) panel.classList.add('on');
+  if (btn) {
+    btn.classList.add('on');
+    const colors = {ch1:'#f5c842',ch2:'#00d4aa',ch3:'#4f8ef7',ch5:'#a78bfa'};
+    const textColors = {ch1:'#000',ch2:'#000',ch3:'#fff',ch5:'#fff'};
+    btn.style.background = colors[chId] || '#fff';
+    btn.style.color = textColors[chId] || '#000';
+  }
+}
+
+// Intersection observer for section animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, {threshold: 0.05});
+document.querySelectorAll('.ch-section').forEach(s => observer.observe(s));
+</script>
 </body>
-</html>
+                            </html>
