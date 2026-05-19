@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأصول الاجتماعية للتربية – تجربة تعليمية تفاعلية</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&display=swap');
+
+  :root {
+    --ink: #1a1510;
+    --cream: #faf6ef;
+    --parchment: #f2ead8;
+    --amber: #c8882a;
+    --amber-light: #e8b96a;
+    --amber-pale: #fdf3e0;
+    --teal: #1d6b6b;
+    --teal-light: #2a9090;
+    --teal-pale: #e6f4f4;
+    --rust: #b04a2a;
+    --rust-pale: #fdf0ec;
+    --gold: #d4a020;
+    --shadow: rgba(26,21,16,0.12);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.85;
+    font-size: 17px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #1a3a3a 0%, #0d2828 40%, #1a3a2a 100%);
+    color: #fff;
+    padding: 70px 40px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(200,136,42,0.25);
+    border: 1px solid rgba(200,136,42,0.5);
+    color: var(--amber-light);
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-family: 'Amiri', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+  .hero-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.72);
+    max-width: 620px;
+    margin: 0 auto 36px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    display: block;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--amber-light);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+  }
+
+  /* NAV */
+  .chapter-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 28px 20px;
+    background: var(--parchment);
+    border-bottom: 2px solid rgba(200,136,42,0.2);
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .nav-btn {
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background: #fff;
+    color: var(--teal);
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all .25s;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .nav-btn:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .nav-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+  /* CONTAINER */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* CHAPTER */
+  .chapter { display: none; animation: fadeIn .5s ease; }
+  .chapter.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  .chapter-header {
+    text-align: center;
+    padding: 56px 0 40px;
+  }
+  .chapter-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--amber), var(--gold));
+    border-radius: 50%;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(200,136,42,0.35);
+  }
+  .chapter-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .chapter-intro {
+    font-size: 16px;
+    color: #555;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* SECTION CARD */
+  .section-card {
+    background: #fff;
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    box-shadow: 0 3px 16px var(--shadow);
+    overflow: hidden;
+    border: 1px solid rgba(26,21,16,0.07);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 28px;
+    background: linear-gradient(90deg, var(--teal-pale) 0%, #fff 100%);
+    border-bottom: 2px solid var(--teal-pale);
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-header:hover { background: linear-gradient(90deg, #d0eaea 0%, #f8fdfd 100%); }
+  .section-icon {
+    font-size: 24px;
+    min-width: 36px;
+    text-align: center;
+  }
+  .section-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--teal);
+    flex: 1;
+  }
+  .section-toggle {
+    font-size: 20px;
+    color: var(--teal);
+    transition: transform .3s;
+    font-weight: 700;
+  }
+  .section-header.open .section-toggle { transform: rotate(180deg); }
+  .section-body {
+    display: none;
+    padding: 28px;
+    animation: fadeIn .3s ease;
+  }
+  .section-body.open { display: block; }
+
+  /* CONTENT ELEMENTS */
+  .hook-box {
+    background: linear-gradient(135deg, #1d3a3a, #0d2020);
+    color: #fff;
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    font-size: 16px;
+    line-height: 1.9;
+    position: relative;
+    overflow: hidden;
+  }
+  .hook-box::before {
+    content: '💡';
+    position: absolute;
+    top: 18px; left: 20px;
+    font-size: 22px;
+    opacity: .7;
+  }
+  .hook-box p { padding-right: 36px; }
+  .hook-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--amber-light);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .explain-box {
+    background: var(--cream);
+    border-right: 4px solid var(--teal);
+    border-radius: 0 10px 10px 0;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.95;
+  }
+
+  .story-box {
+    background: linear-gradient(135deg, #fffbf2, #fdf6e3);
+    border: 1px solid rgba(200,136,42,0.25);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 20px;
+    font-size: 15.5px;
+    line-height: 1.95;
+  }
+  .story-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--amber);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .highlight {
+    background: linear-gradient(180deg, transparent 55%, rgba(200,136,42,0.28) 55%);
+    font-weight: 700;
+  }
+
+  .quote-box {
+    background: #fff;
+    border: 2px solid var(--amber);
+    border-radius: 12px;
+    padding: 20px 24px 20px 52px;
+    margin: 16px 0;
+    position: relative;
+    font-style: normal;
+    font-size: 15.5px;
+    line-height: 1.9;
+  }
+  .quote-box::before {
+    content: '❝';
+    position: absolute;
+    right: 18px; top: 14px;
+    font-size: 28px;
+    color: var(--amber);
+    font-family: serif;
+  }
+  .quote-author {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--amber);
+  }
+
+  .thinker-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(26,21,16,0.1);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: box-shadow .2s;
+  }
+  .thinker-card:hover { box-shadow: 0 4px 18px var(--shadow); }
+  .thinker-emoji {
+    font-size: 30px;
+    min-width: 40px;
+    text-align: center;
+    margin-top: 2px;
+  }
+  .thinker-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+  .thinker-dates {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .thinker-idea {
+    font-size: 15px;
+    line-height: 1.85;
+    color: #333;
+  }
+
+  .warning-box {
+    background: var(--rust-pale);
+    border-right: 4px solid var(--rust);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    line-height: 1.85;
+  }
+  .warning-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--rust);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .mini-card {
+    background: var(--teal-pale);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .mini-card-title {
+    font-weight: 800;
+    color: var(--teal);
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .amber-card {
+    background: var(--amber-pale);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .numbered-list {
+    counter-reset: cnt;
+    list-style: none;
+    padding: 0;
+  }
+  .numbered-list li {
+    counter-increment: cnt;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+    font-size: 15.5px;
+    line-height: 1.85;
+  }
+  .numbered-list li::before {
+    content: counter(cnt);
+    min-width: 30px; height: 30px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .bullet-list {
+    list-style: none; padding: 0;
+  }
+  .bullet-list li {
+    display: flex; gap: 12px;
+    margin-bottom: 10px;
+    font-size: 15.5px;
+    line-height: 1.85;
+    align-items: flex-start;
+  }
+  .bullet-list li::before {
+    content: '◆';
+    color: var(--amber);
+    font-size: 10px;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .recap-box {
+    background: linear-gradient(135deg, var(--teal) 0%, #0d4a4a 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-top: 24px;
+  }
+  .recap-title {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--amber-light);
+    margin-bottom: 14px;
+  }
+  .recap-box ul { list-style: none; padding: 0; }
+  .recap-box li {
+    display: flex; gap: 10px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    line-height: 1.8;
+    opacity: .93;
+  }
+  .recap-box li::before { content: '✓'; color: var(--amber-light); font-weight: 700; flex-shrink: 0; }
+
+  .engage-tag {
+    display: inline-block;
+    background: rgba(29,107,107,0.1);
+    color: var(--teal);
+    border: 1px solid rgba(29,107,107,0.2);
+    border-radius: 50px;
+    padding: 3px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  p { margin-bottom: 14px; }
+  h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--teal);
+    margin: 20px 0 10px;
+  }
+  h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--rust);
+    margin: 16px 0 8px;
+  }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14.5px;
+  }
+  .compare-table th {
+    background: var(--teal);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 700;
+  }
+  .compare-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(26,21,16,0.08);
+    line-height: 1.75;
+    vertical-align: top;
+  }
+  .compare-table tr:nth-child(even) td { background: var(--teal-pale); }
+  .compare-table tr:hover td { background: var(--amber-pale); }
+
+  /* PROPERTY BADGE */
+  .prop-badge {
+    display: inline-block;
+    background: var(--teal-pale);
+    color: var(--teal);
+    border: 1px solid rgba(29,107,107,0.25);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 3px;
+  }
+
+  /* SCROLL TO TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    width: 44px; height: 44px;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    display: none;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+  .scroll-top.visible { display: flex; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 2px dashed rgba(200,136,42,0.25);
+    margin: 24px 0;
+  }
+
+  /* SHIMMER accent line */
+  .accent-line {
+    height: 3px;
+    background: linear-gradient(90deg, var(--amber), var(--teal), var(--amber));
+    border-radius: 2px;
+    margin: 0 0 24px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">◆ مقرر الأصول الاجتماعية للتربية ◆</div>
+  <h1>رحلة تعليمية في أصول التربية</h1>
+  <p class="hero-subtitle">تجربة تفاعلية عميقة تحوّل الكتاب الأكاديمي إلى محطات فهم حقيقية — الفصول الثلاثة الأولى</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">٣</span><span class="stat-label">فصول كاملة</span></div>
+    <div class="stat"><span class="stat-num">٢٠+</span><span class="stat-label">موضوع تفاعلي</span></div>
+    <div class="stat"><span class="stat-num">١٥+</span><span class="stat-label">مفكر وعالم</span></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="chapter-nav">
+  <button class="nav-btn active" onclick="showChapter('ch1', this)">📖 الفصل الأول: العملية التربوية</button>
+  <button class="nav-btn" onclick="showChapter('ch2', this)">🏫 الفصل الثاني: الأصول الاجتماعية</button>
+  <button class="nav-btn" onclick="showChapter('ch3', this)">🌿 الفصل الثالث: الأسس الثقافية</button>
+</nav>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════ CHAPTER 1 ══════════════════════════════════════════ -->
+<div class="chapter active" id="ch1">
+  <div class="chapter-header">
+    <div class="chapter-num">١</div>
+    <h2 class="chapter-title">العملية التربوية</h2>
+    <p class="chapter-intro">من أين جاءت التربية؟ ماذا تعني حقاً؟ وكيف تعمل داخل المجتمع؟ — رحلة من نشأة التربية إلى وظائفها الكاملة</p>
+  </div>
+
+  <!-- SECTION 1: نشأة التربية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🌱</span>
+      <span class="section-title">أولاً: نشأة التربية — القصة الكاملة</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body open">
+      <div class="hook-box">
+        <div class="hook-label">تخيّل معي…</div>
+        <p>أنت طفل في مجتمع بدائي منذ آلاف السنين. لا مدارس، لا كتب، لا معلمين. كيف تعلّمت الصيد والزراعة والكلام؟ ببساطة: نظرت إلى أبيك، وقلّدته. تلك اللحظة البسيطة كانت <span class="highlight">أول درس تربوي في التاريخ البشري.</span></p>
+      </div>
+      <div class="explain-box">
+        <p>التربية وُجدت بوجود الإنسان نفسه — لا قبله ولا بعده. وهي نوعان من البداية:</p>
+      </div>
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-card-title">🎯 التربية غير المقصودة (غير المدرسية)</div>
+          تعلّم تلقائي خلال الحياة اليومية — الأبناء يراقبون الآباء، البنات تتعلم إدارة البيت من أمهاتها، الصبي يتعلم الصيد بملاحظة والده. لا قصد، لا خطة — مجرد محاكاة طبيعية.
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">🏫 التربية المقصودة (المدرسية)</div>
+          مع تعقّد الحياة ظهرت الحاجة لتعليم منظّم. أشخاص متخصصون يعلّمون الآخرين. ثم نشأت المدارس والمؤسسات. هذا النوع يتطور مع تطور المجتمع.
+        </div>
+      </div>
+      <div class="story-box">
+        <div class="story-label">📜 كيف تطورت التربية عبر الزمن؟</div>
+        <ul class="bullet-list">
+          <li><strong>المرحلة الأولى:</strong> الأسرة وحدها تتولى التربية — بسيطة لأن الحياة بسيطة.</li>
+          <li><strong>المرحلة الثانية:</strong> مع ظهور الزراعة والصناعة، ظهر التخصص. فظهرت فئة المعلمين لأول مرة — يعلّمون جانباً من حياتهم اليومية.</li>
+          <li><strong>المرحلة الثالثة:</strong> تعقّدت الحياة أكثر ← ظهرت المدارس والمؤسسات التعليمية ← تعقّدت المناهج.</li>
+          <li><strong>العصر الحديث:</strong> التربية أصبحت <em>علماً تطبيقياً</em> له أسسه ومناهجه ويستند إلى علوم أخرى (علم النفس، الاجتماع، الفلسفة…).</li>
+        </ul>
+      </div>
+      <div class="warning-box">
+        <div class="warning-label">⚠️ لاحظ هنا</div>
+        التربية كـ<em>نشاط اجتماعي</em> قديمة قِدم الإنسان — لكن التربية كـ<em>علم</em> له مناهج ونظريات لم تتبلور إلا في العصر الحديث. الفرق مهم!
+      </div>
+      <div class="recap-box">
+        <div class="recap-title">✦ ملخص سريع</div>
+        <ul>
+          <li>التربية بدأت بالتقليد والمحاكاة الطبيعية</li>
+          <li>تطورت من تربية أسرية بسيطة إلى مؤسسات تعليمية منظمة</li>
+          <li>ازداد تعقيدها بازدياد تعقيد الحياة الإنسانية</li>
+          <li>العلم التربوي الحديث يستمد منهجيته من علوم متعددة</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: مفهوم التربية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">📖</span>
+      <span class="section-title">ثانياً: مفهوم التربية — اللغة والاصطلاح والتمييزات الهامة</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">لو فكّرت فيها…</div>
+        <p>كلمة "تربية" في العربية جاءت من ثلاثة جذور لغوية مختلفة — كل واحد منها يضيف بُعداً للمعنى. هذه ليست صدفة!</p>
+      </div>
+      <h3>المعنى اللغوي للتربية</h3>
+      <div class="grid-2">
+        <div class="amber-card">
+          <div class="mini-card-title">الجذر الأول: رَبَا – يَرْبُو</div>
+          معناه: نَمَا، زاد — التربية تعني النمو والزيادة
+        </div>
+        <div class="amber-card">
+          <div class="mini-card-title">الجذر الثاني: رَبَّى – يُرَبِّي</div>
+          معناه: نشأ وترعرع — التربية هي عملية النشأة
+        </div>
+      </div>
+      <div class="amber-card" style="margin: 12px 0;">
+        <div class="mini-card-title">الجذر الثالث: رَبَّ – يَرُبُّ</div>
+        معناه: أصلحه وتولّى أمره وساسه وقام عليه بالرعاية — التربية هي الرعاية الكاملة
+      </div>
+      <hr class="divider">
+      <h3>المعنى الاصطلاحي</h3>
+      <div class="explain-box">
+        <p>التربية اصطلاحاً أشمل من اللغوي — إنها <strong>تنمية وزيادة جميع الوظائف الإنسانية</strong>: الجسمية، العقلية، الخلقية، العقيدية، الاجتماعية، الجمالية، الترويحية… عند الكائن البشري لكي تبلغ كمالها — ولا يتم ذلك إلا عن طريق التدريب والتثقيف والتهذيب والاستمرار.</p>
+      </div>
+      <div class="story-box">
+        <div class="story-label">🎯 التربية ≠ التعليم</div>
+        <p>وهنا الفكرة الخطيرة — كثير من الناس يساوون بين التربية والتعليم. لكنهما مختلفان تماماً:</p>
+        <ul class="bullet-list">
+          <li><strong>التعليم:</strong> نقل معرفة أو معلومات من معلم إلى متعلم — عملية محدودة النطاق</li>
+          <li><strong>التربية:</strong> أشمل بكثير — تشمل كل جوانب نمو الإنسان: جسماً وعقلاً ووجداناً وروحاً وأخلاقاً</li>
+        </ul>
+        <p><strong>مثال بسيط:</strong> معلم الرياضيات يُعلّمك المعادلات (تعليم). لكن الشخص الذي يجعلك تحب العلم، تحترم الآخرين، وتنمو كإنسان — يُربّيك (تربية).</p>
+      </div>
+      <div class="warning-box">
+        <div class="warning-label">⚠️ سوء فهم شائع</div>
+        بعضهم يظن أن التربية = الأخلاق والتهذيب فقط. وآخرون يظنون أنها = المعرفة فقط. كلاهما مفهوم قاصر. التربية <strong>تشمل كل جوانب نمو الإنسان دون استثناء.</strong>
+      </div>
+      <div class="recap-box">
+        <div class="recap-title">✦ ملخص المفاهيم</div>
+        <ul>
+          <li>التربية لغةً: النمو والزيادة والرعاية والإصلاح</li>
+          <li>التربية اصطلاحاً: تنمية شاملة لكل قدرات الإنسان</li>
+          <li>التربية ≠ التعليم (التعليم جزء منها فقط)</li>
+          <li>التربية ≠ الأخلاق فقط، ولا المعرفة فقط</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: آراء المربين -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🧠</span>
+      <span class="section-title">ثالثاً: آراء كبار المربين والفلاسفة في التربية</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">تخيّل معي…</div>
+        <p>لو جمعنا كبار المفكرين في التاريخ في غرفة واحدة وسألناهم: "ما التربية؟" — كل واحد سيعطيك إجابة مختلفة. لأن كل واحد منهم رأى التربية من زاوية مشكلة كان يريد حلها في عصره.</p>
+      </div>
+      <div class="accent-line"></div>
+      <h3>الفلاسفة اليونانيون</h3>
+      <div class="thinker-card">
+        <div class="thinker-emoji">🏛️</div>
+        <div>
+          <div class="thinker-name">سقراط — أبو الفلسفة الغربية</div>
+          <div class="thinker-dates">٤٧٠ – ٣٩٩ ق.م | يوناني</div>
+          <div class="thinker-idea">رأى أن <strong>التربية تبدّد الخطأ وتكشف عن الحق.</strong> لماذا؟ لأن سقراط آمن أن المعرفة الحقيقية كامنة في داخل كل إنسان — ومهمة التربية هي استخراجها لا حشوها من الخارج. هذه الفكرة غيّرت التعليم للأبد.</div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">📚</div>
+        <div>
+          <div class="thinker-name">أفلاطون — تلميذ سقراط</div>
+          <div class="thinker-dates">٤٢٧ – ٣٤٧ ق.م</div>
+          <div class="thinker-idea">رأى أن <strong>الغرض من التربية إمداد الجسم والعقل بما يمكن من الكمال والجمال.</strong> التربية المثالية عنده تصنع المواطن الصالح الذي يخدم الدولة. كتب "الجمهورية" ليشرح كيف يجب أن يُربَّى المواطن.</div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">🔬</div>
+        <div>
+          <div class="thinker-name">أرسطو — أبو العلوم</div>
+          <div class="thinker-dates">٣٨٤ – ٣٢٢ ق.م</div>
+          <div class="thinker-idea">رأى أن <strong>وظيفة التربية إعداد العقل لكسب العلم كما تُعدّ الأرض للنبات والزرع.</strong> صورة رائعة! — الطالب كالأرض، والمعلم كالفلاح يُهيّئها للبذور. هو أول من رأى أن للتعليم منهجاً علمياً.</div>
+        </div>
+      </div>
+      <hr class="divider">
+      <h3>المربون الغربيون الحديثون</h3>
+      <div class="thinker-card">
+        <div class="thinker-emoji">🌿</div>
+        <div>
+          <div class="thinker-name">جان جاك روسو — الثائر التربوي</div>
+          <div class="thinker-dates">١٧١٢ – ١٧٧٨م | فرنسي-سويسري</div>
+          <div class="thinker-idea">رأى أن <strong>التربية هي ما يزودنا بما لم يكن عندنا وقت الولادة ونحن في حاجة إليه عند الكبر.</strong> كان يؤمن أن الطفل يولد بريئاً والمجتمع يفسده — فالتربية الصحيحة تحمي فطرته. كتابه "إميل" ثورة في تربية الأطفال.</div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">🎓</div>
+        <div>
+          <div class="thinker-name">بستالوتزي — المربي المحبوب</div>
+          <div class="thinker-dates">١٧٤٦ – ١٨٢٧م | سويسري</div>
+          <div class="thinker-idea">رأى أن <strong>التربية هي النمو المنسجم للفرد في محيط ثقافة الجماعة التي يعيش فيها.</strong> وقال جملته الشهيرة: <em>"أحسن خدمة يقدمها إنسان لإنسان مثله هي تعليمه كيف يعيش."</em></div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">⚙️</div>
+        <div>
+          <div class="thinker-name">هربرت سبنسر</div>
+          <div class="thinker-dates">١٨٢٠ – ١٩٠٣م | إنجليزي</div>
+          <div class="thinker-idea">رأى أن <strong>التربية هي إعداد الفرد للحياة الكاملة.</strong> تعريف براغماتي نفعي — ماذا يحتاج الإنسان لكي يعيش حياة ناجحة كاملة؟ هذا هو هدف التربية.</div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">🔄</div>
+        <div>
+          <div class="thinker-name">جون ديوي — عملاق التربية الحديثة</div>
+          <div class="thinker-dates">١٨٥٩ – ١٩٥٢م | أمريكي</div>
+          <div class="thinker-idea">رأى أن <strong>التربية هي الحياة وليست مجرد إعداد للحياة</strong> — ورأى أنها عملية نمو وعملية تعلم وعملية بناء مستمر للخبرة. هذا يفسر لماذا يقول ديوي: "تعلّم بالممارسة" — لأن الحياة نفسها هي المدرسة!</div>
+        </div>
+      </div>
+      <hr class="divider">
+      <h3>علماء الإسلام</h3>
+      <div class="thinker-card">
+        <div class="thinker-emoji">🌙</div>
+        <div>
+          <div class="thinker-name">الإمام الغزالي — حجة الإسلام</div>
+          <div class="thinker-dates">٤٥٠ – ٥٠٥ هـ</div>
+          <div class="thinker-idea">رأى أن الغرض من التربية <strong>التقرب إلى الله</strong> — العلم وسيلة لا غاية. وقال: <em>"وجدت العلم لذيذاً في نفسه… ووجدته وسيلة إلى الدار الآخرة."</em> وعرّف التربية بأنها <strong>إخراج الأخلاق السيئة وغرس الأخلاق الحسنة.</strong></div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">📜</div>
+        <div>
+          <div class="thinker-name">ابن خلدون — أبو علم الاجتماع</div>
+          <div class="thinker-dates">٧٣٢ – ٨٠٨ هـ</div>
+          <div class="thinker-idea">رأى أن التربية تستهدف غرضين: <strong>(١) الغرض الديني</strong> — العمل للآخرة. <strong>(٢) الغرض الدنيوي</strong> — الإعداد للحياة والنفع العملي. أول من وضع هذه الثنائية بوضوح في الفكر الإسلامي.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: طبيعة العملية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">⚙️</span>
+      <span class="section-title">رابعاً: طبيعة العملية التربوية</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="explain-box">
+        <p>التربية ليست معلومات تُحفظ، ولا قواعد أخلاق تُحفظ. إنها <strong>عملية تشكيل إنسان كامل</strong> — والتشكيل يحتاج وقتاً ومجتمعاً وتفاعلاً مستمراً.</p>
+      </div>
+      <div class="story-box">
+        <div class="story-label">🌊 التربية والمجتمع — علاقة لا تنفصل</div>
+        <p>هذا يفسر لماذا التربية تختلف من بلد لبلد، ومن ثقافة لثقافة. المجتمع المصري يربّي بطريقة مختلفة عن اليابان أو الولايات المتحدة — لأن كل مجتمع له قيمه وأهدافه الخاصة التي تريد تربيته أن تحققها.</p>
+        <p>التربية <strong>رهينة المجتمع ومعبّرة عنه</strong> — هي لا تشتق فلسفتها وأهدافها إلا من المجتمع الذي توجد فيه.</p>
+      </div>
+      <div class="hook-box">
+        <div class="hook-label">وهنا الفكرة الخطيرة…</div>
+        <p>هدف العملية التربوية ينحصر في: <strong>تغيير الفرد ليسهم في تغيير وتطوير مجتمعه نحو حياة أفضل.</strong> — التربية ليست للفرد وحده، ولا للمجتمع وحده، بل لكليهما في وقت واحد.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: خصائص التربية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🔮</span>
+      <span class="section-title">خامساً: خصائص التربية — سبع صفات تميزها</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">تخيّل معي…</div>
+        <p>ما الذي يجعل التربية مختلفة عن أي نشاط بشري آخر؟ لها سبع خصائص فريدة تحدد هويتها الكاملة.</p>
+      </div>
+      <ol class="numbered-list">
+        <li>
+          <div>
+            <strong>التربية عملية إنسانية</strong><br>
+            الإنسان هو المخلوق الوحيد الذي يكتسب التربية وينقلها لجيل آخر. الحيوانات قد تُدرَّب لكنها لا تنقل ما تعلمته لأبنائها ولا تُضيف إليه. الإنسان وحده يتجاوز التقليد ويبتكر ويضيف — <strong>هو سيد الكائنات.</strong>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>التربية وسيلة لبقاء المجتمع الإنساني</strong><br>
+            حياة الإنسان قصيرة — فلكي يستمر المجتمع، لا بد من نقل خبرات الكبار إلى الصغار. أي مجتمع ينصرف كباره عن صغاره يكتب على نفسه الفناء. <em>نقل الخبرة من جيل لجيل لا ينتهي إلا بفناء المجتمع.</em>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>التربية وسيلة اتصال وتنمية للأفراد</strong><br>
+            الاتصال المطلوب في التربية ليس مجرد نقل معلومات — بل اتصال يؤكد المشاركة في المفاهيم والمشاعر الإنسانية. الأب والابن، المعلم والتلميذ — علاقة تشكيل متبادل.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>التربية عملية اجتماعية</strong><br>
+            التربية لا تتم في فراغ — لا بد من مجتمع. غايتها إعداد "المواطن الصالح" — وكلمة "صالح" تختلف تعريفاً من مجتمع لآخر تبعاً لقيمه وفلسفته. التربية أداة المجتمع لتنشئة أفراده.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>التربية عملية مستمرة</strong><br>
+            تبدأ من المهد وتنتهي باللحد — التشكيل لا يتوقف. أقوى مراحله في السنوات الخمس الأولى (يؤكد علماء النفس)، لكنه يستمر طوال الحياة. لهذا يقال: <em>التعلم مدى الحياة.</em>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>التربية تعمل على تكوين الاتجاهات السلوكية</strong><br>
+            البيئة الاجتماعية تنعكس على شخصية الإنسان في اتجاهاته العقلية والعاطفية وأنماطه السلوكية. البيئة هي الميدان الحيوي للتربية.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>التربية عملية نمو شاملة ومتكاملة</strong><br>
+            لا تنحاز لجانب على حساب آخر — جسم وعقل ونفس وروح وأخلاق ومهارات وجماليات… كلها معاً. النمو هنا كمّي <em>وكيفي</em> في آنٍ واحد.<br>
+            <strong>ركيزتان أساسيتان:</strong> (١) ضعف المولود البشري وحاجته للآخرين. (٢) مرونة المولود البشري وقابليته للتشكيل والتعديل.
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION 6: وظائف التربية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">⚡</span>
+      <span class="section-title">سادساً: وظائف التربية — ماذا تفعل التربية في المجتمع؟</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="explain-box">
+        <p>وظائف التربية تتمثل في نقل الأنماط السلوكية من المجتمع إلى الأفراد — لكنها أوسع من ذلك بكثير:</p>
+      </div>
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-card-title">📦 نقل التراث الثقافي</div>
+          نقل إرث الأجداد للأحفاد — لكن النقل لا يكون آلياً بل مصحوباً بتعديل وتطوير وحذف وإضافة حسب متطلبات العصر.
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">🧭 تزويد الفرد بمواقف سلوكية</div>
+          تثير وتنمّي القدرات الابتكارية وتطور التفكير النشط المتطلع لمستقبل أفضل.
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">🏛️ نقل التراث الحضاري</div>
+          نشر الاختراعات والابتكارات ومفاهيم الحضارة الحديثة بشكل منظم مدروس.
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">🔗 تكيّف الفرد مع بيئته</div>
+          مساعدة الفرد على الانتماء للجماعة — وبالانتماء يشعر بالأمن والاستقرار ويقل توتره القلق. التربية مكتسبة لا وراثية!
+        </div>
+      </div>
+      <div class="amber-card" style="margin-top: 16px;">
+        <div class="mini-card-title">🗣️ اكتساب اللغة</div>
+        اللغة وسيلة الاتصال بين الأفراد — يتعلمها الطفل من أسرته ثم رفاقه ثم مدرسته ثم مجتمعه. وتبدأ بصيغها الأبسط في المراحل الأولى وتتطور تدريجياً. اللغة نظام رمزي صوتي يصنع هوية الجماعة.
+      </div>
+      <div class="recap-box">
+        <div class="recap-title">✦ ملخص الفصل الأول</div>
+        <ul>
+          <li>التربية ظاهرة اجتماعية قديمة قِدم الإنسان</li>
+          <li>مفهومها يتسع ليشمل كل جوانب النمو البشري</li>
+          <li>عشرات المفكرين عرّفوها من زوايا مختلفة — كلها تلتقي في شمولية الإنسان</li>
+          <li>سبع خصائص تميزها: إنسانية، بقاء، اتصال، اجتماعية، استمرار، سلوك، شمولية</li>
+          <li>وظائفها: نقل التراث، تكوين السلوك، نقل الحضارة، التكيّف، اكتساب اللغة</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CHAPTER 2 ══════════════════════════════════════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <div class="chapter-num">٢</div>
+    <h2 class="chapter-title">الأصول الاجتماعية للتربية</h2>
+    <p class="chapter-intro">لماذا التربية ظاهرة اجتماعية في المقام الأول؟ وكيف تتفاعل المدرسة مع المجتمع؟</p>
+  </div>
+
+  <!-- SECTION: التربية عملية اجتماعية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🌐</span>
+      <span class="section-title">أولاً: التربية عملية اجتماعية — كيف تنشأ؟</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body open">
+      <div class="hook-box">
+        <div class="hook-label">تخيّل معي…</div>
+        <p>لو وُلدت في جزيرة نائية وحدك تماماً — هل كنت ستعرف ما الصواب والخطأ؟ هل كنت ستتعلم أخلاقاً أو قيماً أو عادات؟ لا. التربية لا تنشأ في فراغ — إنها نتاج وجود أفراد معاً.</p>
+      </div>
+      <div class="explain-box">
+        <p>حينما يتواجد أفراد معاً — بحكم استعدادهم البيولوجي والنفسي — يدخلون في روابط وعلاقات لإشباع حاجاتهم. وفي هذا التفاعل يتعلم كل فرد: كيف يميز نفسه عن الآخرين، كيف يستجيب للمواقف، ما القيم المقبولة في جماعته. <strong>وهنا تنشأ التربية.</strong></p>
+      </div>
+      <div class="story-box">
+        <div class="story-label">🔄 التفاعل الاجتماعي = جوهر التربية</div>
+        <p>التفاعل الاجتماعي يصحبه دائماً تعلّم. وباختلاف أنواع التفاعل تختلف أنواع التعلم. العادات والتقاليد والقوانين والأفكار ما هي إلا اصطلاحات يستخدمها الناس لتحديد طريقة تفاعلهم مع بعضهم ومع بيئتهم.</p>
+        <p>في سياق هذا التفاعل تنشأ روابط وعلاقات تتنظم في: عادات وأفكار، نظم وقيم واتجاهات — هذا ما نسميه <strong>التنظيم الاجتماعي العام.</strong> والتربية هي أداة ترسيخ هذه القواعد لبناء المجتمع واستمراره.</p>
+      </div>
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-card-title">علم اجتماع التربية</div>
+          يدرس الظواهر التربوية بوصفها ظاهرة اجتماعية — يرى المدرسة أداة للتغيير الاجتماعي، يركز على شبكة العلاقات الاجتماعية وتحليلها في إطار فلسفة المجتمع.
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">علم الاجتماع التربوي</div>
+          يرى العمليات الاجتماعية مظاهر تربوية — يرى المدرسة وسيلة وغاية للنشاط الاجتماعي، يركز على مشكلات المجتمع وتقديم حلول لها.
+        </div>
+      </div>
+      <div class="warning-box">
+        <div class="warning-label">⚠️ لاحظ الفرق المهم</div>
+        علم اجتماع التربية (Sociology of Education) ≠ علم الاجتماع التربوي (Educational Sociology). الأول فرع من علم الاجتماع يدرس التربية. الثاني توجيه تربوي يستخدم الاجتماع لحل مشكلات.
+      </div>
+      <div class="explain-box">
+        <h4>روّاد المجال</h4>
+        <p>بدأ الاتجاه الاجتماعي في التربية في القرن التاسع عشر مع مقالات <strong>هربرت سبنسر</strong> عام ١٨٦٠م. ثم أسّس <strong>إميل دوركايم</strong> و<strong>ماكس فيبر</strong> النظريات الاجتماعية للتربية — وهما يُعدّان المؤسسَيْن الحقيقيَّيْن لاجتماعيات التربية.</p>
+        <p>رأى دوركايم أن التربية يجب أن تعيد تنظيم الحياة الاجتماعية للمجتمع الصناعي الحديث — وأن المخرج من أزماته يكمن فيها.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: أهداف الأصول الاجتماعية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🎯</span>
+      <span class="section-title">ثانياً: أهداف دراسة الأصول الاجتماعية للتربية</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">لماذا نهتم؟</div>
+        <p>لماذا يجب أن يدرس المعلم الأصول الاجتماعية للتربية؟ لأنه بدون هذا الفهم سيدرّس في فراغ — لا يفهم لماذا تلميذه يتصرف هكذا، ولا كيف يصمم درساً يناسب بيئته الاجتماعية.</p>
+      </div>
+      <ol class="numbered-list">
+        <li>
+          <div>
+            <strong>دراسة الحقائق التربوية وعلاقتها بالحقائق الاجتماعية</strong><br>
+            كل عمل تربوي يقوم على حقائق مستمدة من طبيعة المجتمع ومكوناته الفكرية ومعاييره وأنماط حياته. التربية تحمل طابع مجتمعها وتعكس مصالحه — لذا تتعدد النظريات التربوية بتعدد الرؤى تجاه المجتمع وثقافته.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>تحليل وفهم الوظيفة الاجتماعية للنظم التربوية</strong><br>
+            التربية في أي مجتمع تعمل مشروطة بماضيه وحاضره ومستقبله — تتأثر بثقافته وبأحكام الكبار. فهم هذه الوظيفة يساعد في تحديد دور التربية في الفرد والمجتمع.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>فهم تفاعل التربية مع النظم والمؤسسات الاجتماعية</strong><br>
+            التربية تتبادل التفاعل مع النظم السياسية والاقتصادية والاجتماعية والثقافية — وهذا التفاعل يزداد كلما تقدم المجتمع.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>الكشف عن الوظائف والأدوار الاجتماعية داخل المدرسة</strong><br>
+            المعلم لا يقتصر دوره على التدريس — له دور نفسي وتدريبي واجتماعي وسياسي وثقافي واقتصادي. المناهج الدراسية لها وظيفتها الاجتماعية في حل مشكلات المجتمع.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>فهم أدوار المدرسة في التجديد الثقافي</strong><br>
+            المدرسة اليوم من أهم عوامل التطوير والتجديد الاجتماعي والثقافي — تحافظ على الثقافة وفي نفس الوقت تجددها وتطورها. على دورها يتوقف مستقبل الثقافة ونوعية الحياة.
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION: المدرسة مؤسسة اجتماعية -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🏫</span>
+      <span class="section-title">ثالثاً: المدرسة مؤسسة اجتماعية — البناء والعلاقات</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">فكّر في هذا…</div>
+        <p>المدرسة التي تذهب إليها كل يوم ليست مجرد مبنى وكتب ومعلمين. إنها مجتمع مصغّر — بكل تعقيداته وعلاقاته وتأثيراته. هي مؤسسة اجتماعية بالمعنى الكامل للكلمة.</p>
+      </div>
+      <div class="explain-box">
+        <h4>تعريف المؤسسة الاجتماعية</h4>
+        <p>المؤسسة الاجتماعية هي <strong>أنماط اجتماعية للسلوك السائد</strong> تنظم علاقة الأفراد بعضهم مع بعض للقيام بالوظائف الاجتماعية الأساسية. وتتميز بالاستمرار والديمومة.</p>
+      </div>
+      <div class="story-box">
+        <div class="story-label">🏗️ التركيب الاجتماعي للمدرسة</div>
+        <p>يتكون التركيب الاجتماعي للمدرسة من:</p>
+        <ul class="bullet-list">
+          <li><strong>العناصر البشرية:</strong> التلاميذ، المعلمون، المشرفون، الموجهون، الإداريون</li>
+          <li><strong>العناصر غير البشرية:</strong> المباني، التجهيزات، المعامل، المناهج، الوسائل التعليمية والموارد المادية</li>
+        </ul>
+        <p>هذا البناء يتأثر بالبيئة الطبيعية والجغرافية والاقتصادية — المحيطة بالمدرسة وحتى البعيدة في المحيط الإقليمي والعالمي.</p>
+      </div>
+      <h3>خصائص المدرسة التي تميزها عن غيرها</h3>
+      <ul class="bullet-list">
+        <li>بيئة اجتماعية ثقافية تنظمها تقاليد واضحة وتوجهها الأهداف القومية</li>
+        <li>تقوم على تخطيط واعٍ قصير وبعيد المدى</li>
+        <li>نقطة التقاء لعدد كبير من العلاقات الاجتماعية المعقدة</li>
+        <li>تتمتع بسلطة ومتخصصين ومنهج محتوى دراسي وطرق تدريس مختارة</li>
+        <li>بيئة اجتماعية تنظمها أسس علمية خاصة بسلوك الإنسان وطرق تعلمه</li>
+      </ul>
+      <h3>العلاقات الاجتماعية داخل المدرسة</h3>
+      <div class="explain-box">
+        <p>التفاعل الاجتماعي = أساس العلاقات الاجتماعية. العلاقة هي صلة متبادلة بين شخصين أو أكثر — والتغيير الناتج عن تبادل التأثير يُسمى التفاعل.</p>
+      </div>
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-card-title">علاقة المتعلم بالمعلم</div>
+          علاقة ثنائية تبادلية. جودتها تتوقف على:
+          <ul class="bullet-list" style="margin-top:8px">
+            <li>مدى التقارب بينهما خلال النشاط المدرسي</li>
+            <li>تكرار التفاعل في الأنشطة المختلفة</li>
+            <li>طبيعة النشاط المدرسي وحريته</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">جماعة الفصل المدرسي</div>
+          مجتمع التلاميذ — تساعد على:
+          <ul class="bullet-list" style="margin-top:8px">
+            <li>نمو ذات التلميذ والإبداع والابتكار</li>
+            <li>نمو المفاهيم الاجتماعية وسلوكه</li>
+            <li>التكيف الثقافي ومعرفة المعايير الاجتماعية</li>
+            <li>تنمية دوافع التعليم عبر الحل الجماعي</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: الضبط الاجتماعي -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">⚖️</span>
+      <span class="section-title">رابعاً: المدرسة والضبط الاجتماعي — ما معناه؟ وكيف تطبقه المدرسة؟</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">تخيّل معي…</div>
+        <p>لو لم يكن هناك قانون ولا قيم ولا معايير — ماذا سيحدث؟ فوضى كاملة. كل مجتمع يحتاج إلى آلية تجعل الناس يلتزمون بقواعده. هذه الآلية تسمى <strong>الضبط الاجتماعي.</strong></p>
+      </div>
+      <div class="explain-box">
+        <p>الضبط الاجتماعي (Social Control): عملية اجتماعية تتحدد على أساس السلوك الذي يتوافق مع متطلبات النظام الاجتماعي. وسائله: الدين، الأخلاق، التربية، القانون، الفن، المعرفة.</p>
+        <p>أطلق هذا المصطلح العالم الأمريكي <strong>"روس"</strong> في مطلع القرن العشرين.</p>
+      </div>
+      <h3>أهداف الضبط الاجتماعي</h3>
+      <ol class="numbered-list">
+        <li><div><strong>الامتثال للمعايير والقواعد الاجتماعية</strong> — توقيع الجزاءات على من يخرج عن القواعد.</div></li>
+        <li><div><strong>مقاومة الانحراف والأمراض الاجتماعية</strong> — التشريعات والضوابط لمواجهة الانحرافات.</div></li>
+        <li><div><strong>تمكين السلطة من مزاولة مهامها</strong> — مقاومة الأهواء والقضاء على الظلم والعدوان.</div></li>
+        <li><div><strong>تدعيم المراكز وأداء الأدوار الاجتماعية</strong> — كلما ارتفعت مكانة الفرد زادت مسايرته للمعايير.</div></li>
+        <li><div><strong>توجيه عمليات التنشئة الاجتماعية</strong> — الثواب والعقاب والتوجيه والإرشاد.</div></li>
+        <li><div><strong>تشجيع قوى الإبداع والابتكار</strong> — الضبط الإيجابي يثير الحماس للمثابرة وبذل الجهد.</div></li>
+      </ol>
+      <h3>التربية: أداة الضبط الاجتماعي الأهم</h3>
+      <div class="story-box">
+        <div class="story-label">🔑 في الواقع…</div>
+        <p>التربية من أساليب الضبط الاجتماعي — بل وأهمها، لأن أثرها يفوق قوة القانون. القانون يُخيف، لكن التربية تُقنع وتُشكّل الضمير من الداخل. حين يلتزم الإنسان بالقانون لأنه يؤمن به — لا لأنه يخشاه — هذا هو أعلى درجات الضبط التربوي.</p>
+      </div>
+      <h3>أساليب المدرسة في الضبط الاجتماعي</h3>
+      <div class="grid-2">
+        <div class="amber-card">
+          <div class="mini-card-title">① إرساء قواعد النظام</div>
+          المدرسة لا تسير عشوائياً. النظام يُحفظ بتعقل وحكمة — لا بأساليب مصطنعة، بل بتنمية الوازع الأخلاقي الداخلي وتنمية الشعور بالمسؤولية.
+        </div>
+        <div class="amber-card">
+          <div class="mini-card-title">② القدوة التربوية</div>
+          المعلم الذي يصدق فعله قوله هو أقوى أسلوب ضبط. حين يلتزم المعلم بالقيم والمعايير الأخلاقية ينمي في التلميذ وعياً بأنماط ثقافة مجتمعه.
+        </div>
+      </div>
+      <div class="warning-box">
+        <div class="warning-label">⚠️ العقوبات البدنية — الموقف العلمي</div>
+        الدراسات والبحوث تؤكد أن العقوبات البدنية تمس مشاعر المتعلم وكرامته وتُلحق أضراراً نفسية وأخلاقية. تسهم في توليد العنف والجنوح وزيادة معدلات الجريمة. الأنسب: اللوم، الاستهجان، التوبيخ، العزل المؤقت، الحرمان من الامتيازات. الهدف من العقوبة: الإصلاح والتقويم لا الإيذاء.
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: الحراك الاجتماعي -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">📈</span>
+      <span class="section-title">خامساً: المدرسة والحراك الاجتماعي</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">في الواقع…</div>
+        <p>لماذا يصر الآباء على تعليم أبنائهم بكل ما لديهم؟ لأنهم يعرفون غريزياً أن التعليم هو المصعد الاجتماعي — الطريق من الفقر إلى الرخاء، من الهامش إلى المركز.</p>
+      </div>
+      <div class="explain-box">
+        <h4>تعريف الحراك الاجتماعي (Social Mobilization)</h4>
+        <p>انتقال فرد أو جماعة من مستوى اجتماعي واقتصادي معين إلى مستوى آخر داخل التكوين الطبقي للمجتمع — صعوداً أو هبوطاً (حراك رأسي)، أو أفقياً داخل الطبقة الواحدة.</p>
+      </div>
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-card-title">الحراك الرأسي</div>
+          الانتقال من طبقة إلى أخرى — صعوداً (من فقير إلى متوسط) أو هبوطاً.
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">الحراك الأفقي</div>
+          الانتقال داخل نفس الطبقة — مثل تغيير المهنة في نفس المستوى الاجتماعي.
+        </div>
+      </div>
+      <div class="story-box">
+        <div class="story-label">📖 التاريخ يقول…</div>
+        <p>في العصور السابقة، اقتصر التعليم على أبناء الصفوة — فكان التعليم أداة لتكريس الفجوات الطبقية لا ردمها. لكن مع انتشار مبادئ الديمقراطية والحرية والمساواة، أصبح التعليم أداةً حقيقيةً للحراك الاجتماعي.</p>
+      </div>
+      <h3>كيف تحقق المدرسة الحراك الاجتماعي؟</h3>
+      <ol class="numbered-list">
+        <li><div>تنويع التعليم وتجديد نظمه وبرامجه وفتح مسارات مختلفة أمامه تتيح الاختيار حسب قدرات الأفراد وطموحاتهم.</div></li>
+        <li><div>المساواة في معاملة التلاميذ في التحاقهم وتوزيعهم على الفصول وفي معاملتهم على أساس أدائهم وأنشطتهم.</div></li>
+        <li><div>التقويم الموضوعي للأداء على أساس التحصيل وقياس القدرات والاستعدادات ومنح الشهادات على ذلك.</div></li>
+        <li><div>منح جميع التلاميذ فرصاً متساوية للكشف عن قدراتهم وصقل مواهبهم من خلال المسابقات والنشاطات والندوات.</div></li>
+      </ol>
+      <div class="recap-box">
+        <div class="recap-title">✦ ملخص الفصل الثاني</div>
+        <ul>
+          <li>التربية ظاهرة اجتماعية تنشأ من تفاعل الأفراد مع بعضهم</li>
+          <li>علم اجتماع التربية يدرس الأبعاد الاجتماعية للعملية التربوية</li>
+          <li>المدرسة مؤسسة اجتماعية تستمد فلسفتها وأهدافها من المجتمع</li>
+          <li>الضبط الاجتماعي يحفظ النظام والتماسك — والتربية أهم أدواته</li>
+          <li>التعليم المصعد الاجتماعي الأهم في المجتمعات الحديثة</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CHAPTER 3 ══════════════════════════════════════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <div class="chapter-num">٣</div>
+    <h2 class="chapter-title">الأسس الثقافية للتربية</h2>
+    <p class="chapter-intro">ما الثقافة؟ وكيف تُشكّل التربية وتُشكّلها؟ — رحلة في عناصر الثقافة وخصائصها ومستوياتها</p>
+  </div>
+
+  <!-- SECTION: تعريف الثقافة -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🌿</span>
+      <span class="section-title">أولاً: تعريف الثقافة — ما هي حقاً؟</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body open">
+      <div class="hook-box">
+        <div class="hook-label">تخيّل معي…</div>
+        <p>عربيٌّ يلتقي بياباني. كل شيء مختلف — الطعام، الملابس، طريقة التحية، القيم، اللغة، التفكير. هذا الاختلاف له اسم واحد: <strong>الثقافة.</strong> كل مجتمع له هويته الثقافية التي تميزه عن غيره.</p>
+      </div>
+      <h3>أهم التعريفات العلمية للثقافة</h3>
+      <div class="thinker-card">
+        <div class="thinker-emoji">📌</div>
+        <div>
+          <div class="thinker-name">تايلور — التعريف الكلاسيكي (الأشهر)</div>
+          <div class="thinker-idea"><em>"الثقافة تركيب مكوّن من المعارف والعقائد والفن والقانون والأخلاق والأعراف وكل ما اكتسبه الإنسان كونه عضواً في المجتمع."</em></div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">📌</div>
+        <div>
+          <div class="thinker-name">كلباتريك (Kilpatrick)</div>
+          <div class="thinker-idea">الثقافة: كل ما صنعته يد الإنسان وعقله من أشياء ومظاهر في البيئة الاجتماعية — ما اخترعه أو اكتشفه وكان له دور في العملية الاجتماعية.</div>
+        </div>
+      </div>
+      <div class="thinker-card">
+        <div class="thinker-emoji">📌</div>
+        <div>
+          <div class="thinker-name">كلكهون (Kluckhohn)</div>
+          <div class="thinker-idea">وسائل الحياة المختلفة التي توصل إليها الإنسان عبر التاريخ — الظاهر منها والمتضمن، العقلي واللاعقلي — التي تكون وسائل إرشاد توجه سلوك الأفراد في المجتمع.</div>
+        </div>
+      </div>
+      <div class="explain-box">
+        <p>اتفق العلماء أن الثقافة تشمل: <strong>كافة العادات والتقاليد والقيم ومظاهر السلوك الاجتماعي</strong> التي تحدد هوية الفرد وهوية المجتمع. وهي نشاط إنساني لا يوجد إلا في مجتمع.</p>
+      </div>
+      <div class="story-box">
+        <div class="story-label">🌍 لماذا الثقافة مهمة للتربية؟</div>
+        <p>مجموعة الخبرات الاجتماعية من عادات وتقاليد وقيم ومظاهر سلوكية وطقوس اجتماعية — أصبحت تُعرف بالثقافة. وهي الأساس الاجتماعي الذي يمكننا من خلاله تشريح المجتمع للتعرف على خصائصه ومميزاته التي هي أساس هويته الحضارية. والتربية هي الأداة التي تنقل هذه الثقافة وتطورها.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: عناصر الثقافة -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🧩</span>
+      <span class="section-title">ثانياً: عناصر الثقافة — ما الذي يصنع ثقافة المجتمع؟</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">لو فكّرت فيها…</div>
+        <p>ما الذي يجعل المجتمع العربي مختلفاً عن المجتمع الصيني أو الأمريكي؟ ستجد أن الاختلاف في عناصر بعينها — وهذه هي عناصر الثقافة.</p>
+      </div>
+      <ol class="numbered-list">
+        <li>
+          <div>
+            <strong>اللغة</strong><br>
+            أداة التفكير وإدارة الحضارة، وعاء الفكر، مرآة التقدم والواقع الاجتماعي. التشابه بين الشعوب العربية رغم المسافات الشاسعة ناتج عن اللغة الواحدة. اللغة مطية الأدب ومركبة العلوم كافة.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>الدين</strong><br>
+            لا يوجد ما يؤثر في الإنسان بتفكيره وسلوكه وعقيدته أكثر من العامل الديني. الإسلام يوحد بشعائره بين العربي والأفريقي والأوروبي والأمريكي — رغم اختلاف الجنس والعرق. الفتوحات الإسلامية قامت على أساس الإيمان بالله.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>العادات والتقاليد</strong><br>
+            من العناصر الأساسية للثقافة — تميّز كل مجتمع في كل مجالات الحياة: الكرم والشجاعة وعزة النفس عند العرب مثلاً تميزهم عن غيرهم.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>الجنس والقومية</strong><br>
+            تلعب دوراً رئيسياً في تحديد أنماط السلوك الثقافي. لا يمكن أن يتساوى العربي والصيني في ثقافتهم — اختلاف الجنس والقومية له خصوصيته ومميزاته.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>النظام الاقتصادي والسياسي</strong><br>
+            يؤثر مباشرةً في ثقافة المجتمع. الفروق بين المجتمعات الرأسمالية والاشتراكية في السلوكيات المرتبطة بالاقتصاد والمال والملكية واضحة وعميقة.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>الموقع الجغرافي</strong><br>
+            سكان السواحل الذين يعيشون على الصيد يختلفون عن سكان المناطق الداخلية الذين يعتمدون على الزراعة. حتى الزراعة في السهول تختلف عن الزراعة في الجبال.
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>الإعلام والأدب</strong><br>
+            المؤسسة الإعلامية بمختلف وسائلها تلعب دوراً بارزاً في نقل الثقافة ونشرها وتطويرها — على رأسها اليوم الإنترنت.
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION: خصائص الثقافة -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">⭐</span>
+      <span class="section-title">ثالثاً: خصائص الثقافة — ما الذي يجعلها فريدة؟</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+        <span class="prop-badge">📚 تراكمية</span>
+        <span class="prop-badge">🔄 متوارثة</span>
+        <span class="prop-badge">⏳ مستمرة</span>
+        <span class="prop-badge">🚀 متطورة</span>
+        <span class="prop-badge">🔀 متغيرة</span>
+        <span class="prop-badge">👤 إنسانية</span>
+        <span class="prop-badge">🔗 متداخلة ومترابطة</span>
+        <span class="prop-badge">⚙️ وظيفية</span>
+        <span class="prop-badge">🪨 مادية ومعنوية</span>
+      </div>
+      <ol class="numbered-list">
+        <li><div><strong>تراكمية:</strong> الإنسان يحتفظ بخبراته في ذاكرته وينقلها للأجيال القادمة. كل عالم يبني على ما وصل إليه من سبقه. المعرفة تتراكم جيلاً بعد جيل.</div></li>
+        <li><div><strong>متوارثة:</strong> كل جيل يرث إرثاً ثقافياً يورثه للأجيال اللاحقة. الخبرات الصناعية كانت تُعدّ من أسرار العائلة وتتوارثها الأجيال.</div></li>
+        <li><div><strong>مستمرة:</strong> إذا تواصل التاريخ في مجتمع ما فإن الثقافة تصبح عمليات تفاعلية اجتماعية لا تتوقف.</div></li>
+        <li>
+          <div>
+            <strong>متطورة:</strong> الثقافة ديناميكية بطبيعتها — تتطور بفعل:
+            <ul class="bullet-list" style="margin-top:8px">
+              <li>زيادة الخبرات الاجتماعية</li>
+              <li>تقدم التعليم</li>
+              <li>التبادل الثقافي والعلمي مع الثقافات الخارجية</li>
+              <li>زيادة الثقافة العلمية الناتجة عن البحث العلمي</li>
+            </ul>
+          </div>
+        </li>
+        <li><div><strong>متغيرة:</strong> المفاهيم الثقافية لا تبقى كما هي — تتغير لتواكب الحاجات المعاصرة. تعليم المرأة كان مرفوضاً — واليوم أمر حتمي.</div></li>
+        <li><div><strong>إنسانية:</strong> خاصة بالمجتمع الإنساني كون الإنسان كائن اجتماعي مفكر له قيمه ومبادئه الأخلاقية.</div></li>
+        <li><div><strong>متداخلة ومترابطة:</strong> لا يمكن فصل مكوناتها بعضها عن بعض. الإنسان الذي يمتهن أي مهنة يحتاج معارف تربوية وتاريخية وسياسية وطبية وغيرها معاً.</div></li>
+        <li>
+          <div>
+            <strong>وظيفية:</strong> تحقق أهدافاً ووظائف أساسية في حياة الفرد والمجتمع:
+            <ul class="bullet-list" style="margin-top:8px">
+              <li>تكسب الأفراد مهارات سلوكية في المأكل والملبس وغيرها</li>
+              <li>تعلّم وظيفة التعاون الاجتماعي</li>
+              <li>تمكّن من حل المشكلات والاستفادة من الخبرات الماضية</li>
+              <li>تقدم وظيفة إنسانية (حقوق الإنسان) وقانونية وعلمية</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>مادية ومعنوية:</strong>
+            <ul class="bullet-list" style="margin-top:8px">
+              <li><strong>المادي:</strong> كل ما أنجزته الثقافة من إنتاج مادي: الطعام، الملابس، التقنيات الإلكترونية الدقيقة</li>
+              <li><strong>المعنوي:</strong> منظومة القيم الأخلاقية والقوانين والأنظمة والمبادئ التي تحرر الفكر والإنسان وتبين حقوقه وواجباته</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION: مستويات الثقافة -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">📊</span>
+      <span class="section-title">رابعاً: مستويات الثقافة والطبقات الاجتماعية</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="explain-box">
+        <p>الثقافة تنقسم من حيث مستوياتها إلى أقسام — كل مستوى يعكس جانباً مختلفاً من الإنجاز الإنساني:</p>
+      </div>
+      <table class="compare-table">
+        <tr><th>المستوى</th><th>الشرح والأمثلة</th></tr>
+        <tr><td>المادي وغير المادي</td><td>المادي: العمران، الصناعات الحرفية والتقنية. غير المادي: المفاهيم والمعاني المرتبطة بالقيم والأفكار</td></tr>
+        <tr><td>القيمي</td><td>أرفع مستويات الثقافة — تمثل أرفع المفاهيم الفكرية والاجتماعية وتعكس موقف المجتمع من القضايا</td></tr>
+        <tr><td>الأدبي والفني</td><td>الغناء والشعر والنقوش والقصص — أرقى مستوى للغة والإنجاز الحضاري</td></tr>
+        <tr><td>السلوكي</td><td>مظاهر السلوك تعكس مضموناً ثقافياً — السلوك المهذب القائم على الاحترام يعكس ثقافة رفيعة</td></tr>
+        <tr><td>الطبقي</td><td>لكل طبقة اجتماعية تمايز في ثقافتها: فلاحون، عمال، موظفون، تجار، طبقة سياسية</td></tr>
+        <tr><td>العلمي</td><td>الثقافة القائمة على الحقائق والمفاهيم من البحث العلمي وجهود العلماء والباحثين</td></tr>
+        <tr><td>التطبيقي والخبرة</td><td>الأداء في ميادين الحياة والإبداع في الصناعات — الأمثال المتداولة نتجت عن خبرة عملية</td></tr>
+        <tr><td>المثالي</td><td>ما لا يقاس بقيمة مادية: الشجاعة، الكرم، المروءة، الجمال، الفن — رمز الأمة ومثلها الأعلى</td></tr>
+      </table>
+      <h3>الطبقات الاجتماعية كمستويات ثقافية</h3>
+      <div class="grid-2">
+        <div class="amber-card"><div class="mini-card-title">طبقة الفلاحين</div>تعمل في الزراعة، الأرض مصدر رزقها</div>
+        <div class="amber-card"><div class="mini-card-title">طبقة العمال</div>تعمل في المصانع وورش العمل</div>
+        <div class="amber-card"><div class="mini-card-title">طبقة الموظفين</div>تعمل في الوظائف الحكومية، متقاربة في ثقافتها واهتماماتها</div>
+        <div class="amber-card"><div class="mini-card-title">طبقة التجار وكبار الملاك</div>تمتلك مصالح المال والاقتصاد، مؤثرة في السياسة</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: التثقيف ودور المؤسسات -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🏛️</span>
+      <span class="section-title">خامساً: التثقيف ودور المؤسسات التعليمية</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="explain-box">
+        <p><strong>التثقيف:</strong> مجموعة الجهود والنشاطات التي تعمل على نقل الثقافة من فرد إلى فرد ومن جماعة إلى جماعة. له طابع تربوي يرتبط بصقل سلوك الأفراد اجتماعياً.</p>
+      </div>
+      <h3>دور رياض الأطفال في التثقيف</h3>
+      <ol class="numbered-list" style="font-size:15px">
+        <li><div>عبر اللعب يتعلم الطفل احترام الآخرين والتعاون — نتاج ثقافي قيمي</div></li>
+        <li><div>تعليم الأطفال الدقة والنظام في ترتيب أدواتهم وسلوكهم</div></li>
+        <li><div>تكوين خبرات سلوكية صحيحة في المحافظة على البيئة والنظافة</div></li>
+        <li><div>تكوين مهارات حركية منظمة تطور القدرات الجسدية</div></li>
+        <li><div>تنمية المهارات الفنية في التذوق الفني بالرسم والأدب والمسرح</div></li>
+        <li><div>تنمية قدرة الطفل على حل مشكلاته والاعتماد على ذاته</div></li>
+        <li><div>إكساب معلومات تاريخية وسياحية خاصة بالوطن</div></li>
+        <li><div>تثقيف الأطفال بالمهن والنشاطات والحرف الاجتماعية</div></li>
+      </ol>
+      <h3>دور المدرسة في التثقيف</h3>
+      <div class="story-box">
+        <div class="story-label">📣 تعريف إبراهيم ناصر</div>
+        <p>"المدرسة هي تلك المؤسسة القيّمة على الحضارة الإنسانية، والفكرة التي تقوم عليها المدرسة هي التنمية بمعناها العام."</p>
+      </div>
+      <ul class="bullet-list">
+        <li>تعليم التلاميذ على احترام النظام والقانون</li>
+        <li>استيعاب وإتقان المهارات الأكاديمية بكل دقة وترتيب</li>
+        <li>إتقان التقنيات العلمية الحديثة في مختلف المجالات</li>
+        <li>تدريب الطلبة على العمل الجماعي المنظم</li>
+        <li>تنمية الحس الذوقي والفني للجمال</li>
+        <li>إكساب الطلبة عادات سلوكية ثقافية حميدة كحب المطالعة</li>
+      </ul>
+      <h3>دور المؤسسات الإعلامية والدينية</h3>
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-card-title">الإعلام</div>
+          <ul class="bullet-list" style="font-size:14px">
+            <li>نشر الوعي الثقافي في الأدب والفن والعلوم</li>
+            <li>نشر الوعي السياسي والصحي والبيئي</li>
+            <li>التغذية المعلوماتية المتخصصة</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">المؤسسات الدينية</div>
+          <ul class="bullet-list" style="font-size:14px">
+            <li>توعية بمنظومة القيم والقوانين الدينية</li>
+            <li>تحديد نمط من السلوك الاجتماعي قائم على التعاون والتسامح</li>
+            <li>تحقيق حرية الإنسان وحقوقه ومبدأ المساواة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warning-box">
+        <div class="warning-label">⚠️ الدور السلبي للمؤسسات</div>
+        <p>وسائل الإعلام قد تنشر ثقافات أجنبية تؤثر سلباً كـ"صرعات الموضة" التي تبعد الشباب عن ثقافتهم. والمؤسسات الدينية قد تغرس التعصب والعنصرية. والفقر عدو الحضارة — يجعل الإنسان فريسة للتخلف والانحراف.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: السلوك الثقافي -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">🧭</span>
+      <span class="section-title">سادساً: السلوك الثقافي وعواملـه</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="explain-box">
+        <p><strong>السلوك الثقافي:</strong> أي سلوك اجتماعي يمثّل العادات والتقاليد أو النظم الاقتصادية — يرتبط بقيم المجتمع وثوابته المقبولة التي اعتاد عليها الأفراد وقبلوها.</p>
+        <p>يظهر في كل التفاعلات الاجتماعية: الأسرة، المدرسة، المؤسسة، مناسبات الزواج، الوفاة، الطعام، الملبس، القيم الأخلاقية.</p>
+      </div>
+      <h3>العوامل المؤثرة في السلوك الثقافي</h3>
+      <ol class="numbered-list">
+        <li><div><strong>العامل البيئي والجغرافي:</strong> مستوى البيئة يؤثر في سلوك الفرد — يحدد طبيعته ومستواه.</div></li>
+        <li><div><strong>العامل الاقتصادي:</strong> البيئة الغنية توفر بدائل سلوكية كثيرة — الهوايات والإبداع والمطالعة. الفقر يدفع لأدنى مستوى سلوكي ويدمر القناعات.</div></li>
+        <li><div><strong>العامل الفلسفي:</strong> القواعد الفلسفية للإسلام تختلف عن غيرها — فلسفة الأمة في الدول الغربية تختلف عنها عند العرب والصينيين.</div></li>
+        <li><div><strong>العامل الديني:</strong> للدين شعائره وطقوسه ويفرض على الفرد سلوكاً مميزاً مثل الصلاة والصيام.</div></li>
+        <li><div><strong>العامل القومي والإقليمي:</strong> الأرمني والشركسي وغيرهم يحافظون على عاداتهم وتقاليدهم القومية.</div></li>
+        <li><div><strong>العامل الشخصي/الفردي:</strong> لكل إنسان معادلته الفردية من العوامل الوراثية. في الأسرة الواحدة قد نجد: ابن متدين، وآخر متحرر، وآخر يدخّن، والرابع لا يدخّن.</div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SECTION: أهمية الثقافة للمعلم -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-icon">👨‍🏫</span>
+      <span class="section-title">سابعاً: أهمية دراسة الثقافة للمعلم</span>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="hook-box">
+        <div class="hook-label">هذا يفسر لماذا…</div>
+        <p>المعلم ليس مجرد ناقل معلومات — هو حامل ثقافة كاملة ينقلها للتلميذ. ثقافة المعلم تعمل على ترسيخ أو نسخ وتغيير ثقافة الطفل. المعلم يستطيع أن يقود أفكار وسلوك الطفل إلى ما يريد — سلباً أو إيجاباً.</p>
+      </div>
+      <div class="quote-box">
+        محمد عطية الإبراشي يقول: "مستقبل الأمة بأيدي المدرسين وتحسين الجيل المقبل في أيدي المعلمين. هذا العمل شاق يجب أن يؤدوه برغبة وأمانة وإخلاص وإيمان وعقيدة، فهم الذين يغرسون في نفوس تلاميذهم المبادئ القوية ولا ينتظرون من عملهم جزاءً ولا شكوراً."
+        <span class="quote-author">— محمد عطية الإبراشي</span>
+      </div>
+      <div class="explain-box">
+        <p><strong>ثقافة المعلم تتمثل في:</strong> علمه ومعلوماته وعاداته ومعتقداته وميوله واهتماماته وصفاته وسماته — كلها تنعكس على شخصية المتعلم. ضعف المعلومات يؤدي لضعف معلومات التلميذ — وهكذا لكل جانب من جوانب شخصية التلميذ.</p>
+      </div>
+      <h3>ضرورات التثقيف للإنسان عموماً</h3>
+      <ul class="bullet-list">
+        <li>يجعل الفرد قادراً على فهم العلاقات الاجتماعية وتطبيقها</li>
+        <li>يهذّب سلوكه وينمّي إحساسه بالعواطف نحو الآخرين</li>
+        <li>ينمّي هوايات الأطفال التي تبدأ بميول بسيطة وتنتهي باحتراف كامل</li>
+        <li>يوسّع القاعدة الاجتماعية ويمكّن من القيام بأدوار تربوية وتعليمية ومهنية بشكل أفضل</li>
+        <li>التثقيف للمرأة أمر محوري — هي المدرسة الأولى للأجيال، كما قال الشاعر: "الأم مدرسة إذا أعددتها أعددت شعباً طيب الأعراق"</li>
+        <li>تثقيف الطفل في كل مرحلة نمائية مقدمة ضرورية للمراحل اللاحقة</li>
+      </ul>
+      <div class="story-box">
+        <div class="story-label">🎨 الثقافة الفنية والتقنية</div>
+        <p>الثقافة الفنية ترتبط بنمو الطفل عقلياً وانفعالياً واجتماعياً. التربية الفنية تزود الطلاب بالمفاهيم وتنمي قدرتهم على الملاحظة والتمييز وفهم التراث الثقافي.</p>
+        <p>نعيش اليوم في عالم الحوسبة — الثقافة التكنولوجية دخلت كل مناحي الحياة. عبر الإنترنت يستطيع الشخص قراءة صحف أي بلد في العالم قبل نشرها محلياً. والتسابق بين الأمم يقوم على الاختراعات والتكنولوجيا.</p>
+      </div>
+      <div class="recap-box">
+        <div class="recap-title">✦ ملخص الفصل الثالث</div>
+        <ul>
+          <li>الثقافة: مجموع العادات والتقاليد والقيم والمظاهر السلوكية التي تحدد هوية المجتمع</li>
+          <li>عناصرها: اللغة، الدين، العادات، القومية، الاقتصاد، الجغرافيا، الإعلام</li>
+          <li>خصائصها: تراكمية، متوارثة، مستمرة، متطورة، متغيرة، إنسانية، وظيفية، مادية ومعنوية</li>
+          <li>مستوياتها تشمل: المادي، القيمي، الأدبي، السلوكي، الطبقي، العلمي، التطبيقي، المثالي</li>
+          <li>المؤسسات التعليمية والإعلامية والدينية أدوات التثقيف</li>
+          <li>المعلم حامل الثقافة وناقلها — ثقافته تؤثر مباشرة في شخصية تلاميذه</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function showChapter(id, btn) {
+  document.querySelectorAll('.chapter').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: document.querySelector('.chapter-nav').offsetTop - 10, behavior:'smooth'});
+}
+
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+}
+
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTop');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// Open first sections in ch2 and ch3 by default
+document.querySelectorAll('#ch2 .section-body:first-of-type, #ch3 .section-body:first-of-type').forEach(b => {
+  b.classList.remove('open');
+});
+</script>
+</body>
+  </html>
