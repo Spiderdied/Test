@@ -1,65 +1,311 @@
 <!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><title>UBAD Hub — icon exporter</title>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UBAD Hub — أداة ضبط اللوغو</title>
 <style>
-  body{background:#050816;color:#E6E9FF;font:14px/1.5 system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0}
-  .box{background:rgba(15,23,50,.6);border:1px solid rgba(140,160,255,.2);border-radius:16px;padding:28px;text-align:center}
-  button{margin:6px;padding:10px 16px;border-radius:10px;border:1px solid rgba(139,92,246,.5);
-    background:rgba(139,92,246,.15);color:#D9CBFF;font-weight:600;cursor:pointer}
-  canvas{margin:10px;border-radius:14px}
-  p{color:#A9B2D6;max-width:420px}
-  code{color:#A5F3FC}
-</style></head>
+  :root{
+    --bg:#050816; --panel:rgba(15,23,50,.6); --line:rgba(140,160,255,.18);
+    --ink:#E6E9FF; --ink2:#A9B2D6; --ink3:#7C86A6;
+    --cyan:#22D3EE; --blue:#3B82F6; --violet:#8B5CF6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:
+    radial-gradient(900px 600px at 80% -10%,#0D1328,transparent 60%),
+    radial-gradient(700px 500px at 5% 110%,#0A1024,transparent 55%),var(--bg);
+    color:var(--ink);font:14px/1.6 system-ui,"Segoe UI",sans-serif;
+    display:flex;justify-content:center;padding:24px 16px}
+  .app{width:100%;max-width:920px}
+  h1{font-size:20px;margin:0 0 4px}
+  h1 b{background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--ink3);font-size:13px;margin:0 0 20px}
+  .grid{display:grid;gap:16px;grid-template-columns:1fr}
+  @media(min-width:760px){.grid{grid-template-columns:340px 1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;
+    backdrop-filter:blur(14px);padding:18px}
+  /* drop zone */
+  .drop{border:1.5px dashed var(--line);border-radius:14px;padding:26px 14px;
+    text-align:center;color:var(--ink2);cursor:pointer;transition:.2s}
+  .drop:hover,.drop.over{border-color:var(--violet);background:rgba(139,92,246,.08)}
+  .drop .big{font-size:26px;display:block;margin-bottom:6px}
+  .drop small{color:var(--ink3);display:block;margin-top:4px}
+  /* controls */
+  .ctl{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+  .row{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+  label{font-size:13px;color:var(--ink2);font-weight:600}
+  input[type=range]{flex:1;accent-color:var(--violet);min-width:120px}
+  input[type=color]{width:42px;height:30px;border:1px solid var(--line);border-radius:8px;
+    background:none;padding:2px;cursor:pointer}
+  input[type=checkbox]{accent-color:var(--cyan);width:16px;height:16px}
+  .val{font-family:ui-monospace,monospace;font-size:12px;color:var(--ink3);min-width:44px;text-align:left}
+  button{font:inherit;font-weight:600;cursor:pointer;border-radius:10px;border:1px solid var(--line);
+    background:rgba(59,130,246,.12);color:var(--ink);padding:9px 14px;transition:.15s}
+  button:hover{border-color:var(--blue)}
+  button:active{transform:scale(.97)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .primary{background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(139,92,246,.2));
+    border-color:rgba(139,92,246,.55);color:#D9CBFF}
+  .mini{padding:6px 10px;font-size:12px}
+  /* preview */
+  .prev-wrap{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  #preview{border-radius:14px;border:1px solid var(--line);cursor:grab;touch-action:none;
+    background:
+      repeating-conic-gradient(rgba(140,160,255,.07) 0 25%,transparent 0 50%) 0 0/20px 20px}
+  #preview:active{cursor:grabbing}
+  .minis{display:flex;flex-direction:column;gap:10px;align-items:center}
+  .minis figure{margin:0;text-align:center}
+  .minis canvas{display:block;border:1px solid var(--line)}
+  #pv-mask{border-radius:50%}
+  #pv-apple{border-radius:24%}
+  .minis figcaption{font-size:10.5px;color:var(--ink3);margin-top:4px}
+  .guide-note{font-size:11.5px;color:var(--ink3);margin-top:10px}
+  /* outputs */
+  .outs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:14px}
+  .out{display:flex;align-items:center;justify-content:space-between;gap:8px;
+    border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:rgba(10,16,36,.45)}
+  .out b{font-family:ui-monospace,monospace;font-size:12px;color:var(--cyan)}
+  .out span{font-size:11px;color:var(--ink3)}
+  .hint{margin-top:14px;font-size:12.5px;color:var(--ink2);border-top:1px solid var(--line);padding-top:12px;line-height:1.9}
+  .hint code{color:#A5F3FC;background:rgba(34,211,238,.08);padding:1px 6px;border-radius:6px;
+    font-family:ui-monospace,monospace;font-size:11.5px}
+  .ok{color:#34D399;font-weight:600}
+</style>
+</head>
 <body>
-<div class="box">
-  <h2>UBAD Hub — icon exporter</h2>
-  <p>Click a button to download a PNG icon. Place the files in
-     <code>assets/icons/</code>, then redeploy.</p>
-  <canvas id="cv" width="192" height="192"></canvas>
-  <div>
-    <button data-size="192" data-kind="any">icon-192.png</button>
-    <button data-size="512" data-kind="any">icon-512.png</button>
-    <button data-size="512" data-kind="maskable">icon-maskable-512.png</button>
-    <button data-size="180" data-kind="apple">apple-touch-icon.png</button>
+<div class="app">
+  <h1>أداة ضبط اللوغو — <b>UBAD Hub</b></h1>
+  <p class="sub">ارفع صورة اللوغو، اضبط الحجم والموضع، ثم نزّل كل مقاسات PWA الجاهزة للرفع في <b>assets/icons/</b></p>
+
+  <div class="grid">
+    <!-- ═ التحكم ═ -->
+    <div class="card">
+      <div class="drop" id="drop">
+        <span class="big">🖼️</span>
+        <b>اسحب الصورة هنا أو اضغط للاختيار</b>
+        <small>أو الصقها بـ Ctrl + V · PNG / JPG / WEBP / SVG</small>
+        <input type="file" id="file" accept="image/*" hidden>
+      </div>
+
+      <div class="ctl">
+        <div class="row">
+          <label>تكبير</label>
+          <input type="range" id="zoom" min="0.4" max="3" step="0.01" value="1" disabled>
+          <span class="val" id="zoom-v">1.00×</span>
+        </div>
+        <div class="row">
+          <label>خلفية</label>
+          <input type="color" id="bg" value="#0A1024">
+          <label style="display:flex;align-items:center;gap:6px">
+            <input type="checkbox" id="transparent">
+            شفافة (للأيقونات العادية فقط)
+          </label>
+        </div>
+        <div class="row">
+          <label>استدارة الحواف</label>
+          <input type="range" id="radius" min="0" max="25" step="1" value="18" disabled>
+          <span class="val" id="radius-v">18%</span>
+        </div>
+        <div class="row">
+          <label style="display:flex;align-items:center;gap:6px">
+            <input type="checkbox" id="guide" checked>
+            إظهار منطقة الأمان (Maskable)
+          </label>
+          <button class="mini" id="reset" disabled>↺ إعادة الضبط</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═ المعاينة والمخرجات ═ -->
+    <div class="card">
+      <div class="prev-wrap">
+        <canvas id="preview" width="300" height="300"></canvas>
+        <div class="minis">
+          <figure><canvas id="pv-mask"  width="72" height="72"></canvas><figcaption>Maskable (كما يقصّه أندرويد)</figcaption></figure>
+          <figure><canvas id="pv-apple" width="72" height="72"></canvas><figcaption>آيفون</figcaption></figure>
+        </div>
+      </div>
+      <p class="guide-note">الدائرة المنقّطة = منطقة الأمان. أي جزء من اللوغو خارجها <b>سيُقص في بعض الأجهزة</b> — كبّر أو حرّك حتى يصبح كله بالداخل.</p>
+
+      <div class="outs">
+        <div class="out"><div><b>icon-192.png</b><br><span>192×192 · any</span></div><button class="mini" data-dl="192">نزّل</button></div>
+        <div class="out"><div><b>icon-512.png</b><br><span>512×512 · any</span></div><button class="mini" data-dl="512">نزّل</button></div>
+        <div class="out"><div><b>icon-maskable-512.png</b><br><span>512×512 · maskable</span></div><button class="mini" data-dl="mask">نزّل</button></div>
+        <div class="out"><div><b>apple-touch-icon.png</b><br><span>180×180 · iOS</span></div><button class="mini" data-dl="apple">نزّل</button></div>
+        <div class="out"><div><b>favicon-32.png</b><br><span>32×32 · إضافي</span></div><button class="mini" data-dl="fav">نزّل</button></div>
+      </div>
+      <div style="margin-top:14px">
+        <button class="primary" id="all" disabled>⬇ نزّل الملفات الخمسة كاملة</button>
+        <span id="status" style="margin-inline-start:10px;font-size:12.5px"></span>
+      </div>
+
+      <div class="hint">
+        بعد التنزيل: انقل الملفات الخمسة إلى <code>assets/icons/</code> وارفعها على GitHub،
+        ثم ارفع قيمة <code>VERSION</code> في <code>sw.js</code> إلى <code>v1.0.2</code>
+        وحدّث الصفحة مرتين.<br>
+        إضافي اختياري — أضف هذا السطر في <code>index.html</code> بعد رابط أيقونة الـ SVG:
+        <code>&lt;link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png"&gt;</code>
+      </div>
+    </div>
   </div>
-  <button id="all" style="border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.12);color:#A5F3FC">⬇ Download all 4</button>
 </div>
+
 <script>
-/* draws the exact same "U" logo as the app, straight on canvas */
-function draw(size,kind){
-  const c=document.createElement('canvas');c.width=c.height=size;
-  const x=c.getContext('2d');const s=size/64;
-  x.save();x.scale(s,s);
-  if(kind==='maskable'){x.fillStyle='#0A1024';x.fillRect(0,0,64,64);x.translate(8,8);x.scale(.75,.75);}
-  else if(kind==='apple'){x.fillStyle='#0A1024';x.fillRect(0,0,64,64);}
-  else{x.fillStyle='#0A1024';
-    if(x.roundRect){x.beginPath();x.roundRect(0,0,64,64,15);x.fill();}
-    else x.fillRect(0,0,64,64);
-    x.strokeStyle='rgba(140,160,255,.28)';x.lineWidth=1;
-    if(x.roundRect){x.beginPath();x.roundRect(1,1,62,62,14);x.stroke();}}
-  const g=x.createLinearGradient(0,0,64,64);
-  g.addColorStop(0,'#22D3EE');g.addColorStop(.55,'#3B82F6');g.addColorStop(1,'#8B5CF6');
-  x.strokeStyle=g;x.lineWidth=7;x.lineCap='round';
-  x.beginPath();x.moveTo(20,15);x.lineTo(20,34);x.arc(32,34,12,Math.PI,0,true);x.lineTo(44,15);x.stroke();
-  x.fillStyle='#22D3EE';x.beginPath();x.arc(47.5,14.5,3,0,7);x.fill();
-  x.restore();return c;
+'use strict';
+/* ── الحالة ─────────────────────────────────────────────── */
+const S = { img:null, zoom:1, ox:0, oy:0, bg:'#0A1024', transparent:false, radius:0.18, guide:true };
+
+const $ = s=>document.querySelector(s);
+const preview=$('#preview'), pvMask=$('#pv-mask'), pvApple=$('#pv-apple');
+const zoomEl=$('#zoom'), radiusEl=$('#radius');
+const fileInput=$('#file'), drop=$('#drop'), statusEl=$('#status');
+
+/* ── محرك الرسم ──────────────────────────────────────────── */
+/* kind: 'any' | 'maskable' | 'apple' | 'fav' */
+function renderTo(canvas, size, kind){
+  canvas.width = canvas.height = size;
+  const x = canvas.getContext('2d');
+  x.clearRect(0,0,size,size);
+
+  const needsBg = (kind!=='any' && kind!=='fav') || !S.transparent;
+  if(needsBg){
+    x.fillStyle = S.bg;
+    if(kind==='any' && S.radius>0 && x.roundRect){
+      x.beginPath(); x.roundRect(0,0,size,size,size*S.radius); x.fill();
+    } else x.fillRect(0,0,size,size);
+  }
+  if(!S.img) return;
+
+  /* الاحتواء: maskable أصغر لتجنب القص داخل الدائرة */
+  const padFit = kind==='maskable' ? 0.56 : 0.88;
+  const max = size * padFit * S.zoom;
+  const scale = Math.min(max/S.img.width, max/S.img.height);
+  const w = S.img.width*scale, h = S.img.height*scale;
+  const cx = size/2 + S.ox*size, cy = size/2 + S.oy*size;
+  x.imageSmoothingEnabled = true;
+  x.imageSmoothingQuality = 'high';
+  x.drawImage(S.img, cx-w/2, cy-h/2, w, h);
 }
-function dl(canvas,name){canvas.toBlob(b=>{
-  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;
-  document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(a.href),3000);});}
-document.querySelectorAll('button[data-size]').forEach(b=>b.addEventListener('click',()=>{
-  const kind=b.dataset.kind, size=+b.dataset.size;
-  const name=kind==='apple'?'apple-touch-icon.png'
-    :kind==='maskable'?'icon-maskable-512.png':'icon-'+size+'.png';
-  dl(draw(size,kind),name);
+
+function drawAll(){
+  renderTo(preview, 300, 'any');
+  /* دليل منطقة الأمان فوق المعاينة */
+  const x = preview.getContext('2d');
+  if(S.guide && S.img){
+    x.save();
+    x.strokeStyle='rgba(34,211,238,.55)'; x.setLineDash([6,6]); x.lineWidth=1.5;
+    x.beginPath(); x.arc(150,150,120,0,Math.PI*2); x.stroke(); /* 40% من 300 */
+    x.restore();
+  }
+  renderTo(pvMask, 72, 'maskable');
+  renderTo(pvApple, 72, 'apple');
+}
+
+/* ── تحميل الصورة ───────────────────────────────────────── */
+function loadImage(file){
+  if(!file || !/^image\//.test(file.type)){ flash('⚠️ الملف ليس صورة'); return; }
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = ()=>{
+    S.img = img;
+    S.zoom = 1; S.ox = 0; S.oy = 0;
+    zoomEl.value = 1; $('#zoom-v').textContent='1.00×';
+    [zoomEl,radiusEl,$('#reset'),$('#all')].forEach(e=>e.disabled=false);
+    drawAll();
+    flash('✅ تم تحميل اللوغو — اضبط ثم نزّل', true);
+  };
+  img.onerror = ()=>flash('⚠️ تعذّر قراءة الصورة');
+  img.src = url;
+}
+
+function flash(msg, ok){
+  statusEl.textContent = msg;
+  statusEl.className = ok ? 'ok' : '';
+  statusEl.style.color = ok ? '#34D399' : '#FCA5A5';
+}
+
+/* ── الأحداث ────────────────────────────────────────────── */
+drop.addEventListener('click', ()=>fileInput.click());
+fileInput.addEventListener('change', e=>{ loadImage(e.target.files[0]); e.target.value=''; });
+
+['dragover','dragleave','drop'].forEach(ev=>drop.addEventListener(ev, e=>{
+  e.preventDefault();
+  drop.classList.toggle('over', ev==='dragover');
+  if(ev==='drop') loadImage(e.dataTransfer.files[0]);
 }));
-document.getElementById('all').addEventListener('click',()=>{
-  [[192,'any','icon-192.png'],[512,'any','icon-512.png'],
-   [512,'maskable','icon-maskable-512.png'],[180,'apple','apple-touch-icon.png']]
-  .forEach((j,i)=>setTimeout(()=>dl(draw(j[0],j[1]),j[2]),i*450));
+window.addEventListener('paste', e=>{
+  const item = [...(e.clipboardData?.items||[])].find(i=>i.type.startsWith('image/'));
+  if(item) loadImage(item.getAsFile());
 });
-document.getElementById('cv').getContext('2d').drawImage(draw(192,'any'),0,0);
+
+zoomEl.addEventListener('input', ()=>{
+  S.zoom = +zoomEl.value;
+  $('#zoom-v').textContent = S.zoom.toFixed(2)+'×';
+  drawAll();
+});
+radiusEl.addEventListener('input', ()=>{
+  S.radius = +radiusEl.value/100;
+  $('#radius-v').textContent = radiusEl.value+'%';
+  drawAll();
+});
+ $('#bg').addEventListener('input', e=>{ S.bg=e.target.value; drawAll(); });
+ $('#transparent').addEventListener('change', e=>{ S.transparent=e.target.checked; drawAll(); });
+ $('#guide').addEventListener('change', e=>{ S.guide=e.target.checked; drawAll(); });
+ $('#reset').addEventListener('click', ()=>{
+  S.zoom=1; S.ox=0; S.oy=0; zoomEl.value=1; $('#zoom-v').textContent='1.00×'; drawAll();
+});
+
+/* سحب اللوغو داخل المعاينة + عجلة الفأرة للتكبير */
+let drag=null;
+preview.addEventListener('pointerdown', e=>{
+  drag={x:e.clientX, y:e.clientY, ox:S.ox, oy:S.oy};
+  preview.setPointerCapture(e.pointerId);
+});
+preview.addEventListener('pointermove', e=>{
+  if(!drag) return;
+  const r=preview.getBoundingClientRect();
+  S.ox=Math.max(-.45,Math.min(.45, drag.ox+(e.clientX-drag.x)/r.width));
+  S.oy=Math.max(-.45,Math.min(.45, drag.oy+(e.clientY-drag.y)/r.height));
+  drawAll();
+});
+preview.addEventListener('pointerup', ()=>drag=null);
+preview.addEventListener('wheel', e=>{
+  e.preventDefault();
+  S.zoom=Math.max(.4,Math.min(3, S.zoom*(e.deltaY<0?1.06:0.94)));
+  zoomEl.value=S.zoom; $('#zoom-v').textContent=S.zoom.toFixed(2)+'×';
+  drawAll();
+},{passive:false});
+preview.addEventListener('dblclick', ()=>$('#reset').click());
+
+/* ── التنزيل ────────────────────────────────────────────── */
+function save(canvas, name){
+  canvas.toBlob(b=>{
+    if(!b){ flash('⚠️ فشل إنشاء الملف'); return; }
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(b); a.download=name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  },'image/png');
+}
+function gen(kind){
+  const c=document.createElement('canvas');
+  if(kind==='192')  { renderTo(c,192,'any');      save(c,'icon-192.png'); }
+  if(kind==='512')  { renderTo(c,512,'any');      save(c,'icon-512.png'); }
+  if(kind==='mask') { renderTo(c,512,'maskable'); save(c,'icon-maskable-512.png'); }
+  if(kind==='apple'){ renderTo(c,180,'apple');    save(c,'apple-touch-icon.png'); }
+  if(kind==='fav')  { renderTo(c,32,'fav');       save(c,'favicon-32.png'); }
+}
+document.querySelectorAll('[data-dl]').forEach(b=>
+  b.addEventListener('click', ()=>{ if(!S.img){flash('⚠️ ارفع اللوغو أولًا');return;} gen(b.dataset.dl); }));
+
+ $('#all').addEventListener('click', ()=>{
+  if(!S.img){ flash('⚠️ ارفع اللوغو أولًا'); return; }
+  ['192','512','mask','apple','fav'].forEach((k,i)=>setTimeout(()=>gen(k), i*450));
+  flash('✅ جاري تنزيل الملفات الخمسة…', true);
+});
+
+drawAll(); /* معاينة فارغة عند الفتح */
 </script>
 </body>
-</html>
+  </html>
