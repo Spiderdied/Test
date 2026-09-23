@@ -6,7 +6,7 @@
    ═══════════════════════════════════════════════════════════ */
 'use strict';
 
-const VERSION = 'v1.15.2';                 /* bumped — Google Forms/Summaries, custom Focus/Break
+const VERSION = 'v1.15.3';                 /* bumped — Google Forms/Summaries, custom Focus/Break
                                               durations, new local click/alarm sounds, nav-flicker fix, PDF.js 3.11 classic build/content tabs, Blogger section, GA4 analytics */
 const CACHE   = 'ubad-hub-' + VERSION;
 
