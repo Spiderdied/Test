@@ -1,0 +1,19 @@
+UBAD ACADEMY HUB — PDF.js Diagnostic v8
+
+This build does NOT change the PDF format or replace PDF.js again.
+It records the actual browser/WebView environment and reports:
+- PDF.js module fetch
+- PDF.js worker fetch
+- Promise.try / Promise.withResolvers support
+- Uint8Array.toHex support
+- Worker / WebAssembly / Canvas availability
+- PDF.js version/build
+- getDocument with worker
+- getDocument without worker
+- getPage(1)
+- canvas render
+
+Open a PDF and if it fails, take a screenshot of the diagnostic text.
+
+
+V8 fix: PDF.js and its worker are fetched and loaded from text/javascript Blob URLs to bypass the local preview server returning application/octet-stream for .js files.

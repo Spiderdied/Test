@@ -1,0 +1,125 @@
+/* UBAD FCM background notifications */
+try {
+  importScripts('https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js');
+  importScripts('https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging-compat.js');
+  firebase.initializeApp({
+    apiKey:'AIzaSyB8mYXZ31BUDoPN5HeB1lpSy7_Tdhvnlyk',
+    authDomain:'ubad-academy-hub.firebaseapp.com',
+    projectId:'ubad-academy-hub',
+    storageBucket:'ubad-academy-hub.firebasestorage.app',
+    messagingSenderId:'595289164594',
+    appId:'1:595289164594:web:6c34e660307af0a6a3652b'
+  });
+  const ubadMessaging=firebase.messaging();
+  ubadMessaging.onBackgroundMessage(payload=>{
+    const n=payload.notification||{};
+    const d=payload.data||{};
+    self.registration.showNotification(n.title||d.title||'UBAD Academy', {
+      body:n.body||d.body||'', icon:d.icon||'assets/icons/icon-192.png', badge:d.badge||'assets/icons/icon-192.png',
+      data:{url:d.url||d.link||'./',articleId:d.articleId||''}
+    });
+  });
+} catch(e) { /* messaging is optional until configured */ }
+
+self.addEventListener('notificationclick',event=>{
+  event.notification.close();
+  const url=event.notification?.data?.url||'./';
+  event.waitUntil((async()=>{
+    const cs=await clients.matchAll({type:'window',includeUncontrolled:true});
+    for(const c of cs){ if('focus' in c){ try{ await c.navigate(url); }catch(_){} return c.focus(); } }
+    if(clients.openWindow) return clients.openWindow(url);
+  })());
+});
+
+/* ═══════════════════════════════════════════════════════════
+   UBAD ACADEMY HUB — service worker
+   offline shell + runtime caching. Optional assets (audio)
+   are cached on first successful fetch — missing files never
+   break anything.
+   ═══════════════════════════════════════════════════════════ */
+'use strict';
+
+const VERSION = 'v1.25.0';                 /* bumped — Google Authentication/Firestore, Google Forms/Summaries, custom Focus/Break
+                                              durations, new local click/alarm sounds, nav-flicker fix, PDF.js 3.11 classic build/content tabs, Blogger section, GA4 analytics */
+const CACHE   = 'ubad-hub-' + VERSION;
+
+const SHELL = [
+  './',
+  './index.html',
+  './style.css',
+  './app.js',
+  './analytics-config.js',
+  './notifications-config.js',
+  './firebase-auth.js',
+  './manifest.json',
+  './assets/icons/icon.svg',
+  './assets/icons/icon-maskable.svg',
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png',
+  './assets/icons/icon-maskable-512.png',
+  './assets/icons/apple-touch-icon.png',
+  './assets/sounds/Click_1.mp3',
+  './assets/sounds/Alarm.mp3',
+  './assets/pdfjs/build/pdf.js',
+  './assets/pdfjs/build/pdf.worker.js'
+];
+
+self.addEventListener('install', (e) => {
+  e.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    await Promise.allSettled(SHELL.map((u) => cache.add(u)));
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+
+  let url;
+  try { url = new URL(req.url); } catch (err) { return; }
+  if (url.origin !== location.origin) return; /* never touch cross-origin */
+
+  /* navigations: network-first → offline falls back to cached shell */
+  if (req.mode === 'navigate') {
+    e.respondWith((async () => {
+      try {
+        const res = await fetch(req);
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put('./index.html', copy)).catch(() => {});
+        }
+        return res;
+      } catch (err) {
+        const hit = await caches.match('./index.html');
+        return hit || Response.error();
+      }
+    })());
+    return;
+  }
+
+  /* static assets (js, css, icons, audio, …): cache-first + runtime cache */
+  e.respondWith((async () => {
+    const hit = await caches.match(req);
+    if (hit) return hit;
+    try {
+      const res = await fetch(req);
+      /* 200 only — never attempt to cache 206 partial audio ranges */
+      if (res && res.status === 200 && res.type === 'basic') {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+      }
+      return res;
+    } catch (err) {
+      return hit || Response.error();
+    }
+  })());
+});
