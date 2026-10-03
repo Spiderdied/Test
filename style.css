@@ -232,7 +232,6 @@ textarea.input{height:auto;min-height:96px;padding:10px 12px;resize:vertical;lin
   background:var(--glass2);font-weight:600;font-size:13.5px;color:var(--ink2);transition:.15s}
 .pill.on{background:var(--pri-bg);border-color:var(--pri-bd);color:var(--pri-fg)}
 
-.notify-status{display:block;margin-top:6px;font-size:12px;line-height:1.45;color:var(--muted);min-height:17px}.notify-status.err{color:#dc2626}
 
 .switch{position:relative;width:46px;height:26px;border-radius:99px;background:var(--line);
   border:1px solid var(--line2);transition:.2s;flex:none;align-self:center}
@@ -1522,11 +1521,11 @@ canvas.chart{width:100%;display:block}
 .notify-item{width:100%;display:flex;align-items:flex-start;gap:12px;text-align:start;padding:13px;border:1px solid var(--line);background:var(--glass2);border-radius:14px}
 .notify-item:hover{border-color:var(--line2)}
 .notify-item.read{opacity:.62}.notify-item>b,.notify-item small{display:block}.notify-item small{color:var(--ink2);margin-top:3px}.notify-item time{display:block;color:var(--ink3);font:10px var(--mono);margin-top:5px}.notify-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--pri-bg);color:var(--acc-c);flex:none}
-.settings-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:14px;position:sticky;top:0;z-index:4;padding:4px 0;background:linear-gradient(var(--headbg),transparent)}
-.settings-tab{min-height:44px;padding:7px 9px;border:1px solid var(--line);border-radius:12px;background:var(--glass2);font-weight:650;font-size:12px}
+.settings-nav{display:flex;align-items:stretch;gap:8px;margin-bottom:14px;position:sticky;top:0;z-index:4;padding:4px 0 8px;background:linear-gradient(var(--headbg),transparent);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}.settings-nav::-webkit-scrollbar{display:none}
+.settings-tab{flex:0 0 auto;min-height:44px;padding:7px 12px;border:1px solid var(--line);border-radius:12px;background:var(--glass2);font-weight:650;font-size:12px;white-space:nowrap;scroll-snap-align:start}
 .settings-tab.on{border-color:var(--pri-bd);background:var(--pri-bg);color:var(--ink)}
 .sync-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.sync-choice{text-align:start;display:flex;flex-direction:column;gap:8px;cursor:pointer}.sync-choice span{font-size:12px;color:var(--ink3);line-height:1.55}
-@media(max-width:680px){.settings-nav{grid-template-columns:repeat(2,1fr)}.sync-choice-grid{grid-template-columns:1fr}.quick-controls{gap:4px}.quick-controls .icon-btn,.hub-actions>.icon-btn{width:38px;height:38px}}
+@media(max-width:680px){.sync-choice-grid{grid-template-columns:1fr}.quick-controls{gap:4px}.quick-controls .icon-btn,.hub-actions>.icon-btn{width:38px;height:38px}}
 @media(max-width:430px){.quick-controls .icon-btn,.hub-actions>.icon-btn{width:35px;height:35px;border-radius:10px}.hub-actions{gap:4px}}
 
 /* ── UBAD Academy home redesign ─────────────────────────── */
@@ -1547,15 +1546,15 @@ canvas.chart{width:100%;display:block}
 .hub-blog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .hub-blog-kicker{display:block;font-size:18px;font-weight:800}
 .hub-blog-sub{display:block;color:var(--ink3);font-size:11px;margin-top:2px}
-.hub-blog-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-height:82px}
-.hub-blog-item{display:flex;align-items:center;gap:10px;min-width:0;text-align:start;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035);color:var(--ink);transition:.18s ease;overflow:hidden}
+.hub-blog-track{display:flex;gap:10px;min-height:82px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 8px;scroll-snap-type:x mandatory;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.hub-blog-item{display:flex;align-items:center;gap:10px;flex:0 0 min(340px,86%);min-width:0;text-align:start;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035);color:var(--ink);transition:.18s ease;overflow:hidden}
 .hub-blog-item:hover{transform:translateY(-2px);border-color:var(--line2)}
 .hub-blog-item img,.hub-blog-thumb-empty{width:78px;height:62px;flex:none;border-radius:11px;object-fit:cover;background:var(--glass2);display:grid;place-items:center;color:var(--ink3)}
 .hub-blog-copy{min-width:0;display:block}
 .hub-blog-copy b{display:block;font-size:12.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .hub-blog-copy small{display:block;color:var(--ink3);font-size:9.5px;line-height:1.4;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.hub-blog-loading,.hub-blog-empty{grid-column:1/-1;display:grid;place-items:center;color:var(--ink3);min-height:70px}
-@media(max-width:700px){.hub-grid{grid-template-columns:1fr 1fr;gap:10px}.hub-card{min-height:145px}.hub-inner{min-height:145px;padding:16px 10px;border-radius:22px}.hub-ic{width:52px;height:52px;border-radius:17px}.hub-ic .ic{width:24px;height:24px}.hub-blog-track{grid-template-columns:1fr}.hub-blog-item:nth-child(n+3){display:none}.hub-blog-more span{display:none}}
+.hub-blog-loading,.hub-blog-empty{flex:1 0 100%;display:grid;place-items:center;color:var(--ink3);min-height:70px}
+@media(max-width:700px){.hub-grid{grid-template-columns:1fr 1fr;gap:10px}.hub-card{min-height:145px}.hub-inner{min-height:145px;padding:16px 10px;border-radius:22px}.hub-ic{width:52px;height:52px;border-radius:17px}.hub-ic .ic{width:24px;height:24px}.hub-blog-item{flex-basis:88%}.hub-blog-more span{display:none}}
 @media(max-width:480px){.hub-grid{grid-template-columns:1fr 1fr}.hub-t{font-size:15px}.hub-s{font-size:10px}.hub-blog{border-radius:20px;padding:12px}.hub-blog-item img,.hub-blog-thumb-empty{width:70px;height:56px}}
 
 
@@ -1635,3 +1634,15 @@ canvas.chart{width:100%;display:block}
 @media(prefers-reduced-motion:reduce){
   .hub-card .hub-float{animation:none}
 }
+
+/* Sections intentionally have no global header; only a compact back control remains. */
+.section-back{position:absolute;top:12px;inset-inline-start:12px;z-index:8;box-shadow:var(--shadow);}
+.layer>.lbody{padding-top:56px;}
+@media(max-width:600px){.section-back{top:10px;inset-inline-start:10px}.layer>.lbody{padding-top:52px;}}
+
+
+/* Section header: keep DOM hooks for existing section logic, but show only back control. */
+.section-lhead .lhead-mid{display:none !important;}
+.section-lhead .quick-controls{display:none !important;}
+.section-lhead .lhead-act{display:flex !important;align-items:center;gap:8px;}
+.section-lhead{justify-content:space-between !important;}

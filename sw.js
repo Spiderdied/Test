@@ -1,36 +1,3 @@
-/* UBAD FCM background notifications */
-try {
-  importScripts('https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js');
-  importScripts('https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging-compat.js');
-  firebase.initializeApp({
-    apiKey:'AIzaSyB8mYXZ31BUDoPN5HeB1lpSy7_Tdhvnlyk',
-    authDomain:'ubad-academy-hub.firebaseapp.com',
-    projectId:'ubad-academy-hub',
-    storageBucket:'ubad-academy-hub.firebasestorage.app',
-    messagingSenderId:'595289164594',
-    appId:'1:595289164594:web:6c34e660307af0a6a3652b'
-  });
-  const ubadMessaging=firebase.messaging();
-  ubadMessaging.onBackgroundMessage(payload=>{
-    const n=payload.notification||{};
-    const d=payload.data||{};
-    self.registration.showNotification(n.title||d.title||'UBAD Academy', {
-      body:n.body||d.body||'', icon:d.icon||'assets/icons/icon-192.png', badge:d.badge||'assets/icons/icon-192.png',
-      data:{url:d.url||d.link||'./',articleId:d.articleId||''}
-    });
-  });
-} catch(e) { /* messaging is optional until configured */ }
-
-self.addEventListener('notificationclick',event=>{
-  event.notification.close();
-  const url=event.notification?.data?.url||'./';
-  event.waitUntil((async()=>{
-    const cs=await clients.matchAll({type:'window',includeUncontrolled:true});
-    for(const c of cs){ if('focus' in c){ try{ await c.navigate(url); }catch(_){} return c.focus(); } }
-    if(clients.openWindow) return clients.openWindow(url);
-  })());
-});
-
 /* ═══════════════════════════════════════════════════════════
    UBAD ACADEMY HUB — service worker
    offline shell + runtime caching. Optional assets (audio)
@@ -39,7 +6,7 @@ self.addEventListener('notificationclick',event=>{
    ═══════════════════════════════════════════════════════════ */
 'use strict';
 
-const VERSION = 'v1.25.0';                 /* bumped — Google Authentication/Firestore, Google Forms/Summaries, custom Focus/Break
+const VERSION = 'v1.29.0';                 /* bumped — Google Authentication/Firestore, Google Forms/Summaries, custom Focus/Break
                                               durations, new local click/alarm sounds, nav-flicker fix, PDF.js 3.11 classic build/content tabs, Blogger section, GA4 analytics */
 const CACHE   = 'ubad-hub-' + VERSION;
 
@@ -49,7 +16,6 @@ const SHELL = [
   './style.css',
   './app.js',
   './analytics-config.js',
-  './notifications-config.js',
   './firebase-auth.js',
   './manifest.json',
   './assets/icons/icon.svg',

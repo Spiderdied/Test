@@ -181,9 +181,8 @@ en:{
  'set.imported':'Backup restored successfully.','set.importFailed':'Invalid backup file.',
  'set.danger':'Danger zone',
  'set.clearMsg':'This permanently deletes all courses, notes, events, worship records and study content stored on this device.',
- 'set.clearAll':'Erase all data','set.cleared':'All data erased.',
- 'notify.title':'Notifications','notify.subtitle':'New articles and UBAD updates','notify.markRead':'Mark all read','notify.push':'Push notifications','notify.pushDesc':'Receive notifications even when UBAD is closed.','notify.empty':'No notifications yet.','notify.enabled':'Push notifications enabled.','notify.disabled':'Push notifications disabled.','notify.denied':'Notifications are blocked in your browser.','notify.unsupported':'Push notifications are not supported here.','notify.notConfigured':'Push notifications need a Firebase Web Push key first.','sync.firstTitle':'Choose how to sync','sync.firstBody':'UBAD found data on this device and cloud data for this Google account. Choose what should happen now.','sync.upload':'Upload device data','sync.uploadDesc':'Keep this device as the source and upload its data to the cloud.','sync.restore':'Restore cloud data','sync.restoreDesc':'Replace the device data with the cloud copy.','sync.merge':'Merge','sync.mergeDesc':'Combine records from both sides and keep newer records when possible.',
- 'settings.account':'Account & sync','settings.appearance':'Appearance','settings.data':'Data & backup','settings.privacy':'Privacy','settings.about':'About UBAD','set.privacyTitle':'Privacy','set.privacyBody':'UBAD keeps your study data local-first and syncs it only to your signed-in Google account when cloud sync is enabled.','set.analyticsPrivacy':'Anonymous usage events only; no names, emails, notes, files, or course content.','set.about':'About','set.aboutBody':'A local-first academic hub. Your notes, files, and study content stay on your device. UBAD may use Google Analytics to collect general usage statistics; we do not send your name, email, phone number, notes, files, or other content.',
+ 'set.clearAll':'Erase all data','set.cleared':'All data erased.','sync.firstTitle':'Choose how to sync','sync.firstBody':'UBAD found data on this device and cloud data for this Google account. Choose what should happen now.','sync.upload':'Upload device data','sync.uploadDesc':'Keep this device as the source and upload its data to the cloud.','sync.restore':'Restore cloud data','sync.restoreDesc':'Replace the device data with the cloud copy.','sync.merge':'Merge','sync.mergeDesc':'Combine records from both sides and keep newer records when possible.',
+ 'settings.account':'Account & sync','settings.appearance':'Appearance','settings.data':'Data & backup','settings.about':'About UBAD','set.about':'About','set.aboutBody':'A local-first academic hub. Your notes, files, and study content stay on your device. UBAD may use Google Analytics to collect general usage statistics; we do not send your name, email, phone number, notes, files, or other content.',
  'rights.title':'Copyright','rights.body':'© 2026 UBAD Academy Hub — All Rights Reserved.','rights.detail':'Unauthorized copying, reproduction, modification, redistribution, or use of the source code is prohibited without explicit permission from the copyright holder.',
  'onboard.title':'Welcome to UBAD','onboard.body':'Let’s personalize your academic hub before you start.','onboard.language':'Language','onboard.name':'Your name','onboard.namePh':'Enter your name','onboard.theme':'Theme','onboard.start':'Get started',
  'set.support':'Developer Support','set.supportDesc':'If UBAD Academy Hub has helped you, you can support the developer.','set.vodafone':'Vodafone Cash','set.paypal':'PayPal','set.copy':'Copy','set.copied':'Copied.',
@@ -325,9 +324,8 @@ ar:{
  'set.imported':'تمت الاستعادة بنجاح.','set.importFailed':'ملف نسخة احتياطية غير صالح.',
  'set.danger':'منطقة الخطر',
  'set.clearMsg':'سيحذف هذا نهائيًا كل المقررات والملاحظات والفعاليات وسجلات العبادة ومحتوى الدراسة المحفوظة على هذا الجهاز.',
- 'set.clearAll':'محو جميع البيانات','set.cleared':'تم محو جميع البيانات.',
- 'notify.title':'الإشعارات','notify.subtitle':'المقالات الجديدة وتحديثات UBAD','notify.markRead':'تحديد الكل كمقروء','notify.push':'إشعارات Push','notify.pushDesc':'استقبل الإشعارات حتى عندما يكون UBAD مغلقًا.','notify.empty':'لا توجد إشعارات بعد.','notify.enabled':'تم تفعيل إشعارات Push.','notify.disabled':'تم إيقاف إشعارات Push.','notify.denied':'إشعارات الموقع محظورة في المتصفح.','notify.unsupported':'إشعارات Push غير مدعومة هنا.','notify.notConfigured':'تحتاج إشعارات Push إلى مفتاح Web Push من Firebase أولًا.','sync.firstTitle':'اختر طريقة المزامنة','sync.firstBody':'وجد UBAD بيانات على هذا الجهاز وبيانات سحابية لحساب Google. اختر ما تريد فعله الآن.','sync.upload':'رفع بيانات الجهاز','sync.uploadDesc':'اعتبر بيانات هذا الجهاز هي المصدر وارفعها إلى السحابة.','sync.restore':'استعادة بيانات السحابة','sync.restoreDesc':'استبدل بيانات الجهاز بالنسخة الموجودة في السحابة.','sync.merge':'دمج','sync.mergeDesc':'اجمع السجلات من الطرفين وحافظ على الأحدث قدر الإمكان.',
- 'settings.account':'الحساب والمزامنة','settings.appearance':'المظهر والتخصيص','settings.data':'البيانات والنسخ الاحتياطي','settings.privacy':'الخصوصية','settings.about':'حول UBAD','set.privacyTitle':'الخصوصية','set.privacyBody':'يحافظ UBAD على بياناتك محليًا أولًا، ولا تتم مزامنتها إلا مع حساب Google المسجل عند تفعيل المزامنة السحابية.','set.analyticsPrivacy':'إحصاءات استخدام مجهّلة فقط؛ لا يتم إرسال الأسماء أو البريد أو الملاحظات أو الملفات أو محتوى المقررات.','set.about':'حول','set.aboutBody':'بيئة أكاديمية محلية بالكامل. ملاحظاتك وملفاتك ومحتواك الدراسي يبقون على جهازك. قد يستخدم UBAD خدمة Google Analytics لجمع إحصاءات عامة عن الاستخدام، ولا نرسل اسمك أو بريدك أو رقم هاتفك أو ملاحظاتك أو ملفاتك أو محتواك.',
+ 'set.clearAll':'محو جميع البيانات','set.cleared':'تم محو جميع البيانات.','sync.firstTitle':'اختر طريقة المزامنة','sync.firstBody':'وجد UBAD بيانات على هذا الجهاز وبيانات سحابية لحساب Google. اختر ما تريد فعله الآن.','sync.upload':'رفع بيانات الجهاز','sync.uploadDesc':'اعتبر بيانات هذا الجهاز هي المصدر وارفعها إلى السحابة.','sync.restore':'استعادة بيانات السحابة','sync.restoreDesc':'استبدل بيانات الجهاز بالنسخة الموجودة في السحابة.','sync.merge':'دمج','sync.mergeDesc':'اجمع السجلات من الطرفين وحافظ على الأحدث قدر الإمكان.',
+ 'settings.account':'الحساب والمزامنة','settings.appearance':'المظهر والتخصيص','settings.data':'البيانات والنسخ الاحتياطي','settings.about':'حول UBAD','set.about':'حول','set.aboutBody':'بيئة أكاديمية محلية بالكامل. ملاحظاتك وملفاتك ومحتواك الدراسي يبقون على جهازك. قد يستخدم UBAD خدمة Google Analytics لجمع إحصاءات عامة عن الاستخدام، ولا نرسل اسمك أو بريدك أو رقم هاتفك أو ملاحظاتك أو ملفاتك أو محتواك.',
  'rights.title':'حقوق الملكية','rights.body':'© 2026 UBAD Academy Hub — جميع الحقوق محفوظة.','rights.detail':'يُمنع نسخ أو إعادة توزيع أو تعديل أو استخدام الكود المصدري دون إذن صريح من صاحب حقوق المشروع.',
  'onboard.title':'أهلًا بيك في UBAD','onboard.body':'خلينا نجهز أكاديميتك على ذوقك قبل ما نبدأ.','onboard.language':'اللغة','onboard.name':'اسمك','onboard.namePh':'اكتب اسمك','onboard.theme':'الثيم','onboard.start':'ابدأ',
  'set.support':'دعم المطور','set.supportDesc':'إذا ساعدتك أكاديمية عُبَدْ، يمكنك دعم المطور عبر الطرق التالية.','set.vodafone':'فودافون كاش','set.paypal':'PayPal','set.copy':'نسخ','set.copied':'تم النسخ.',
@@ -430,33 +428,32 @@ function scheduleDaysLabel(days){ return SCHED_DAY_ORDER.filter(d=>days.includes
 /* ═══ 3. state ═══════════════════════════════════════════════ */
 const state={
   user:{name:'Ubad'},
-  settings:{lang:'en',sound:true,theme:'dark',pushNotifications:false},
+  settings:{lang:'en',sound:true,theme:'dark'},
   courses:[], notes:[], events:[], tasks:[], decks:[], quizzes:[], schedule:[],
-  forms:[], summaries:[], notifications:[],
+  forms:[], summaries:[],
   focus:{day:'',done:0,focusMins:25,breakMins:5},
   islam:normIslam({})
 };
 const PREF_KEY='ubad.prefs.v1';
 const ONBOARD_KEY='ubad.onboarding.v1';
 function savePrefs(){ try{ localStorage.setItem(PREF_KEY,JSON.stringify({
-  name:state.user.name, lang:state.settings.lang, sound:state.settings.sound, theme:state.settings.theme, pushNotifications:!!state.settings.pushNotifications})); }catch(e){} }
+  name:state.user.name, lang:state.settings.lang, sound:state.settings.sound, theme:state.settings.theme})); }catch(e){} }
 function loadPrefs(){ try{ const p=JSON.parse(localStorage.getItem(PREF_KEY)||'{}');
   if(p.name) state.user.name=normStr(p.name,40,'Ubad');
   if(p.lang==='ar'||p.lang==='en') state.settings.lang=p.lang;
   if(typeof p.sound==='boolean') state.settings.sound=p.sound;
-  if(typeof p.pushNotifications==='boolean') state.settings.pushNotifications=p.pushNotifications;
   if(THEMES.includes(p.theme)) state.settings.theme=p.theme; }catch(e){} }
 
 /* ═══ 4. storage — IndexedDB (graceful memory fallback) ══════ */
 const DB={ db:null,
   open(){ return new Promise((res,rej)=>{
     if(!('indexedDB' in window)) return rej();
-    const rq=indexedDB.open('ubad-academy-hub',3);
+    const rq=indexedDB.open('ubad-academy-hub',4);
     rq.onupgradeneeded=()=>{ const d=rq.result;
       if(!d.objectStoreNames.contains('kv')) d.createObjectStore('kv',{keyPath:'id'});
       if(!d.objectStoreNames.contains('notes')) d.createObjectStore('notes',{keyPath:'id'});
       if(!d.objectStoreNames.contains('courseAssets')) d.createObjectStore('courseAssets',{keyPath:'id'});
-      if(!d.objectStoreNames.contains('notifications')) d.createObjectStore('notifications',{keyPath:'id'}); };
+      if(d.objectStoreNames.contains('notifications')) d.deleteObjectStore('notifications'); };
     rq.onsuccess=()=>{ this.db=rq.result; res(); };
     rq.onerror=()=>rej(rq.error); }); },
   st(mode,store){ return this.db.transaction(store,mode).objectStore(store); },
@@ -553,7 +550,6 @@ function hydrate(d){ if(!d||typeof d!=='object') return;
   const s=d.settings||{};
   if(s.lang==='ar'||s.lang==='en') state.settings.lang=s.lang;
   if(typeof s.sound==='boolean') state.settings.sound=s.sound;
-  if(typeof s.pushNotifications==='boolean') state.settings.pushNotifications=s.pushNotifications;
   if(THEMES.includes(s.theme)) state.settings.theme=s.theme;
   state.focus=(d.focus&&typeof d.focus==='object')?
     { day:normStr(d.focus.day,10), done:clampNum(d.focus.done,0,999,0),
@@ -576,7 +572,6 @@ function hydrate(d){ if(!d||typeof d!=='object') return;
     questions:normArr(z&&z.questions).map(q=>({ q:normStr(q&&q.q,400),
       options:normArr(q&&q.options).slice(0,4).map(o=>normStr(o,160)), correct:clampNum(q&&q.correct,0,3,0) }))
       .filter(q=>q.q&&q.options.filter(Boolean).length>=2&&q.options[q.correct]) }));
-  state.notifications=normArr(d.notifications).map(n=>({id:normStr(n&&n.id,80)||uid(),type:normStr(n&&n.type,30,'system'),title:normStr(n&&n.title,160),body:normStr(n&&n.body,400),url:safeHttpUrl(n&&n.url)||'',articleId:normStr(n&&n.articleId,120),createdAt:clampNum(n&&n.createdAt,0,1e15,Date.now()),read:!!(n&&n.read)})).sort((a,b)=>b.createdAt-a.createdAt).slice(0,100);
   /* Old saved data never had these arrays — always initialize safely. */
   state.forms=normArr(d.forms).map(f=>{ const url=safeHttpUrl(f&&f.url); if(!url) return null;
     return { id:normStr(f&&f.id,40)||uid(), title:normStr(f&&f.title,120,'Google Form'), url,
@@ -627,7 +622,7 @@ function cloudPayload(){
     settings:{...state.settings},
     courses:state.courses, events:state.events, tasks:state.tasks,
     decks:state.decks, quizzes:state.quizzes, schedule:state.schedule,
-    forms:state.forms, summaries:state.summaries, notifications:state.notifications, focus:state.focus,
+    forms:state.forms, summaries:state.summaries, focus:state.focus,
     islam:state.islam, notes:cloudNotes()
   };
 }
@@ -661,7 +656,7 @@ async function applyCloudPayload(remote,remoteMeta){
     cloudSync.lastRemoteId=String(remoteMeta?.syncId||'');
     await DB.put('kv',{id:'appdata',data:{user:state.user,settings:state.settings,courses:state.courses,
       events:state.events,tasks:state.tasks,decks:state.decks,quizzes:state.quizzes,schedule:state.schedule,
-      forms:state.forms,summaries:state.summaries,notifications:state.notifications,focus:state.focus,islam:state.islam}});
+      forms:state.forms,summaries:state.summaries,focus:state.focus,islam:state.islam}});
     savePrefs(); applyLang(); applyTheme();
     Nav.invalidate('dashboard','analytics');
     if(Nav.stack.length) Nav.rerenderAll();
@@ -735,7 +730,7 @@ async function mergeCloudAndLocal(remote){
   const merged={...remote,user:{...remote.user,...local.user},settings:{...remote.settings,...local.settings},
     courses:mergeRecords(local.courses,remote.courses),events:mergeRecords(local.events,remote.events),tasks:mergeRecords(local.tasks,remote.tasks),
     decks:mergeRecords(local.decks,remote.decks),quizzes:mergeRecords(local.quizzes,remote.quizzes),schedule:mergeRecords(local.schedule,remote.schedule),
-    forms:mergeRecords(local.forms,remote.forms),summaries:mergeRecords(local.summaries,remote.summaries),notifications:mergeRecords(local.notifications,remote.notifications),
+    forms:mergeRecords(local.forms,remote.forms),summaries:mergeRecords(local.summaries,remote.summaries),
     notes:mergeRecords(cloudNotes(),remote.notes)};
   await applyCloudPayload(merged,{clientUpdatedAt:Date.now(),syncId:'merge-'+uid()});
   return merged;
@@ -875,7 +870,7 @@ window.addEventListener('online',()=>{ if(cloudSync.active) scheduleCloudSync(50
 function saveData(){ Nav.invalidate('dashboard','analytics'); savePrefs();
   DB.put('kv',{id:'appdata',data:{user:state.user,settings:state.settings,courses:state.courses,
     events:state.events,tasks:state.tasks,decks:state.decks,quizzes:state.quizzes,schedule:state.schedule,
-    forms:state.forms,summaries:state.summaries,notifications:state.notifications,
+    forms:state.forms,summaries:state.summaries,
     focus:state.focus,islam:state.islam}}).catch(()=>{});
   scheduleCloudSync();
 }
@@ -1362,36 +1357,20 @@ const Nav={
 };
 
 function quickControls(){
-  const unread=unreadNotificationCount();
-  return `<div class="quick-controls"><button class="icon-btn quick-lang" id="quick-lang" aria-label="${t('set.language')}">${ic('globe')}</button><button class="icon-btn quick-sound" id="quick-sound" aria-label="${t('set.sound')}">${ic(state.settings.sound?'vol':'volume-x')}</button><button class="icon-btn ubad-notify-btn ${unread?'has-unread':''}" id="quick-notify" type="button" aria-haspopup="dialog" aria-label="${t('notify.title')}">${ic(unread?'bell-dot':'bell')}<span class="notify-dot">${unread>9?'9+':unread||''}</span></button><button class="icon-btn" id="quick-settings" aria-label="${t('nav.settings')}">${ic('sliders')}</button></div>`;
+  return `<div class="quick-controls"><button class="icon-btn quick-lang" id="quick-lang" aria-label="${t('set.language')}">${ic('globe')}</button><button class="icon-btn quick-sound" id="quick-sound" aria-label="${t('set.sound')}">${ic(state.settings.sound?'vol':'volume-x')}</button><button class="icon-btn" id="quick-settings" aria-label="${t('nav.settings')}">${ic('sliders')}</button></div>`;
 }
 function bindQuickControls(sec){
   $('#quick-lang',sec)?.addEventListener('click',()=>setLang(state.settings.lang==='ar'?'en':'ar'));
   $('#quick-sound',sec)?.addEventListener('click',()=>{state.settings.sound=!state.settings.sound;saveData();Nav.rerenderAll();});
-  /* Notifications are bound once at document level below so rerenders cannot detach the handler. */
   $('#quick-settings',sec)?.addEventListener('click',()=>{if(Nav.stack.at(-1)?.id!=='settings')Nav.push('settings');});
 }
 
-/* Robust global handler for the notification quick-control. The header is
-   frequently rerendered during navigation, so a delegated capture handler
-   avoids stale button listeners and guarantees the bell remains clickable. */
-if(!window.__UBAD_NOTIFICATION_CLICK_BOUND){
-  window.__UBAD_NOTIFICATION_CLICK_BOUND=true;
-  document.addEventListener('click',e=>{
-    const b=e.target?.closest?.('#quick-notify');
-    if(!b) return;
-    e.preventDefault();
-    e.stopPropagation();
-    openNotifications();
-  },true);
-}
-
-function chrome(o){ /* standard layer shell: back button + breadcrumb + body */
+function chrome(o){ /* section shell: preserve full internal structure, visually compact */
   const sec=document.createElement('section'); sec.className='layer';
   const crumbs=Nav.stack.map((it,i)=>`<span class="crumb${i===Nav.stack.length-1?' cur':''}">${esc(Nav.title(it))}</span>`)
     .join(`<span class="crumb-sep">${ic('chr','dir-flip')}</span>`);
   sec.innerHTML=`
-    <header class="lhead">
+    <header class="lhead section-lhead">
       <button class="icon-btn nav-back" aria-label="${t('common.back')}">${ic('chl','dir-flip')}</button>
       <div class="lhead-mid"><span class="lhead-crumbs mono">${crumbs}</span><h1 class="lhead-title">${esc(o.title||'')}</h1></div>
       <div class="lhead-act">${o.actions||''}${quickControls()}</div>
@@ -1616,13 +1595,12 @@ LAYERS.hub={
     $('#hub-blog-open',sec)?.addEventListener('click',()=>Nav.push('analytics'));
     const renderHubBlog=()=>{
       const host=$('#hub-blog-list',sec); if(!host) return;
-      const posts=(blogState.posts||[]).slice(0,3);
+      const posts=(blogState.posts||[]).slice(0,8);
       if(!posts.length){ host.innerHTML=`<div class="hub-blog-empty">📰 <span>${blogState.loading?t('blog.loading'):t('blog.empty')}</span></div>`; return; }
       host.innerHTML=posts.map(p=>{
         const title=blogTitle(p)||t('blog.untitled'), img=blogImage(p);
-        return `<button class="hub-blog-item" data-post="${esc(String(p.id||''))}">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="hub-blog-thumb-empty">📰</span>`}<span class="hub-blog-copy"><b>${esc(title)}</b><small>${esc(blogExcerpt(p)||'')}</small></span></button>`;
+        const url=safeHttpUrl(p?.url||p?.link||''); return url?`<a class="hub-blog-item" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="hub-blog-thumb-empty">📰</span>`}<span class="hub-blog-copy"><b>${esc(title)}</b><small>${esc(blogExcerpt(p)||'')}</small></span></a>`:`<div class="hub-blog-item">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="hub-blog-thumb-empty">📰</span>`}<span class="hub-blog-copy"><b>${esc(title)}</b><small>${esc(blogExcerpt(p)||'')}</small></span></div>`;
       }).join('');
-      $$('.hub-blog-item',host).forEach(b=>b.addEventListener('click',()=>Nav.push('analyticsPost',{id:b.dataset.post})));
     };
     $$('#hub-blog-list',sec).forEach(()=>{});
     (async()=>{ if(!blogState.loaded) await blogLoad(); renderHubBlog(); })();
@@ -3050,14 +3028,8 @@ async function blogLoad({refresh=false,pageToken=null}={}){
     const res=await fetch(u.toString(),{headers:{Accept:'application/json'},cache:'no-store'});
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data=await res.json();
-    const incoming=Array.isArray(data.posts)?data.posts:[];
-    const knownIds=new Set(notificationList().filter(n=>n.type==='blog').map(n=>n.articleId).filter(Boolean));
-    let blogNotifyBoot=false; try{ blogNotifyBoot=localStorage.getItem('ubad.blog.notify.initialized')==='1'; }catch(e){}
-    if(!pageToken && blogNotifyBoot){ for(const post of incoming.slice(0,20)){ const pid=String(post?.id||''); if(pid && !knownIds.has(pid)){ const title=blogTitle(post)||t('blog.untitled'); const body=blogExcerpt(post); await addNotification({type:'blog',title,body,url:post?.url||post?.link||'',articleId:pid}); } } }
-    else if(!pageToken && !blogNotifyBoot){ try{ localStorage.setItem('ubad.blog.notify.initialized','1'); }catch(e){}
-      /* First successful fetch seeds the baseline; it does not notify for old posts. */
-    }
-    blogState.posts=refresh||!pageToken?incoming:[...blogState.posts,...incoming];
+    const incoming=(Array.isArray(data.posts)?data.posts:[]).slice().sort((a,b)=>new Date(b?.published||b?.updated||0)-new Date(a?.published||a?.updated||0));
+    blogState.posts=refresh||!pageToken?[...incoming].sort((a,b)=>new Date(b?.published||b?.updated||0)-new Date(a?.published||a?.updated||0)):[...blogState.posts,...incoming].sort((a,b)=>new Date(b?.published||b?.updated||0)-new Date(a?.published||a?.updated||0));
     blogState.nextPageToken=data.nextPageToken||null;
     blogState.loaded=true;
     blogCacheWrite({posts:blogState.posts,nextPageToken:blogState.nextPageToken});
@@ -3101,15 +3073,9 @@ LAYERS.analytics={
       if(!posts.length){ list.innerHTML=`<div class="empty"><div class="blog-empty-icon">📰</div><p>${t('blog.empty')}</p>${blogState.error&&!cached?`<p class="e-h">${t('blog.error')}</p>`:''}</div>`; return; }
       list.innerHTML=`<div class="blog-grid">${posts.map(p=>{
         const title=blogTitle(p)||t('blog.untitled'), img=blogImage(p), ex=blogExcerpt(p), date=p.published||p.updated;
-        return `<article class="blog-card card">
-          ${img?`<img class="blog-thumb" src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<div class="blog-thumb blog-thumb-empty">📰</div>`}
-          <div class="blog-card-body">
-            <div class="blog-meta mono">${date?esc(fmtDate(new Date(date),{day:'numeric',month:'short',year:'numeric'})):''}</div>
-            <h2 class="blog-card-title">${esc(title)}</h2>
-            <p class="blog-excerpt">${esc(ex||t('blog.noImage'))}</p>
-            <button class="btn btn-primary btn-sm" data-nav="analyticsPost" data-params='${esc(JSON.stringify({id:p.id}))}'>${t('blog.read')} ${ic('chr','ic-s')}</button>
-          </div>
-        </article>`;
+        const url=safeHttpUrl(p?.url||p?.link||'');
+        const card=`${img?`<img class="blog-thumb" src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<div class="blog-thumb blog-thumb-empty">📰</div>`}<div class="blog-card-body"><div class="blog-meta mono">${date?esc(fmtDate(new Date(date),{day:'numeric',month:'short',year:'numeric'})):''}</div><h2 class="blog-card-title">${esc(title)}</h2><p class="blog-excerpt">${esc(ex||t('blog.noImage'))}</p><span class="btn btn-primary btn-sm">${t('blog.read')} ${ic('chr','ic-s')}</span></div>`;
+        return url?`<a class="blog-card card" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${card}</a>`:`<article class="blog-card card">${card}</article>`;
       }).join('')}</div>`;
       if(blogState.nextPageToken && !q){
         list.insertAdjacentHTML('beforeend',`<div class="blog-more"><button class="btn" id="blog-more">${t('blog.loadMore')}</button></div>`);
@@ -3785,129 +3751,6 @@ window.addEventListener('ubad-firebase-error',event=>{
 });
 
 
-/* ── Notifications ────────────────────────────────────────── */
-function notificationList(){ return normArr(state.notifications).sort((a,b)=>b.createdAt-a.createdAt).slice(0,100); }
-function unreadNotificationCount(){ return notificationList().filter(n=>!n.read).length; }
-async function addNotification({type='system',title='',body='',url='',articleId=''}){
-  if(articleId && state.notifications.some(n=>n.articleId===String(articleId))) return false;
-  const rec={id:uid(),type,title:String(title).slice(0,160),body:String(body).slice(0,400),url:safeHttpUrl(url)||'',articleId:String(articleId||''),createdAt:Date.now(),read:false};
-  state.notifications.unshift(rec); state.notifications=notificationList();
-  try{ await DB.put('notifications',rec); }catch(e){}
-  saveData(); refreshNotificationBadges(); return true;
-}
-function refreshNotificationBadges(){
-  const n=unreadNotificationCount();
-  $$('.ubad-notify-btn').forEach(b=>{ b.classList.toggle('has-unread',n>0); b.setAttribute('aria-label',t('notify.title')+(n?` (${n})`:'')); const dot=$('.notify-dot',b); if(dot) dot.textContent=n>9?'9+':n?String(n):''; });
-}
-async function markAllNotificationsRead(){ state.notifications.forEach(n=>n.read=true); state.notifications=notificationList(); for(const n of state.notifications) try{await DB.put('notifications',n);}catch(e){} saveData(); refreshNotificationBadges(); }
-async function openNotifications(){
-  let pushStatus='';
-  const render=()=>{ const list=notificationList(); return `<div class="notify-head"><div><h2>${t('notify.title')}</h2><p>${t('notify.subtitle')}</p></div><button class="btn btn-sm" id="notify-read" type="button">${t('notify.markRead')}</button></div>
-    <div class="notify-setting card card-pad"><span><b>${t('notify.push')}</b><small>${t('notify.pushDesc')}</small><em class="notify-status" id="notify-push-status">${esc(pushStatus)}</em></span><button class="switch ${state.settings.pushNotifications?'on':''}" id="notify-push" type="button" role="switch" aria-checked="${state.settings.pushNotifications}"></button></div>
-    <div class="notify-list">${list.length?list.map(n=>`<button type="button" class="notify-item ${n.read?'read':''}" data-notify-id="${esc(n.id)}"><span class="notify-icon">${n.type==='blog'?ic('book'):ic('bell')}</span><span><b>${esc(n.title)}</b><small>${esc(n.body)}</small><time>${esc(fmtDate(new Date(n.createdAt),{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'}))}</time></span></button>`).join(''):`<div class="empty empty-sm">${ic('bell')}<p>${t('notify.empty')}</p></div>`}</div>`; };
-  const api=openModal({title:t('notify.title'),wide:true,body:render(),actions:[{label:t('common.close')}]});
-  const status=(msg,err=false)=>{ const el=$('#notify-push-status',api.root); if(el){el.textContent=msg||''; el.classList.toggle('err',!!err);} if(msg) console[err?'error':'log']('[UBAD Push]',msg); };
-  $('#notify-read',api.root)?.addEventListener('click',async()=>{await markAllNotificationsRead(); api.close(); openNotifications();});
-  api.root.addEventListener('click',async e=>{
-    const btn=e.target?.closest?.('#notify-push');
-    if(btn){
-      e.preventDefault(); e.stopPropagation();
-      if(btn.dataset.busy==='1') return;
-      btn.dataset.busy='1'; btn.disabled=true; status('جارٍ تجهيز الإشعارات…');
-      try{
-        const before=!!state.settings.pushNotifications;
-        const ok=before ? await disablePushNotifications() : await enablePushNotifications();
-        if(ok){
-          btn.classList.toggle('on',!!state.settings.pushNotifications);
-          btn.setAttribute('aria-checked',String(!!state.settings.pushNotifications));
-          status(state.settings.pushNotifications?'تم تفعيل الإشعارات بنجاح.':'تم إيقاف الإشعارات.');
-        } else {
-          status('لم يتم تفعيل الإشعارات. راجع الرسالة الظاهرة هنا أو إعدادات المتصفح.',true);
-        }
-      }catch(err){
-        console.error('[UBAD Push]',err);
-        status(`[${err?.code||'push/error'}] ${err?.message||err}`,true);
-      }finally{
-        btn.disabled=false; btn.dataset.busy='0';
-      }
-      return;
-    }
-    const item=e.target?.closest?.('.notify-item');
-    if(item){
-      const n=state.notifications.find(x=>x.id===item.dataset.notifyId); if(!n)return;
-      n.read=true; await DB.put('notifications',n).catch(()=>{}); saveData(); refreshNotificationBadges(); api.close(); if(n.url) window.open(n.url,'_blank','noopener');
-    }
-  });
-}
-async function disablePushNotifications(){
-  try{
-    const token=localStorage.getItem('ubad.fcm.token');
-    if(token) await window.UBADAuth?.deletePushToken(token);
-    localStorage.removeItem('ubad.fcm.token');
-    state.settings.pushNotifications=false; saveData(); toast(t('notify.disabled')); return true;
-  }catch(e){ console.error('[UBAD Push] disable failed',e); toast(`[${e.code||'push/disable'}] ${e.message||e}`,'err'); return false; }
-}
-async function enablePushNotifications(){
-  const statusEl=()=>document.querySelector('#notify-push-status');
-  const status=(msg,err=false)=>{const el=statusEl(); if(el){el.textContent=msg;el.classList.toggle('err',!!err);} console[err?'error':'log']('[UBAD Push]',msg);};
-  const withTimeout=async(promise,ms,code,label)=>{
-    let timer;
-    const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(Object.assign(new Error(label+' timed out after '+ms+'ms'),{code})),ms);});
-    try{return await Promise.race([promise,timeout]);}finally{clearTimeout(timer);}
-  };
-  if(!('Notification' in window)||!('serviceWorker' in navigator)){status('غير مدعوم: المتصفح لا يدعم Notifications أو Service Worker.',true);return false;}
-  if(!window.UBADAuth?.registerPushToken){status('Firebase Messaging غير مهيأ في الصفحة.',true);return false;}
-  if(!window.UBADAuth.user){status('يجب تسجيل الدخول بحساب Google أولًا.',true);return false;}
-  if(Notification.permission==='denied'){status('إذن الإشعارات محظور من إعدادات المتصفح.',true);return false;}
-  try{
-    status('1/6 — التحقق من إذن الإشعارات…');
-    if(Notification.permission!=='granted'){
-      const perm=await withTimeout(Notification.requestPermission(),10000,'messaging/permission-timeout','Notification.requestPermission');
-      if(perm!=='granted'){status('تم رفض إذن الإشعارات: '+perm,true);return false;}
-    }
-    status('2/6 — البحث عن Service Worker…');
-    let reg=await navigator.serviceWorker.getRegistration('./');
-    if(!reg) reg=await withTimeout(navigator.serviceWorker.register('./sw.js',{scope:'./'}),10000,'messaging/sw-register-timeout','Service Worker registration');
-    status('3/6 — انتظار Service Worker…');
-    reg=await withTimeout(navigator.serviceWorker.ready,10000,'messaging/sw-ready-timeout','Service Worker ready');
-    if(!reg.active) throw Object.assign(new Error('Service Worker has no active worker.'),{code:'messaging/sw-not-active'});
-    status('4/6 — فحص Firebase Messaging…');
-    if(window.UBADAuth.messaging && firebase?.messaging?.isSupported){
-      const supported=await withTimeout(firebase.messaging.isSupported(),10000,'messaging/support-timeout','Firebase Messaging support check');
-      if(!supported) throw Object.assign(new Error('Firebase Web Messaging is not supported in this browser/environment.'),{code:'messaging/unsupported-browser'});
-    }
-    status('5/6 — طلب FCM registration token…');
-    const token=await withTimeout(window.UBADAuth.registerPushToken(reg),15000,'messaging/token-timeout','FCM getToken');
-    if(!token) throw Object.assign(new Error('Firebase did not return a registration token.'),{code:'messaging/no-token'});
-    status('6/6 — تم تسجيل الجهاز في Firebase.');
-    localStorage.setItem('ubad.fcm.token',token);
-    state.settings.pushNotifications=true; saveData();
-    status('تم تفعيل إشعارات Push بنجاح.');
-    return true;
-  }catch(e){
-    console.error('[UBAD Push] diagnostic failure',e);
-    status(`[${e?.code||'push/error'}] ${e?.message||e}`,true);
-    return false;
-  }
-}
-async function refreshPushTokenIfEnabled(){
-  try{
-    if(!state.settings.pushNotifications || !window.UBADAuth?.syncExistingPushToken || !window.UBADAuth.user) return;
-    if(!('Notification' in window)||Notification.permission!=='granted') return;
-    const reg=await navigator.serviceWorker.ready;
-    const token=await window.UBADAuth.syncExistingPushToken(reg);
-    if(token) localStorage.setItem('ubad.fcm.token',token);
-  }catch(e){ console.warn('[UBAD Push] token refresh failed:',e); }
-}
-async function initNotifications(){
-  try{ state.notifications=(await DB.all('notifications')).filter(x=>x&&x.id).sort((a,b)=>b.createdAt-a.createdAt).slice(0,100); }catch(e){}
-  refreshNotificationBadges();
-  refreshPushTokenIfEnabled();
-  if(window.__UBAD_FOREGROUND_PUSH_BOUND) return;
-  const bind=()=>{ if(window.__UBAD_FOREGROUND_PUSH_BOUND||!window.UBADAuth?.onForegroundMessage) return; window.__UBAD_FOREGROUND_PUSH_BOUND=true; window.UBADAuth.onForegroundMessage(async payload=>{ const n=payload?.notification||{}, d=payload?.data||{}; await addNotification({type:d.articleId?'blog':'system',title:n.title||d.title||'UBAD Academy',body:n.body||d.body||'',url:d.url||'',articleId:d.articleId||''}); }); };
-  bind(); window.addEventListener('ubad-firebase-ready',bind,{once:true});
-}
-
 /* ── SETTINGS ─────────────────────────────────────────────── */
 let activeSettingsTab='account';
 LAYERS.settings={
@@ -3917,11 +3760,10 @@ LAYERS.settings={
     const account=`<div class="set-group card card-pad"><div class="set-h">${ic('user')}<div><h2>${t('set.googleAccount')}</h2><p>${user?esc(t('set.googleSignedIn',{name:user.displayName||user.email||'Google'})):t('set.googleNotSignedIn')}</p></div></div><div class="pillrow">${user?`<button class="btn" id="set-google-out">${t('set.googleSignOut')}</button>`:`<button class="btn btn-primary" id="set-google-in">${t('set.googleSignIn')}</button>`}</div><div class="inline-form" style="margin-top:12px"><input class="input" id="set-name" value="${esc(state.user.name)}" maxlength="40" placeholder="${t('set.usernamePh')}"><button class="btn btn-primary" id="set-name-save">${t('common.save')}</button></div>${cloudSync.active?`<div class="sync-status-card"><div class="sync-status-line"><span class="sync-dot on"></span><span><b>${t('set.cloudSync')}</b><small>${t('set.cloudSyncOn')}</small></span></div><div class="sync-stats"><span><b>${cloudSync.remoteFiles.length}</b><small>${t('set.syncedFiles')}</small></span><span><b>${navigator.onLine?t('set.online'):t('set.offline')}</b><small>${t('set.connection')}</small></span></div><div class="sync-actions"><button class="btn btn-primary" id="set-upload-cloud">${ic('ul','ic-s')}<span>${t('set.uploadCloud')}</span></button><button class="btn" id="set-download-cloud">${ic('dl','ic-s')}<span>${t('set.downloadCloud')}</span></button></div></div>`:`<div class="sync-status-card off"><div class="sync-status-line"><span class="sync-dot"></span><span><b>${t('set.cloudSync')}</b><small>${t('set.cloudSyncOff')}</small></span></div></div>`}</div>`;
     const appearance=`<div class="set-group card card-pad appearance-panel"><div class="set-h">${s.theme==='dark'||s.theme==='oled'?ic('moon'):ic('sun')}<div><h2>${t('set.appearance')}</h2><p>${t('set.appearanceDesc')||t('set.theme')}</p></div></div><div class="appearance-block"><div class="appearance-block-head"><div><b>${t('set.theme')}</b><small>${t('set.themeDesc')||t('set.theme')}</small></div><span class="appearance-current">${esc(t('set.th.'+s.theme))}</span></div><div class="theme-grid" id="set-theme">${[['dark','#0A1024','#22D3EE|#3B82F6|#8B5CF6'],['oled','#000000','#22D3EE|#3B82F6|#8B5CF6'],['light','#F7F9FF','#0891B2|#2563EB|#7C3AED'],['paper','#FBF6EC','#0F766E|#B45309|#9F1239'],['sage','#F7FBF7','#0D9488|#047857|#4338CA'],['rose','#FDF5F8','#DB2777|#9333EA|#BE185D']].map(([id,bg,dots])=>{const d=dots.split('|');return `<div class="theme-card ${s.theme===id?'on':''}" data-th="${id}" role="button" tabindex="0" aria-pressed="${s.theme===id}"><span class="theme-preview" style="background:${bg}"><i style="background:${d[0]}"></i><i style="background:${d[1]}"></i><i style="background:${d[2]}"></i></span><span class="theme-copy"><b>${t('set.th.'+id)}</b><small>${id==='dark'||id==='oled'?'Dark':id==='rose'?'Soft rose':'Light'}</small></span><span class="theme-actions"><button type="button" class="btn btn-sm bg-up" data-th="${id}">${ic('ul','ic-s')}<span>${t('set.bgUp')}</span></button><button type="button" class="icon-btn icon-btn-sm bg-rm" data-th="${id}" aria-label="${t('set.bgRm')}">${ic('x','ic-s')}</button></span>${s.theme===id?'<span class="theme-check">✓</span>':''}</div>`}).join('')}</div><input type="file" id="bg-file" accept="image/*" hidden></div></div>`;
     const backup=`<div class="set-group card card-pad"><div class="set-h">${ic('dl')}<div><h2>${t('set.backup')}</h2><p>${t('set.backupDesc')}</p></div></div><div class="pillrow"><button class="btn btn-primary" id="set-export">${ic('dl','ic-s')}<span>${t('set.export')}</span></button><button class="btn" id="set-import">${ic('ul','ic-s')}<span>${t('set.import')}</span></button></div><input type="file" id="set-file" accept="application/json,.json" hidden></div>`;
-    const privacy=`<div class="set-group card card-pad"><div class="set-h">${ic('lock')}<div><h2>${t('set.privacyTitle')||'Privacy'}</h2><p>${t('set.privacyBody')||t('set.aboutBody')}</p></div></div><div class="rowitem"><span class="row-main"><span class="row-title">GA4</span><span class="row-sub">${t('set.analyticsPrivacy')||'Anonymous usage events only; no names, emails, notes, files, or course content.'}</span></span></div></div>`;
     const about=`<div class="set-group card card-pad about">${ic('logo','about-logo')}<div><h2>UBAD ACADEMY HUB</h2><p>${t('set.aboutBody')}</p></div></div><div class="set-group card card-pad about"><div class="set-h">${ic('heart')}<div><h2>${t('set.support')}</h2><p>${t('set.supportDesc')}</p></div></div><div class="support-list"><div class="support-item"><span class="support-info"><strong>${t('set.vodafone')}</strong><span dir="ltr" class="mono">01093557071</span></span><button class="btn btn-sm support-copy" data-copy="01093557071">${ic('copy','ic-s')}<span>${t('set.copy')}</span></button></div><div class="support-item"><span class="support-info"><strong>${t('set.paypal')}</strong><span dir="ltr" class="mono">abdalla.toaila34@gmail.com</span></span><button class="btn btn-sm support-copy" data-copy="abdalla.toaila34@gmail.com">${ic('copy','ic-s')}<span>${t('set.copy')}</span></button></div></div></div><div class="set-group card card-pad"><div class="set-h">${ic('alert')}<div><h2>${t('set.danger')}</h2><p>${t('set.clearMsg')}</p></div></div><button class="btn btn-danger" id="set-wipe">${ic('trash','ic-s')}<span>${t('set.clearAll')}</span></button></div>`;
-    const body=`<div class="settings-nav"><button class="settings-tab on" data-tab="account">👤 <span>${t('settings.account')||'Account & Sync'}</span></button><button class="settings-tab" data-tab="appearance">🎨 <span>${t('settings.appearance')||'Appearance'}</span></button><button class="settings-tab" data-tab="backup">💾 <span>${t('settings.data')||'Data & Backup'}</span></button><button class="settings-tab" data-tab="privacy">🔐 <span>${t('settings.privacy')||'Privacy'}</span></button><button class="settings-tab" data-tab="about">🛠️ <span>${t('settings.about')||'About UBAD'}</span></button></div><div id="settings-pane"></div>`;
+    const body=`<div class="settings-nav"><button class="settings-tab on" data-tab="account">👤 <span>${t('settings.account')||'Account & Sync'}</span></button><button class="settings-tab" data-tab="appearance">🎨 <span>${t('settings.appearance')||'Appearance'}</span></button><button class="settings-tab" data-tab="backup">💾 <span>${t('settings.data')||'Data & Backup'}</span></button><button class="settings-tab" data-tab="about">🛠️ <span>${t('settings.about')||'About UBAD'}</span></button></div><div id="settings-pane"></div>`;
     const sec=chrome({title:t('nav.settings'),body}); const pane=$('#settings-pane',sec);
-    const tabs={account,appearance,backup,privacy,about};
+    const tabs={account,appearance,backup,about};
     const draw=k=>{activeSettingsTab=tabs[k]?k:'account';pane.innerHTML=tabs[activeSettingsTab];$$('.settings-tab',sec).forEach(b=>b.classList.toggle('on',b.dataset.tab===activeSettingsTab));bindPane();};
     const bindPane=()=>{
       const googleIn=$('#set-google-in',sec); if(googleIn) googleIn.addEventListener('click',async()=>{try{googleIn.disabled=true;await window.UBADAuth.signIn();toast(t('set.nameSaved'));refreshAuthUI();}catch(e){googleIn.disabled=false;toast(`[${e.code||'auth/error'}] ${e.message||e}`,'err');}});
@@ -3966,7 +3808,7 @@ function setTheme(th){
 async function wipeAll(){
   try{ await DB.clear('kv'); await DB.clear('notes'); await DB.clear('courseAssets'); }catch(e){}
   for(const th of THEMES){ try{ await DB.del('kv','bg-'+th); }catch(e){} }
-  state.user={name:'Ubad'}; Object.assign(state.settings,{lang:'en',sound:true,theme:'dark',pushNotifications:false});
+  state.user={name:'Ubad'}; Object.assign(state.settings,{lang:'en',sound:true,theme:'dark'});
   state.courses=[]; state.notes=[]; state.events=[]; state.tasks=[]; state.decks=[]; state.quizzes=[]; state.schedule=[];
   state.focus={day:'',done:0}; state.islam=normIslam({});
   try{ localStorage.removeItem(PREF_KEY); }catch(e){}
@@ -4330,8 +4172,7 @@ async function boot(){
   try{ await Promise.all([loadData(),loadNotes()]); }catch(e){} /* 7. user data */
   Focus.loadDurations();  /* 7.2 apply saved custom Focus/Break lengths */
   try{ await bgApply(); }catch(e){}          /* 7.5 custom theme background */
-  Sound.init(); initNotifications();
-window.addEventListener('ubad-firebase-ready',()=>refreshPushTokenIfEnabled());           /* 8. audio manager (silent until gesture) */
+  Sound.init();           /* 8. audio manager (silent until gesture) */
   /* html2app's documented bridge is loaded explicitly. Do not await the network
      import, otherwise an offline launch could be delayed by the CDN. */
   import('https://esm.unpkg.com/@yandeu/js-bridge@0.0.4').then(mod=>{

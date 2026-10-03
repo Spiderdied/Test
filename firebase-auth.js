@@ -16,14 +16,13 @@
   };
   const WORKER=(window.UBAD_B2_CONFIG&&window.UBAD_B2_CONFIG.workerUrl)||'https://ubad-academy-sync.abdalla-toaila34.workers.dev';
 
-  let app=null,auth=null,db=null,messaging=null;
+  let app=null,auth=null,db=null;
   let initError=null;
   try{
     if(!window.firebase) throw new Error('Firebase SDK did not load.');
     if(!firebase.apps.length) app=firebase.initializeApp(firebaseConfig); else app=firebase.app();
     auth=firebase.auth();
     db=firebase.firestore();
-    try{ messaging=firebase.messaging(); }catch(e){ messaging=null; }
   }catch(e){ initError=e; console.error('[UBAD Firebase] initialization failed:',e); }
 
   const provider=window.firebase&&firebase.auth?new firebase.auth.GoogleAuthProvider():null;
@@ -45,7 +44,7 @@
   function hashToken(t){ let h=0; for(let i=0;i<t.length;i++) h=((h<<5)-h+t.charCodeAt(i))|0; return 't_'+Math.abs(h).toString(36)+'_'+t.length; }
 
   const api={
-    auth,db,messaging,user:null,ready:false,
+    auth,db,user:null,ready:false,
     async getIdToken(forceRefresh=false){
       if(!auth||!auth.currentUser) throw err('Not signed in','auth/not-signed-in');
       return auth.currentUser.getIdToken(forceRefresh);
@@ -100,29 +99,6 @@
     },
     cancelUploads(){ /* fetch uploads are not globally cancellable; kept for app compatibility */ },
 
-    /* Firebase Cloud Messaging */
-    async registerPushToken(registration){
-      if(!messaging) throw err('Firebase Messaging is not available','messaging/not-initialized');
-      const cfg=window.UBAD_NOTIFICATIONS_CONFIG||{};
-      if(!cfg.vapidKey) throw err('VAPID public key is missing','messaging/vapid-key-missing');
-      const t=await messaging.getToken({vapidKey:cfg.vapidKey,serviceWorkerRegistration:registration});
-      if(t) await this._savePushToken(t);
-      return t;
-    },
-    async syncExistingPushToken(registration){
-      if(!messaging||!api.user) return null;
-      const cfg=window.UBAD_NOTIFICATIONS_CONFIG||{}; if(!cfg.vapidKey) return null;
-      const t=await messaging.getToken({vapidKey:cfg.vapidKey,serviceWorkerRegistration:registration});
-      if(t) await this._savePushToken(t); return t;
-    },
-    async _savePushToken(t){
-      if(!db||!api.user||!t) return;
-      await db.collection('users').doc(api.user.uid).collection('fcmTokens').doc(hashToken(t)).set({token:t,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),platform:navigator.userAgent.slice(0,180)},{merge:true});
-    },
-    async deletePushToken(t){
-      if(!db||!api.user||!t) return; await db.collection('users').doc(api.user.uid).collection('fcmTokens').doc(hashToken(t)).delete();
-    },
-    onForegroundMessage(callback){ if(!messaging) return ()=>{}; return messaging.onMessage(payload=>callback&&callback(payload)); },
   };
 
   async function saveProfile(user){
