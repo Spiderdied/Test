@@ -1,0 +1,105 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ─── Helper Functions (Cross-Service Firestore Role Verification) ────
+    function isSignedIn() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    function hasRoleDoc() {
+      return isSignedIn() &&
+        firestore.exists(/databases/(default)/documents/roles/$(request.auth.uid));
+    }
+
+    function roleDoc() {
+      return firestore.get(/databases/(default)/documents/roles/$(request.auth.uid)).data;
+    }
+
+    function isOwner() {
+      return hasRoleDoc() &&
+        roleDoc().active == true &&
+        roleDoc().role == 'owner';
+    }
+
+    function isManagerFor(materialId) {
+      return isOwner() || (
+        hasRoleDoc() &&
+        roleDoc().active == true &&
+        roleDoc().role == 'manager' &&
+        (
+          (materialId in roleDoc().assignedMaterialIds) ||
+          ('*' in roleDoc().assignedMaterialIds)
+        )
+      );
+    }
+
+    function isEditorFor(materialId) {
+      return isManagerFor(materialId) || (
+        hasRoleDoc() &&
+        roleDoc().active == true &&
+        roleDoc().role == 'editor' &&
+        (
+          (materialId in roleDoc().assignedMaterialIds) ||
+          ('*' in roleDoc().assignedMaterialIds)
+        )
+      );
+    }
+
+    function isMaterialPublished(materialId) {
+      return firestore.exists(/databases/(default)/documents/materials/$(materialId)) &&
+        firestore.get(/databases/(default)/documents/materials/$(materialId)).data.status == 'published';
+    }
+
+    function isAllowedEducationalContentType() {
+      return request.resource != null && (
+        request.resource.contentType == 'application/pdf' ||
+        request.resource.contentType.matches('image/(png|jpeg|jpg|webp)') ||
+        request.resource.contentType.matches('video/(mp4|webm)') ||
+        request.resource.contentType.matches('audio/(mpeg|mp3|mp4|x-m4a|aac)') ||
+        request.resource.contentType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+        request.resource.contentType == 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      );
+    }
+
+    function isWithinSizeLimit(maxBytes) {
+      return request.resource != null &&
+        request.resource.size > 0 &&
+        request.resource.size <= maxBytes;
+    }
+
+    // ─── 1. Private User Backup Scope (Preserves Legacy User Files) ──────
+    match /users/{userId}/{allPaths=**} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create, update: if isSignedIn() &&
+        request.auth.uid == userId &&
+        isWithinSizeLimit(50 * 1024 * 1024) &&
+        isAllowedEducationalContentType();
+      allow delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // ─── 2. Course-Scoped Academy Educational Assets ─────────────────────
+    // Path format: /academy/{materialId}/{lectureId}/{fileName}
+    // Students/guests can only read files when the parent material is published
+    // and the file's custom metadata status is not 'draft'/'archived'.
+    // Only authorized Editors, Managers, and Owners within scope can upload/replace.
+    match /academy/{materialId}/{allPaths=**} {
+      allow read: if (
+        isMaterialPublished(materialId) &&
+        (!('status' in resource.metadata) || resource.metadata.status == 'published')
+      ) || isEditorFor(materialId);
+
+      allow create, update: if isEditorFor(materialId) &&
+        isWithinSizeLimit(100 * 1024 * 1024) &&
+        isAllowedEducationalContentType();
+
+      allow delete: if isOwner() || isManagerFor(materialId);
+    }
+
+    // Default deny all other storage paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

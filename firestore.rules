@@ -1,0 +1,238 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper Functions (Trusted UID-based Role & Scope Verification) ───
+    function isSignedIn() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    function userUid() {
+      return request.auth.uid;
+    }
+
+    function userEmail() {
+      return (isSignedIn() && request.auth.token.email != null)
+        ? request.auth.token.email.lower()
+        : '';
+    }
+
+    // Roles are stored in /roles/{uid} and keyed strictly by Firebase Auth UID.
+    // No hardcoded email addresses grant elevated privileges.
+    function hasRoleDoc() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles/$(userUid()));
+    }
+
+    function roleDoc() {
+      return get(/databases/$(database)/documents/roles/$(userUid())).data;
+    }
+
+    function isOwner() {
+      return hasRoleDoc() &&
+        roleDoc().active == true &&
+        roleDoc().role == 'owner';
+    }
+
+    function isManagerFor(materialId) {
+      return isOwner() || (
+        hasRoleDoc() &&
+        roleDoc().active == true &&
+        roleDoc().role == 'manager' &&
+        (
+          (materialId in roleDoc().assignedMaterialIds) ||
+          ('*' in roleDoc().assignedMaterialIds)
+        )
+      );
+    }
+
+    function isEditorFor(materialId) {
+      return isManagerFor(materialId) || (
+        hasRoleDoc() &&
+        roleDoc().active == true &&
+        roleDoc().role == 'editor' &&
+        (
+          (materialId in roleDoc().assignedMaterialIds) ||
+          ('*' in roleDoc().assignedMaterialIds)
+        )
+      );
+    }
+
+    function isAnyActiveAdmin() {
+      return isOwner() || (
+        hasRoleDoc() &&
+        roleDoc().active == true &&
+        (roleDoc().role == 'manager' || roleDoc().role == 'editor')
+      );
+    }
+
+    function isParentMaterialPublished(materialId) {
+      return materialId != null &&
+        exists(/databases/$(database)/documents/materials/$(materialId)) &&
+        get(/databases/$(database)/documents/materials/$(materialId)).data.status == 'published';
+    }
+
+    // ─── 1. Preserve User Profiles & Student Private Sync Scope ──────────
+    // Users can only read/write their own profile and student study progress.
+    // Users cannot inject elevated 'role' or 'isAdmin' fields into their profile.
+    match /users/{userId} {
+      allow read: if isSignedIn() && (userUid() == userId || isOwner());
+
+      allow create, update: if isSignedIn() &&
+        userUid() == userId &&
+        (!('role' in request.resource.data) || request.resource.data.role == 'student') &&
+        (!('isAdmin' in request.resource.data) || request.resource.data.isAdmin == false);
+
+      allow delete: if false;
+
+      match /studentState/{docId} {
+        allow read, create, update, delete: if isSignedIn() && userUid() == userId;
+      }
+    }
+
+    // ─── 2. Materials Catalog ────────────────────────────────────────────
+    // Public/students can ONLY read published materials.
+    // Managers can create/update/publish/archive materials within their assigned scope.
+    // Editors can only update draft metadata within their assigned scope.
+    match /materials/{materialId} {
+      allow read: if resource.data.status == 'published' || isEditorFor(materialId);
+
+      allow create: if (
+        isOwner() ||
+        (hasRoleDoc() && roleDoc().active == true && roleDoc().role == 'manager') ||
+        (isEditorFor(materialId) && request.resource.data.status == 'draft')
+      ) &&
+      request.resource.data.title is string &&
+      request.resource.data.title.size() > 0 &&
+      request.resource.data.title.size() <= 300 &&
+      request.resource.data.status in ['draft', 'published', 'archived'];
+
+      allow update: if (
+        isManagerFor(materialId) ||
+        (
+          isEditorFor(materialId) &&
+          resource.data.status == 'draft' &&
+          request.resource.data.status == 'draft'
+        )
+      ) &&
+      request.resource.data.title is string &&
+      request.resource.data.title.size() > 0 &&
+      request.resource.data.status in ['draft', 'published', 'archived'];
+
+      allow delete: if isOwner();
+    }
+
+    // ─── 3. Lectures Catalog ─────────────────────────────────────────────
+    // Public/students can ONLY read published lectures whose parent material is ALSO published.
+    match /lectures/{lectureId} {
+      allow read: if (
+        resource.data.status == 'published' &&
+        isParentMaterialPublished(resource.data.materialId)
+      ) || isEditorFor(resource.data.materialId);
+
+      allow create: if (
+        isManagerFor(request.resource.data.materialId) ||
+        (
+          isEditorFor(request.resource.data.materialId) &&
+          request.resource.data.status == 'draft'
+        )
+      ) &&
+      request.resource.data.title is string &&
+      request.resource.data.title.size() > 0 &&
+      request.resource.data.status in ['draft', 'published', 'archived'];
+
+      allow update: if (
+        isManagerFor(resource.data.materialId) ||
+        (
+          isEditorFor(resource.data.materialId) &&
+          resource.data.status == 'draft' &&
+          request.resource.data.status == 'draft' &&
+          request.resource.data.materialId == resource.data.materialId
+        )
+      ) &&
+      request.resource.data.title is string &&
+      request.resource.data.title.size() > 0 &&
+      request.resource.data.status in ['draft', 'published', 'archived'];
+
+      allow delete: if isOwner() || isManagerFor(resource.data.materialId);
+    }
+
+    // ─── 4. Lecture Revisions (Non-Destructive Editor Workflow) ──────────
+    // Editors editing a published lecture create/update a revision doc here
+    // while the published lecture remains live until approved by Manager/Owner.
+    match /lectureRevisions/{revisionId} {
+      allow read: if isEditorFor(resource.data.materialId);
+      allow create, update: if isEditorFor(request.resource.data.materialId) &&
+        request.resource.data.status in ['draft', 'pending_review'];
+      allow delete: if isManagerFor(resource.data.materialId);
+    }
+
+    // ─── 5. File Assets Metadata & Version Registry ──────────────────────
+    // Unpublished or cross-course assets cannot be read by students or out-of-scope editors.
+    match /assets/{assetId} {
+      allow read: if (
+        resource.data.status == 'published' &&
+        isParentMaterialPublished(resource.data.materialId)
+      ) || isEditorFor(resource.data.materialId);
+
+      allow create: if isEditorFor(request.resource.data.materialId) &&
+        request.resource.data.size is int &&
+        request.resource.data.size > 0 &&
+        request.resource.data.size <= 104857600 &&
+        request.resource.data.status in ['draft', 'published'];
+
+      allow update: if isManagerFor(resource.data.materialId) || (
+        isEditorFor(resource.data.materialId) &&
+        resource.data.status == 'draft' &&
+        request.resource.data.status == 'draft'
+      );
+
+      // Permanent deletion requires Owner or scoped Manager AND zero active references
+      allow delete: if (isOwner() || isManagerFor(resource.data.materialId)) &&
+        resource.data.referenceCount == 0;
+    }
+
+    // ─── 6. Trusted Administrative Roles (/roles/{uid}) ──────────────────
+    // Keyed by Firebase Auth UID.
+    // Users can read their own role document to verify permissions on login.
+    // Only an existing Owner can assign/modify Manager or Editor roles.
+    // No client request can promote any user to 'owner' or modify the caller's own owner role.
+    match /roles/{targetUid} {
+      allow read: if isOwner() || (isSignedIn() && userUid() == targetUid);
+
+      allow create, update: if isOwner() &&
+        targetUid != userUid() &&
+        request.resource.data.role in ['manager', 'editor', 'student'] &&
+        request.resource.data.active is bool &&
+        request.resource.data.assignedMaterialIds is list;
+
+      allow delete: if isOwner() && targetUid != userUid();
+    }
+
+    // Legacy read-only compatibility for adminRoles/{docId}; client writes disabled
+    match /adminRoles/{docId} {
+      allow read: if isOwner() || (isSignedIn() && (userUid() == docId || userEmail() == docId));
+      allow write: if false;
+    }
+
+    // ─── 7. Append-Only Audit Log (Owner Read, Active Admin Append) ──────
+    match /auditLogs/{logId} {
+      allow read: if isOwner();
+      allow create: if isAnyActiveAdmin() &&
+        request.resource.data.actorUid == userUid() &&
+        request.resource.data.keys().hasAll(['actorUid', 'actorEmail', 'actorRole', 'action', 'entityType', 'entityId', 'timestamp']);
+      allow update, delete: if false;
+    }
+
+    // ─── 8. Platform Settings (Owner Write, Public Read of Safe Config) ──
+    match /platformSettings/{docId} {
+      allow read: if docId == 'publicConfig' || isOwner();
+      allow write: if isOwner();
+    }
+
+    // Default deny all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

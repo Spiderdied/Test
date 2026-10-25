@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+*serviceAccount*
+*private*key*
+*.pem
+node_modules/
+.DS_Store
+
+PDF_DIAGNOSTIC_V6.txt
+PDF_VIEWER_V12.md
